@@ -3,7 +3,7 @@ import CoreLocation
 import SnapKit
 import UIKit
 
-class MyLocationUIView: UIView {
+class MapView: UIView {
     var mapView: MKMapView!
     
     lazy var locationManager: CLLocationManager = {

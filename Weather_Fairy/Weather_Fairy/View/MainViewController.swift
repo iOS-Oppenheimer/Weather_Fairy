@@ -20,7 +20,7 @@ class MainViewController: UIViewController {
         navigationItem.rightBarButtonItem = menuBarItem
 
         // MapKit 띄우기
-        let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds
+        let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 300, width: UIScreen.main.bounds
                 .width, height: 250))
         view.addSubview(locationView)
     } //: viewDidLoad()
@@ -57,29 +57,44 @@ class MainViewController: UIViewController {
 } //: UIViewController
 
 extension MainViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let coordinate = locations.last?.coordinate {
-            print(coordinate.latitude)
-            print(coordinate.longitude)
+    // 위치 권한이 변경될 때 호출되는 메서드
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            print("GPS 권한 설정됨")
+        case .restricted, .notDetermined:
+            print("GPS 권한 설정되지 않음")
+            DispatchQueue.main.async {
+                // 위치 권한을 요청하는 코드 추가
+                self.myLocationView.locationManager.requestWhenInUseAuthorization()
+            }
+        case .denied:
+            print("GPS 권한 요청 거부됨")
+            DispatchQueue.main.async {
+                // 위치 권한을 요청하는 코드 추가
+                self.myLocationView.locationManager.requestWhenInUseAuthorization()
+            }
+        default:
+            print("GPS: Default")
         }
     }
 }
 
-//// MainViewController Preview
-// struct MainViewController_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainVCRepresentable()
-//            .edgesIgnoringSafeArea(.all)
-//    }
-// }
-//
-// struct MainVCRepresentable: UIViewControllerRepresentable {
-//    func makeUIViewController(context: Context) -> UIViewController {
-//        let mainViewController = MainViewController()
-//        return UINavigationController(rootViewController: mainViewController)
-//    }
-//
-//    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
-//
-//    typealias UIViewControllerType = UIViewController
-// }
+// MainViewController Preview
+struct MainViewController_Previews: PreviewProvider {
+    static var previews: some View {
+        MainVCRepresentable()
+            .edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct MainVCRepresentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        let mainViewController = MainViewController()
+        return UINavigationController(rootViewController: mainViewController)
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
+
+    typealias UIViewControllerType = UIViewController
+}
