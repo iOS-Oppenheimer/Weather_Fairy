@@ -16,6 +16,7 @@
 		FBB1369D2AC15F140010CED0 /* UILabel +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136992AC15F140010CED0 /* UILabel +.swift */; };
 		FBB1369E2AC15F140010CED0 /* UIStackView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB1369A2AC15F140010CED0 /* UIStackView +.swift */; };
 		FBB1369F2AC15F140010CED0 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB1369B2AC15F140010CED0 /* DateFormatter.swift */; };
+		FBB136A22AC160010010CED0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = FBB136A12AC160010010CED0 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBB136A22AC160010010CED0 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +142,9 @@
 			dependencies = (
 			);
 			name = Weather_Fairy;
+			packageProductDependencies = (
+				FBB136A12AC160010010CED0 /* SnapKit */,
+			);
 			productName = Weather_Fairy;
 			productReference = FBB1367B2AC15D300010CED0 /* Weather_Fairy.app */;
 			productType = "com.apple.product-type.application";
@@ -168,6 +173,9 @@
 				Base,
 			);
 			mainGroup = FBB136722AC15D300010CED0;
+			packageReferences = (
+				FBB136A02AC160010010CED0 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = FBB1367C2AC15D300010CED0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -408,6 +416,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FBB136A02AC160010010CED0 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FBB136A12AC160010010CED0 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FBB136A02AC160010010CED0 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FBB136732AC15D300010CED0 /* Project object */;
 }
