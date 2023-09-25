@@ -17,6 +17,7 @@
 		FBB1369E2AC15F140010CED0 /* UIStackView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB1369A2AC15F140010CED0 /* UIStackView +.swift */; };
 		FBB1369F2AC15F140010CED0 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB1369B2AC15F140010CED0 /* DateFormatter.swift */; };
 		FBB136A22AC160010010CED0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = FBB136A12AC160010010CED0 /* SnapKit */; };
+		FBB136A62AC174B40010CED0 /* NavigationBarItem +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136A52AC174B40010CED0 /* NavigationBarItem +.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		FBB136992AC15F140010CED0 /* UILabel +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel +.swift"; sourceTree = "<group>"; };
 		FBB1369A2AC15F140010CED0 /* UIStackView +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView +.swift"; sourceTree = "<group>"; };
 		FBB1369B2AC15F140010CED0 /* DateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
+		FBB136A52AC174B40010CED0 /* NavigationBarItem +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationBarItem +.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 				FBB136982AC15F140010CED0 /* UIButton +.swift */,
 				FBB136992AC15F140010CED0 /* UILabel +.swift */,
 				FBB1369A2AC15F140010CED0 /* UIStackView +.swift */,
+				FBB136A52AC174B40010CED0 /* NavigationBarItem +.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 				FBB1369E2AC15F140010CED0 /* UIStackView +.swift in Sources */,
 				FBB1369C2AC15F140010CED0 /* UIButton +.swift in Sources */,
 				FBB136832AC15D300010CED0 /* MainViewController.swift in Sources */,
+				FBB136A62AC174B40010CED0 /* NavigationBarItem +.swift in Sources */,
 				FBB1369F2AC15F140010CED0 /* DateFormatter.swift in Sources */,
 				FBB1369D2AC15F140010CED0 /* UILabel +.swift in Sources */,
 				FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */,
