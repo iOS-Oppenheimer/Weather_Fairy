@@ -1,9 +1,10 @@
-import SwiftUI
 import SnapKit
+import SwiftUI
 import UIKit
 
 class MainViewController: UIViewController {
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -14,10 +15,9 @@ class MainViewController: UIViewController {
         navigationItem.leftBarButtonItem = presentLocationBarItem
         navigationItem.rightBarButtonItem = menuBarItem
 
-        //MapKit 띄우기
+        // MapKit 띄우기
         let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 0))
         view.addSubview(locationView)
-        
     } //: viewDidLoad()
 
     // ========================================🔽 navigation Bar Tapped구현==========================================
@@ -25,6 +25,7 @@ class MainViewController: UIViewController {
 
     @objc func menuTapped() {}
 } //: UIViewController
+
 
 // MainViewController Preview
 struct MainViewController_Previews: PreviewProvider {

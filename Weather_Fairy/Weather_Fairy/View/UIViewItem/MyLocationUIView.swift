@@ -1,9 +1,11 @@
 import MapKit
+import CoreLocation
 import SnapKit
 import UIKit
 
 class MyLocationUIView: UIView {
     var mapView: MKMapView!
+    let locationManager = CLLocationManager()
     
     lazy var country: UILabel = {
         let label = UILabel()
@@ -33,18 +35,19 @@ class MyLocationUIView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        locationManager.requestWhenInUseAuthorization()
+        
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(200)
             make.leading.equalTo(safeAreaLayoutGuide.snp.leading).offset(15)
             make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-15)
-            make.width.equalTo(frame.width) // 이 부분은 너비를 화면 너비와 일치하게 설정합니다.
+            make.width.equalTo(frame.width)
         }
 
         customMapView.snp.makeConstraints { make in
-            make.height.equalTo(300)
-            make.width.equalTo(frame.width) // 이 부분은 너비를 화면 너비와 일치하게 설정합니다.
+            make.height.equalTo(250)
+            make.width.equalTo(frame.width)
         }
     }
     
