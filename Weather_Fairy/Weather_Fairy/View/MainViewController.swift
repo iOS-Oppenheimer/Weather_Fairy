@@ -5,13 +5,14 @@ import SwiftUI
 import UIKit
 
 class MainViewController: UIViewController {
-    let myLocationView = MyLocationUIView()
+    let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 300, width: UIScreen.main.bounds
+            .width, height: 250))
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
 
-        myLocationView.locationManager.delegate = self
+        locationView.locationManager.delegate = self
 
         // NavigationBarButton 구현
         let presentLocationBarItem = UIBarButtonItem.presentLocationItemButton(target: self, action: #selector(presentLocationTapped))
@@ -20,27 +21,25 @@ class MainViewController: UIViewController {
         navigationItem.rightBarButtonItem = menuBarItem
 
         // MapKit 띄우기
-        let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 300, width: UIScreen.main.bounds
-                .width, height: 250))
         view.addSubview(locationView)
     } //: viewDidLoad()
 
-    // ========================================🔽 navigation Bar Tapped구현==========================================
+    // ========================================🔽 navigation Bar Tapped구현 ==========================================
     @objc func presentLocationTapped() {
-        let status = myLocationView.locationManager.authorizationStatus
+        let status = locationView.locationManager.authorizationStatus
 
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
-            if let currentLocation = myLocationView.locationManager.location {
+            if let currentLocation = locationView.locationManager.location {
                 let latitude = currentLocation.coordinate.latitude
                 let longitude = currentLocation.coordinate.longitude
                 print("현재 위치 - 위도: \(latitude), 경도: \(longitude)")
 
                 // 현재 위치를 중심으로 지도를 이동
                 let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                let regionRadius: CLLocationDistance = 200
+                let regionRadius: CLLocationDistance = 10000
                 let coordinateRegion = MKCoordinateRegion(center: location, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
-                myLocationView.customMapView.setRegion(coordinateRegion, animated: true)
+                locationView.customMapView.setRegion(coordinateRegion, animated: true)
             } else {
                 print("위치 정보를 가져올 수 없습니다.")
             }
@@ -57,6 +56,15 @@ class MainViewController: UIViewController {
 } //: UIViewController
 
 extension MainViewController: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else {
+            print("위치 업데이트 실패")
+            return
+        }
+        print("location: \(location.coordinate.latitude),\(location.coordinate.longitude)")
+    }
+    
     // 위치 권한이 변경될 때 호출되는 메서드
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
@@ -66,13 +74,13 @@ extension MainViewController: CLLocationManagerDelegate {
             print("GPS 권한 설정되지 않음")
             DispatchQueue.main.async {
                 // 위치 권한을 요청하는 코드 추가
-                self.myLocationView.locationManager.requestWhenInUseAuthorization()
+                self.locationView.locationManager.requestWhenInUseAuthorization()
             }
         case .denied:
             print("GPS 권한 요청 거부됨")
             DispatchQueue.main.async {
                 // 위치 권한을 요청하는 코드 추가
-                self.myLocationView.locationManager.requestWhenInUseAuthorization()
+                self.locationView.locationManager.requestWhenInUseAuthorization()
             }
         default:
             print("GPS: Default")
