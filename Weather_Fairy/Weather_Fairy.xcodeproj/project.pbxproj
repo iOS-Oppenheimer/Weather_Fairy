@@ -24,7 +24,7 @@
 		FBB136A82AC17A3B0010CED0 /* MyLocationUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */; };
 		FBB136AC2AC1EBE00010CED0 /* map.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136AB2AC1EBE00010CED0 /* map.swift */; };
 		FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136AD2AC26ABA0010CED0 /* MainView.swift */; };
-		FBB136B92AC2B6610010CED0 /* CurrentWeatherViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136B82AC2B6610010CED0 /* CurrentWeatherViewItem.swift */; };
+		FBB136B92AC2B6610010CED0 /* CurrentLocationViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136B82AC2B6610010CED0 /* CurrentLocationViewItem.swift */; };
 		FBB136BB2AC2BAB90010CED0 /* imageView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136BA2AC2BAB90010CED0 /* imageView +.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,7 +47,7 @@
 		FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLocationUIView.swift; sourceTree = "<group>"; };
 		FBB136AB2AC1EBE00010CED0 /* map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = map.swift; sourceTree = "<group>"; };
 		FBB136AD2AC26ABA0010CED0 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		FBB136B82AC2B6610010CED0 /* CurrentWeatherViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherViewItem.swift; sourceTree = "<group>"; };
+		FBB136B82AC2B6610010CED0 /* CurrentLocationViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocationViewItem.swift; sourceTree = "<group>"; };
 		FBB136BA2AC2BAB90010CED0 /* imageView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "imageView +.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -126,7 +126,7 @@
 			children = (
 				FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */,
 				FBB136AB2AC1EBE00010CED0 /* map.swift */,
-				FBB136B82AC2B6610010CED0 /* CurrentWeatherViewItem.swift */,
+				FBB136B82AC2B6610010CED0 /* CurrentLocationViewItem.swift */,
 			);
 			path = UIViewItem;
 			sourceTree = "<group>";
@@ -229,7 +229,7 @@
 				FBB136BB2AC2BAB90010CED0 /* imageView +.swift in Sources */,
 				DFF9011E2AC19F7E005BD423 /* SearchPageTableViewCell.swift in Sources */,
 				FBB1369F2AC15F140010CED0 /* DateFormatter.swift in Sources */,
-				FBB136B92AC2B6610010CED0 /* CurrentWeatherViewItem.swift in Sources */,
+				FBB136B92AC2B6610010CED0 /* CurrentLocationViewItem.swift in Sources */,
 				DFA298252AC16BD200700EF1 /* User.swift in Sources */,
 				FBB1369D2AC15F140010CED0 /* UILabel +.swift in Sources */,
 				FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */,

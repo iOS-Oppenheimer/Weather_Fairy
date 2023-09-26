@@ -1,6 +1,6 @@
 import UIKit
 
-class CurrentWeatherViewItem: UIView {
+class CurrentLocationViewItem: UIView {
     // 대기질
     lazy var airQualityImage: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "airQuality"))
