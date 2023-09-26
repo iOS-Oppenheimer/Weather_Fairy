@@ -7,23 +7,9 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-
-        let goToSearchButton = UIButton(type: .system)
-        goToSearchButton.setTitle("검색 페이지로 이동", for: .normal)
-        goToSearchButton.addTarget(self, action: #selector(goToSearchPage), for: .touchUpInside)
-        view.addSubview(goToSearchButton)
-        
-
-        goToSearchButton.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
-        }
-        
     }
 
-    @objc func goToSearchPage() {
-        let searchViewController = SearchPageViewController()
-        navigationController?.pushViewController(searchViewController, animated: true)
-    }
+
    
 
 }
