@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C763EA3B2AC2D9A600B07C90 /* MainWeatherForecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C763EA3A2AC2D9A600B07C90 /* MainWeatherForecastView.swift */; };
+		C763EA3D2AC2D9BB00B07C90 /* MainMyLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C763EA3C2AC2D9BB00B07C90 /* MainMyLocationView.swift */; };
+		C7ABCD422AC28EE800E77072 /* MainTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ABCD412AC28EE800E77072 /* MainTopView.swift */; };
+		C7ABCD442AC2A92F00E77072 /* MainMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ABCD432AC2A92F00E77072 /* MainMiddleView.swift */; };
+		C7ABCD462AC2A94C00E77072 /* MainCurrentWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ABCD452AC2A94C00E77072 /* MainCurrentWeatherView.swift */; };
 		DFA298232AC1659A00700EF1 /* SearchPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA298222AC1659A00700EF1 /* SearchPageViewController.swift */; };
-		DFA298252AC16BD200700EF1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA298242AC16BD200700EF1 /* User.swift */; };
 		DFF9011E2AC19F7E005BD423 /* SearchPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF9011D2AC19F7E005BD423 /* SearchPageTableViewCell.swift */; };
 		FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB1367E2AC15D300010CED0 /* AppDelegate.swift */; };
 		FBB136812AC15D300010CED0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136802AC15D300010CED0 /* SceneDelegate.swift */; };
@@ -22,13 +26,16 @@
 		FBB136A22AC160010010CED0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = FBB136A12AC160010010CED0 /* SnapKit */; };
 		FBB136A62AC174B40010CED0 /* NavigationBarItem +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136A52AC174B40010CED0 /* NavigationBarItem +.swift */; };
 		FBB136A82AC17A3B0010CED0 /* MyLocationUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */; };
-		FBB136AC2AC1EBE00010CED0 /* map.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136AB2AC1EBE00010CED0 /* map.swift */; };
 		FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136AD2AC26ABA0010CED0 /* MainView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C763EA3A2AC2D9A600B07C90 /* MainWeatherForecastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWeatherForecastView.swift; sourceTree = "<group>"; };
+		C763EA3C2AC2D9BB00B07C90 /* MainMyLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMyLocationView.swift; sourceTree = "<group>"; };
+		C7ABCD412AC28EE800E77072 /* MainTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTopView.swift; sourceTree = "<group>"; };
+		C7ABCD432AC2A92F00E77072 /* MainMiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMiddleView.swift; sourceTree = "<group>"; };
+		C7ABCD452AC2A94C00E77072 /* MainCurrentWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCurrentWeatherView.swift; sourceTree = "<group>"; };
 		DFA298222AC1659A00700EF1 /* SearchPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageViewController.swift; sourceTree = "<group>"; };
-		DFA298242AC16BD200700EF1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = Weather_Fairy/Components/User.swift; sourceTree = SOURCE_ROOT; };
 		DFF9011D2AC19F7E005BD423 /* SearchPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageTableViewCell.swift; sourceTree = "<group>"; };
 		FBB1367B2AC15D300010CED0 /* Weather_Fairy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather_Fairy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBB1367E2AC15D300010CED0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -43,7 +50,6 @@
 		FBB1369B2AC15F140010CED0 /* DateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		FBB136A52AC174B40010CED0 /* NavigationBarItem +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationBarItem +.swift"; sourceTree = "<group>"; };
 		FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLocationUIView.swift; sourceTree = "<group>"; };
-		FBB136AB2AC1EBE00010CED0 /* map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = map.swift; sourceTree = "<group>"; };
 		FBB136AD2AC26ABA0010CED0 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,13 +77,6 @@
 			children = (
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		DFA298282AC16C2700700EF1 /* UIViewItem */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UIViewItem;
 			sourceTree = "<group>";
 		};
 		DFF9011C2AC19F25005BD423 /* Cell */ = {
@@ -139,25 +138,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		FBB136942AC15E670010CED0 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		FBB136952AC15E6D0010CED0 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		FBB136962AC15EDE0010CED0 /* UIViewItem */ = {
 			isa = PBXGroup;
 			children = (
 				FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */,
-				FBB136AB2AC1EBE00010CED0 /* map.swift */,
+				C7ABCD412AC28EE800E77072 /* MainTopView.swift */,
+				C7ABCD432AC2A92F00E77072 /* MainMiddleView.swift */,
+				C7ABCD452AC2A94C00E77072 /* MainCurrentWeatherView.swift */,
+				C763EA3A2AC2D9A600B07C90 /* MainWeatherForecastView.swift */,
+				C763EA3C2AC2D9BB00B07C90 /* MainMyLocationView.swift */,
 			);
 			path = UIViewItem;
 			sourceTree = "<group>";
@@ -170,7 +159,6 @@
 				FBB136992AC15F140010CED0 /* UILabel +.swift */,
 				FBB1369A2AC15F140010CED0 /* UIStackView +.swift */,
 				FBB136A52AC174B40010CED0 /* NavigationBarItem +.swift */,
-				DFA298242AC16BD200700EF1 /* User.swift */,
 				DFA298262AC16C0300700EF1 /* Model */,
 			);
 			path = Components;
@@ -254,18 +242,21 @@
 			files = (
 				FBB1369E2AC15F140010CED0 /* UIStackView +.swift in Sources */,
 				FBB1369C2AC15F140010CED0 /* UIButton +.swift in Sources */,
+				C7ABCD462AC2A94C00E77072 /* MainCurrentWeatherView.swift in Sources */,
 				FBB136832AC15D300010CED0 /* MainViewController.swift in Sources */,
 				FBB136A62AC174B40010CED0 /* NavigationBarItem +.swift in Sources */,
 				DFA298232AC1659A00700EF1 /* SearchPageViewController.swift in Sources */,
 				DFF9011E2AC19F7E005BD423 /* SearchPageTableViewCell.swift in Sources */,
 				FBB1369F2AC15F140010CED0 /* DateFormatter.swift in Sources */,
-				DFA298252AC16BD200700EF1 /* User.swift in Sources */,
 				FBB1369D2AC15F140010CED0 /* UILabel +.swift in Sources */,
+				C763EA3D2AC2D9BB00B07C90 /* MainMyLocationView.swift in Sources */,
 				FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */,
+				C7ABCD422AC28EE800E77072 /* MainTopView.swift in Sources */,
 				FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */,
+				C763EA3B2AC2D9A600B07C90 /* MainWeatherForecastView.swift in Sources */,
 				FBB136812AC15D300010CED0 /* SceneDelegate.swift in Sources */,
-				FBB136AC2AC1EBE00010CED0 /* map.swift in Sources */,
 				FBB136A82AC17A3B0010CED0 /* MyLocationUIView.swift in Sources */,
+				C7ABCD442AC2A92F00E77072 /* MainMiddleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
