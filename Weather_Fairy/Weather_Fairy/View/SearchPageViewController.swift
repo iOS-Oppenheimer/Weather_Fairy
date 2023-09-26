@@ -3,8 +3,10 @@ import SwiftUI
 import SnapKit
 
 class SearchPageViewController: UIViewController, UISearchBarDelegate {
-
     
+    private let viewModel = SearchPageViewModel()
+    
+    private var searchHistory = SearchHistory()
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -56,7 +58,29 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
         
     }
     
-
+    // 서치바 검색 시 메서드
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let searchText = searchBar.text {
+            print("검색어: \(searchText)")
+            
+            viewModel.searchLocation(for: searchText) { result in
+                switch result {
+                case .success(let coordinates):
+                    print("결과: \(coordinates)")
+                    
+                    // 검색 결과를 SearchHistory에 추가
+                    let location = Location(name: coordinates.0, koreanName: coordinates.1, lat: coordinates.2, lon: coordinates.3)
+                    self.searchHistory.addSearch(location)
+                    print("검색기록: \(self.searchHistory.currentHistory)")
+                    
+                case .failure(let error):
+                    print("에러: \(error)")
+                }
+            }
+        }
+    }
+    
+    
 }
 
 // 테이블뷰 Delegate, DataSource 설정
@@ -66,14 +90,14 @@ extension SearchPageViewController : UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-            let cell = tableView.dequeueReusableCell(withIdentifier: SearchPageTableViewCell.identifier, for: indexPath) as! SearchPageTableViewCell
-            cell.titleLabel.text = "테이블 뷰 셀 #\(indexPath.row + 1)"
-            
- 
-
-            return cell
-        }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: SearchPageTableViewCell.identifier, for: indexPath) as! SearchPageTableViewCell
+        cell.titleLabel.text = "테이블 뷰 셀 #\(indexPath.row + 1)"
+        
+        
+        
+        return cell
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
