@@ -1,4 +1,3 @@
-import SnapKit
 import UIKit
 
 class CurrentWeatherViewItem: UIView {
@@ -114,14 +113,14 @@ class CurrentWeatherViewItem: UIView {
         return stackView
     }()
     
-    func setupCurrentWeatherView() {
+    private func setupCurrentWeatherView() {
         let stackView = UIStackView(arrangedSubviews: [airQualityStackView, windyStackView, humidityStackView, rainfallStackView])
         stackView.horizontalStackView(spacing: 30)
         stackView.layer.borderColor = UIColor.red.cgColor
         stackView.layer.borderWidth = 2.0
-        addSubview(stackView)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(stackView)
     }
 
     override init(frame: CGRect) {
