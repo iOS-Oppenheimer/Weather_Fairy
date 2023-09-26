@@ -24,7 +24,7 @@
 		FBB136A82AC17A3B0010CED0 /* MyLocationUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */; };
 		FBB136AC2AC1EBE00010CED0 /* map.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136AB2AC1EBE00010CED0 /* map.swift */; };
 		FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136AD2AC26ABA0010CED0 /* MainView.swift */; };
-		FBB136B52AC299B00010CED0 /* CurrentLocationViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136B42AC299B00010CED0 /* CurrentLocationViewItem.swift */; };
+		FBB136B52AC299B00010CED0 /* CurrentWeatherViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136B42AC299B00010CED0 /* CurrentWeatherViewItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,7 +46,7 @@
 		FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLocationUIView.swift; sourceTree = "<group>"; };
 		FBB136AB2AC1EBE00010CED0 /* map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = map.swift; sourceTree = "<group>"; };
 		FBB136AD2AC26ABA0010CED0 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		FBB136B42AC299B00010CED0 /* CurrentLocationViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CurrentLocationViewItem.swift; path = ../../../../../.Trash/Weather_Fairy/Weather_Fairy/Weather_Fairy/View/UIViewItem/CurrentLocationViewItem.swift; sourceTree = "<group>"; };
+		FBB136B42AC299B00010CED0 /* CurrentWeatherViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CurrentWeatherViewItem.swift; path = ../../../../../.Trash/Weather_Fairy/Weather_Fairy/Weather_Fairy/View/UIViewItem/CurrentWeatherViewItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,7 +124,7 @@
 			children = (
 				FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */,
 				FBB136AB2AC1EBE00010CED0 /* map.swift */,
-				FBB136B42AC299B00010CED0 /* CurrentLocationViewItem.swift */,
+				FBB136B42AC299B00010CED0 /* CurrentWeatherViewItem.swift */,
 			);
 			path = UIViewItem;
 			sourceTree = "<group>";
@@ -227,7 +227,7 @@
 				FBB1369F2AC15F140010CED0 /* DateFormatter.swift in Sources */,
 				DFA298252AC16BD200700EF1 /* User.swift in Sources */,
 				FBB1369D2AC15F140010CED0 /* UILabel +.swift in Sources */,
-				FBB136B52AC299B00010CED0 /* CurrentLocationViewItem.swift in Sources */,
+				FBB136B52AC299B00010CED0 /* CurrentWeatherViewItem.swift in Sources */,
 				FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */,
 				FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */,
 				FBB136812AC15D300010CED0 /* SceneDelegate.swift in Sources */,

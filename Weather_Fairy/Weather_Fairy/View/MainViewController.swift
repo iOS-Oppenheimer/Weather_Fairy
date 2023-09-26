@@ -4,10 +4,10 @@ import SnapKit
 import SwiftUI
 import UIKit
 
-
 class MainViewController: UIViewController {
-    let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 300, width: UIScreen.main.bounds
+    let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 480, width: UIScreen.main.bounds
             .width, height: 250))
+    let currentLocationView = CurrentWeatherViewItem(frame: CGRect(x: 60, y: 100, width: UIScreen.main.bounds.width, height: 0))
     let locationManager = CLLocationManager()
   
   lazy var cityName: UILabel = {
@@ -279,12 +279,6 @@ class MainViewController: UIViewController {
         view.backgroundColor = .systemBackground
         locationView.locationManager.delegate = self
 
-//        // NavigationBarButton 구현
-//        let presentLocationBarItem = UIBarButtonItem.presentLocationItemButton(target: self, action: #selector(presentLocationTapped))
-//        let menuBarItem = UIBarButtonItem.menuItemButton(target: self, action: #selector(menuTapped))
-//        navigationItem.leftBarButtonItem = presentLocationBarItem
-//        navigationItem.rightBarButtonItem = menuBarItem
-
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -298,6 +292,7 @@ class MainViewController: UIViewController {
       
         // MapKit 띄우기
         view.addSubview(locationView)
+        view.addSubview(currentLocationView)
     } //: viewDidLoad()
   
   override func didReceiveMemoryWarning() {
