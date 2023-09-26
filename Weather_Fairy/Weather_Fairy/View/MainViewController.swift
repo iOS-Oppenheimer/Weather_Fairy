@@ -5,6 +5,8 @@ import SwiftUI
 import UIKit
 
 class MainViewController: UIViewController {
+    let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 480, width: UIScreen.main.bounds
+            .width, height: 250))
     var locationView: MyLocationUIView!
     let locationManager = CLLocationManager()
     
@@ -19,7 +21,6 @@ class MainViewController: UIViewController {
         setupNavigationBar()
         setupBackgroundImage()
         setupViews()
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -87,8 +88,8 @@ class MainViewController: UIViewController {
 
     @objc func resetLocationButtonTapped() {
         locationManager.startUpdatingLocation()
-              let status = locationView.locationManager.authorizationStatus
-
+        let status = locationView.locationManager.authorizationStatus
+      
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
             if let currentLocation = locationView.locationManager.location {
@@ -117,9 +118,6 @@ class MainViewController: UIViewController {
         let searchPageVC = SearchPageViewController()
         navigationController?.pushViewController(searchPageVC, animated: true)
     }
-    
-    @objc func SearchPageButtonTapped() {}
-
 }
 
 extension MainViewController: CLLocationManagerDelegate {
