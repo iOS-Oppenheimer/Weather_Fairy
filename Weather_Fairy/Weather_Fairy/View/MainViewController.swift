@@ -4,310 +4,30 @@ import SnapKit
 import SwiftUI
 import UIKit
 
-
 class MainViewController: UIViewController {
-    let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 300, width: UIScreen.main.bounds
-            .width, height: 250))
+    var locationView: MyLocationUIView!
     let locationManager = CLLocationManager()
-  
-  lazy var cityName: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "서울특별시"
-        label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        label.sizeToFit()
-        label.textAlignment = .center
-        label.textColor = .systemBackground
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowOffset = CGSize(width: 0, height: 2)
-        label.layer.shadowOpacity = 0.8
-        label.layer.shadowRadius = 2
-
-        return label
-    }()
-
-    lazy var celsiusLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "21"
-        label.font = UIFont.systemFont(ofSize: 100, weight: .bold)
-        label.sizeToFit()
-        label.textAlignment = .center
-        label.textColor = .systemBackground
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowOffset = CGSize(width: 0, height: 2)
-        label.layer.shadowOpacity = 0.8
-        label.layer.shadowRadius = 2
-
-        return label
-    }()
-
-    lazy var celsiusSignLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "℃"
-        label.font = UIFont.systemFont(ofSize: 80, weight: .bold)
-        label.sizeToFit()
-        label.textAlignment = .center
-        label.textColor = .systemBackground
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowOffset = CGSize(width: 0, height: 2)
-        label.layer.shadowOpacity = 0.8
-        label.layer.shadowRadius = 2
-
-        return label
-    }()
-
-    lazy var celsiusStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [celsiusLabel, celsiusSignLabel])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = 2
-
-        return stackView
-    }()
-
-    lazy var fahrenheitLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "69.8"
-        label.font = UIFont.systemFont(ofSize: 100, weight: .bold)
-        label.sizeToFit()
-        label.textAlignment = .center
-        label.textColor = .systemBackground
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowOffset = CGSize(width: 0, height: 2)
-        label.layer.shadowOpacity = 0.8
-        label.layer.shadowRadius = 2
-
-        return label
-    }()
-
-    lazy var fahrenheitSignLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "℉"
-        label.font = UIFont.systemFont(ofSize: 80, weight: .bold)
-        label.sizeToFit()
-        label.textAlignment = .center
-        label.textColor = .systemBackground
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowOffset = CGSize(width: 0, height: 2)
-        label.layer.shadowOpacity = 0.8
-        label.layer.shadowRadius = 2
-
-        return label
-    }()
-
-    lazy var fahrenheitStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [fahrenheitLabel, fahrenheitSignLabel])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = 2
-
-        return stackView
-    }()
-
-    lazy var topStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [celsiusStackView, fahrenheitStackView])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.alignment = .center
-        stackView.axis = .vertical
-        stackView.spacing = 0
-
-        return stackView
-    }()
-
-    private lazy var signChangeButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-
-        if let changeImage = UIImage(named: "change") {
-            let changeImageSize = CGSize(width: 25, height: 25)
-            UIGraphicsBeginImageContextWithOptions(changeImageSize, false, UIScreen.main.scale)
-            changeImage.draw(in: CGRect(origin: .zero, size: changeImageSize))
-            if let resizedchangeImage = UIGraphicsGetImageFromCurrentImageContext() {
-                UIGraphicsEndImageContext()
-                button.setImage(resizedchangeImage.withRenderingMode(.alwaysOriginal), for: .normal)
-            } else {
-                UIGraphicsEndImageContext()
-            }
-        }
-        button.backgroundColor = UIColor.clear
-        button.layer.borderColor = UIColor.systemBackground.cgColor
-        button.layer.borderWidth = 0
-        button.layer.cornerRadius = 5
-        button.addTarget(self, action: #selector(signChangeButtonTapped), for: .touchUpInside)
-
-        return button
-    }()
-
-    lazy var conditionsLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "한때 흐림"
-        label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
-        label.sizeToFit()
-        label.textAlignment = .center
-        label.textColor = .systemBackground
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowOffset = CGSize(width: 0, height: 2)
-        label.layer.shadowOpacity = 0.8
-        label.layer.shadowRadius = 2
-
-        return label
-    }()
-
-    lazy var currentWeatherButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-
-        button.setTitleColor(.systemBackground, for: .normal)
-        button.setTitle("현재 날씨", for: .normal)
-        button.titleLabel?.font = UIFont(name: "Marker Felt", size: 15)
-        button.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        button.layer.borderColor = UIColor.clear.cgColor
-        button.layer.borderWidth = 0
-        button.layer.cornerRadius = 7
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
-
-        button.addTarget(self, action: #selector(currentWeatherButtonTapped), for: .touchUpInside)
-
-        return button
-    }()
-
-    lazy var weatherForecastButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-
-        button.setTitleColor(.systemBackground, for: .normal)
-        button.setTitle("기상 예보", for: .normal)
-        button.titleLabel?.font = UIFont(name: "Marker Felt", size: 15)
-        button.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        button.layer.borderColor = UIColor.clear.cgColor
-        button.layer.borderWidth = 0
-        button.layer.cornerRadius = 7
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
-
-        button.addTarget(self, action: #selector(weatherForecastButtonTapped), for: .touchUpInside)
-
-        return button
-    }()
-
-    lazy var myLocationButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-
-        button.setTitleColor(.systemBackground, for: .normal)
-        button.setTitle("나의 위치", for: .normal)
-        button.titleLabel?.font = UIFont(name: "Marker Felt", size: 15)
-        button.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        button.layer.borderColor = UIColor.clear.cgColor
-        button.layer.borderWidth = 0
-        button.layer.cornerRadius = 7
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
-
-        button.addTarget(self, action: #selector(myLocationButtonTapped), for: .touchUpInside)
-
-        return button
-    }()
-
-    lazy var middleButtonStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [currentWeatherButton, weatherForecastButton, myLocationButton])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = 20
-
-        return stackView
-    }()
-
-    lazy var buttonOverlayView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-        view.layer.cornerRadius = 9
-
-        return view
-    }()
-
-    lazy var currentWeatherView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.4)
-        view.layer.cornerRadius = 9
-        view.isHidden = false
-
-        return view
-    }()
-
-    lazy var weatherForecastView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.gray.withAlphaComponent(0.4)
-        view.layer.cornerRadius = 9
-        view.isHidden = true
-
-        return view
-    }()
-
-    lazy var myLocationView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-        view.layer.cornerRadius = 9
-        view.isHidden = true
-
-        return view
-    }()
-
-    lazy var bottomStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [currentWeatherView, weatherForecastView, myLocationView])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = 0
-
-        return stackView
-    }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         locationView.locationManager.delegate = self
-
-       
-
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-
-        fahrenheitStackView.isHidden = true
         setupNavigationBar()
         setupBackgroundImage()
         setupViews()
-        setUpConstraints()
-      
-        // MapKit 띄우기
-        view.addSubview(locationView)
-    } //: viewDidLoad()
-  
-  override func didReceiveMemoryWarning() {
+
+    }
+
+    override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
     private func setupViews() {
-        view.addSubview(bottomStackView)
-        view.addSubview(buttonOverlayView)
-        view.addSubview(middleButtonStackView)
-        view.addSubview(conditionsLabel)
-        view.addSubview(cityName)
-        view.addSubview(signChangeButton)
-        view.addSubview(topStackView)
+
     }
 
     private func setupBackgroundImage() {
@@ -361,103 +81,13 @@ class MainViewController: UIViewController {
                 SearchPageButton.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
                 navigationItem.rightBarButtonItems = [SearchPageButton, navigationItem.rightBarButtonItem].compactMap { $0 }
             }
-
             UIGraphicsEndImageContext()
         }
     }
 
-    private func setUpConstraints() {
-        let safeArea = view.safeAreaLayoutGuide
-        NSLayoutConstraint.activate([
-            cityName.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
-            cityName.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 30),
-            cityName.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 40),
-            cityName.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -40),
-            cityName.heightAnchor.constraint(equalToConstant: 35),
-            cityName.widthAnchor.constraint(equalToConstant: 70),
-
-            topStackView.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
-            topStackView.topAnchor.constraint(equalTo: cityName.bottomAnchor, constant: 5),
-            topStackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 30),
-            topStackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -30),
-            topStackView.heightAnchor.constraint(equalToConstant: 120),
-
-            signChangeButton.topAnchor.constraint(equalTo: topStackView.bottomAnchor, constant: -10),
-            signChangeButton.rightAnchor.constraint(equalTo: topStackView.rightAnchor, constant: -20),
-
-            conditionsLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
-            conditionsLabel.topAnchor.constraint(equalTo: signChangeButton.bottomAnchor, constant: 10),
-
-            currentWeatherButton.widthAnchor.constraint(equalToConstant: 80),
-            currentWeatherButton.heightAnchor.constraint(equalToConstant: 25),
-            weatherForecastButton.widthAnchor.constraint(equalToConstant: 80),
-            weatherForecastButton.heightAnchor.constraint(equalToConstant: 25), myLocationButton.widthAnchor.constraint(equalToConstant: 80),
-            myLocationButton.heightAnchor.constraint(equalToConstant: 25),
-
-            middleButtonStackView.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
-            middleButtonStackView.topAnchor.constraint(equalTo: conditionsLabel.bottomAnchor, constant: 50),
-            middleButtonStackView.heightAnchor.constraint(equalToConstant: 25),
-
-            buttonOverlayView.centerXAnchor.constraint(equalTo: middleButtonStackView.centerXAnchor),
-            buttonOverlayView.centerYAnchor.constraint(equalTo: middleButtonStackView.centerYAnchor),
-            buttonOverlayView.widthAnchor.constraint(equalTo: middleButtonStackView.widthAnchor, constant: 15),
-            buttonOverlayView.heightAnchor.constraint(equalTo: middleButtonStackView.heightAnchor, constant: 15),
-
-            currentWeatherView.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
-            currentWeatherView.topAnchor.constraint(equalTo: buttonOverlayView.bottomAnchor, constant: 50),
-            currentWeatherView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20),
-            currentWeatherView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20),
-            currentWeatherView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -80),
-
-            weatherForecastView.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
-            weatherForecastView.topAnchor.constraint(equalTo: buttonOverlayView.bottomAnchor, constant: 50),
-            weatherForecastView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20),
-            weatherForecastView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20),
-            weatherForecastView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -80),
-
-            myLocationView.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
-            myLocationView.topAnchor.constraint(equalTo: buttonOverlayView.bottomAnchor, constant: 50),
-            myLocationView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20),
-            myLocationView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20),
-            myLocationView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -80),
-        ])
-    }
-
-    @objc func signChangeButtonTapped() {
-        celsiusStackView.isHidden = !celsiusStackView.isHidden
-        fahrenheitStackView.isHidden = !fahrenheitStackView.isHidden
-    }
-
-    @objc func currentWeatherButtonTapped() {
-        currentWeatherView.isHidden = false
-        weatherForecastView.isHidden = true
-        myLocationView.isHidden = true
-    }
-
-    @objc func weatherForecastButtonTapped() {
-        currentWeatherView.isHidden = true
-        weatherForecastView.isHidden = false
-        myLocationView.isHidden = true
-    }
-
-    @objc func myLocationButtonTapped() {
-        currentWeatherView.isHidden = true
-        weatherForecastView.isHidden = true
-        myLocationView.isHidden = false
-    }
-
     @objc func resetLocationButtonTapped() {
         locationManager.startUpdatingLocation()
-    }
-
-    @objc func SearchPageButtonTapped() {
-        let searchPageVC = SearchPageViewController()
-        navigationController?.pushViewController(searchPageVC, animated: true)
-    }
-    
-    // ========================================🔽 navigation Bar Tapped구현 ==========================================
-    @objc func presentLocationTapped() {
-        let status = locationView.locationManager.authorizationStatus
+              let status = locationView.locationManager.authorizationStatus
 
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
@@ -483,7 +113,13 @@ class MainViewController: UIViewController {
         }
     }
 
-    @objc func menuTapped() {}
+    @objc func SearchPageButtonTapped() {
+        let searchPageVC = SearchPageViewController()
+        navigationController?.pushViewController(searchPageVC, animated: true)
+    }
+    
+    @objc func SearchPageButtonTapped() {}
+
 }
 
 extension MainViewController: CLLocationManagerDelegate {

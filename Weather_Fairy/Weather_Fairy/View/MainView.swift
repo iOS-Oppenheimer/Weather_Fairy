@@ -7,6 +7,7 @@
 
 import UIKit
 
+// 레이아웃 코드 작성
 class MainView: UIView {
 
     /*
