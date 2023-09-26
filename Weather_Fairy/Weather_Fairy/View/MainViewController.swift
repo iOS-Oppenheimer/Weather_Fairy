@@ -436,12 +436,7 @@ class MainViewController: UIViewController {
         locationManager.startUpdatingLocation()
     }
 
-    @objc func SearchPageButtonTapped() {
-//        let vc = MenuViewController()
-//
-//        let navController = UINavigationController(rootViewController: vc)
-//        present(navController, animated: true)
-    }
+    @objc func SearchPageButtonTapped() {}
 }
 
 extension MainViewController: CLLocationManagerDelegate {
