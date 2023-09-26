@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		DFA298232AC1659A00700EF1 /* SearchPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA298222AC1659A00700EF1 /* SearchPageViewController.swift */; };
-		DFA298252AC16BD200700EF1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA298242AC16BD200700EF1 /* User.swift */; };
 		DFF9011E2AC19F7E005BD423 /* SearchPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF9011D2AC19F7E005BD423 /* SearchPageTableViewCell.swift */; };
 		FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB1367E2AC15D300010CED0 /* AppDelegate.swift */; };
 		FBB136812AC15D300010CED0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136802AC15D300010CED0 /* SceneDelegate.swift */; };
@@ -22,7 +21,6 @@
 		FBB136A22AC160010010CED0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = FBB136A12AC160010010CED0 /* SnapKit */; };
 		FBB136A62AC174B40010CED0 /* NavigationBarItem +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136A52AC174B40010CED0 /* NavigationBarItem +.swift */; };
 		FBB136A82AC17A3B0010CED0 /* MyLocationUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */; };
-		FBB136AC2AC1EBE00010CED0 /* map.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136AB2AC1EBE00010CED0 /* map.swift */; };
 		FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136AD2AC26ABA0010CED0 /* MainView.swift */; };
 		FBB136B92AC2B6610010CED0 /* CurrentLocationViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136B82AC2B6610010CED0 /* CurrentLocationViewItem.swift */; };
 		FBB136BB2AC2BAB90010CED0 /* imageView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136BA2AC2BAB90010CED0 /* imageView +.swift */; };
@@ -30,7 +28,6 @@
 
 /* Begin PBXFileReference section */
 		DFA298222AC1659A00700EF1 /* SearchPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageViewController.swift; sourceTree = "<group>"; };
-		DFA298242AC16BD200700EF1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = Weather_Fairy/Components/User.swift; sourceTree = SOURCE_ROOT; };
 		DFF9011D2AC19F7E005BD423 /* SearchPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageTableViewCell.swift; sourceTree = "<group>"; };
 		FBB1367B2AC15D300010CED0 /* Weather_Fairy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather_Fairy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBB1367E2AC15D300010CED0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -45,7 +42,6 @@
 		FBB1369B2AC15F140010CED0 /* DateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		FBB136A52AC174B40010CED0 /* NavigationBarItem +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationBarItem +.swift"; sourceTree = "<group>"; };
 		FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLocationUIView.swift; sourceTree = "<group>"; };
-		FBB136AB2AC1EBE00010CED0 /* map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = map.swift; sourceTree = "<group>"; };
 		FBB136AD2AC26ABA0010CED0 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		FBB136B82AC2B6610010CED0 /* CurrentLocationViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocationViewItem.swift; sourceTree = "<group>"; };
 		FBB136BA2AC2BAB90010CED0 /* imageView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "imageView +.swift"; sourceTree = "<group>"; };
@@ -125,7 +121,6 @@
 			isa = PBXGroup;
 			children = (
 				FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */,
-				FBB136AB2AC1EBE00010CED0 /* map.swift */,
 				FBB136B82AC2B6610010CED0 /* CurrentLocationViewItem.swift */,
 			);
 			path = UIViewItem;
@@ -139,7 +134,6 @@
 				FBB136992AC15F140010CED0 /* UILabel +.swift */,
 				FBB1369A2AC15F140010CED0 /* UIStackView +.swift */,
 				FBB136A52AC174B40010CED0 /* NavigationBarItem +.swift */,
-				DFA298242AC16BD200700EF1 /* User.swift */,
 				FBB136BA2AC2BAB90010CED0 /* imageView +.swift */,
 			);
 			path = Components;
@@ -230,12 +224,10 @@
 				DFF9011E2AC19F7E005BD423 /* SearchPageTableViewCell.swift in Sources */,
 				FBB1369F2AC15F140010CED0 /* DateFormatter.swift in Sources */,
 				FBB136B92AC2B6610010CED0 /* CurrentLocationViewItem.swift in Sources */,
-				DFA298252AC16BD200700EF1 /* User.swift in Sources */,
 				FBB1369D2AC15F140010CED0 /* UILabel +.swift in Sources */,
 				FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */,
 				FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */,
 				FBB136812AC15D300010CED0 /* SceneDelegate.swift in Sources */,
-				FBB136AC2AC1EBE00010CED0 /* map.swift in Sources */,
 				FBB136A82AC17A3B0010CED0 /* MyLocationUIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
