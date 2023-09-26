@@ -279,11 +279,7 @@ class MainViewController: UIViewController {
         view.backgroundColor = .systemBackground
         locationView.locationManager.delegate = self
 
-        // NavigationBarButton 구현
-        let presentLocationBarItem = UIBarButtonItem.presentLocationItemButton(target: self, action: #selector(presentLocationTapped))
-        let menuBarItem = UIBarButtonItem.menuItemButton(target: self, action: #selector(menuTapped))
-        navigationItem.leftBarButtonItem = presentLocationBarItem
-        navigationItem.rightBarButtonItem = menuBarItem
+       
 
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -454,9 +450,11 @@ class MainViewController: UIViewController {
         locationManager.startUpdatingLocation()
     }
 
-    @objc func SearchPageButtonTapped() {}
-}
-
+    @objc func SearchPageButtonTapped() {
+        let searchPageVC = SearchPageViewController()
+        navigationController?.pushViewController(searchPageVC, animated: true)
+    }
+    
     // ========================================🔽 navigation Bar Tapped구현 ==========================================
     @objc func presentLocationTapped() {
         let status = locationView.locationManager.authorizationStatus
@@ -486,16 +484,14 @@ class MainViewController: UIViewController {
     }
 
     @objc func menuTapped() {}
-} //: UIViewController
-
-   
+}
 
 extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[locations.count - 1]
-          if location.horizontalAccuracy > 0 {
-            locationManager.stopUpdatingLocation()
-
+        if location.horizontalAccuracy > 0 {
+            //locationManager.stopUpdatingLocation()
+            
             let geocoder = CLGeocoder()
             geocoder.reverseGeocodeLocation(location) { placemarks, error in
                 if error == nil {
@@ -506,56 +502,57 @@ extension MainViewController: CLLocationManagerDelegate {
                 }
             }
         }
-      
-     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Error \(error)")
-      }
-//     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//         guard let location = locations.last else {
-//             print("위치 업데이트 실패")
-//             return
-//         }
-//         print("location: \(location.coordinate.latitude),\(location.coordinate.longitude)")
-//     }
-    
-    // 위치 권한이 변경될 때 호출되는 메서드
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .authorizedAlways, .authorizedWhenInUse:
-            print("GPS 권한 설정됨")
-        case .restricted, .notDetermined:
-            print("GPS 권한 설정되지 않음")
-            DispatchQueue.main.async {
-                // 위치 권한을 요청하는 코드 추가
-                self.locationView.locationManager.requestWhenInUseAuthorization()
+        
+        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+            print("Error \(error)")
+        }
+        //     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //         guard let location = locations.last else {
+        //             print("위치 업데이트 실패")
+        //             return
+        //         }
+        //         print("location: \(location.coordinate.latitude),\(location.coordinate.longitude)")
+        //     }
+        
+        // 위치 권한이 변경될 때 호출되는 메서드
+        func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+            switch status {
+            case .authorizedAlways, .authorizedWhenInUse:
+                print("GPS 권한 설정됨")
+            case .restricted, .notDetermined:
+                print("GPS 권한 설정되지 않음")
+                DispatchQueue.main.async {
+                    // 위치 권한을 요청하는 코드 추가
+                    self.locationView.locationManager.requestWhenInUseAuthorization()
+                }
+            case .denied:
+                print("GPS 권한 요청 거부됨")
+                DispatchQueue.main.async {
+                    // 위치 권한을 요청하는 코드 추가
+                    self.locationView.locationManager.requestWhenInUseAuthorization()
+                }
+            default:
+                print("GPS: Default")
             }
-        case .denied:
-            print("GPS 권한 요청 거부됨")
-            DispatchQueue.main.async {
-                // 위치 권한을 요청하는 코드 추가
-                self.locationView.locationManager.requestWhenInUseAuthorization()
-            }
-        default:
-            print("GPS: Default")
         }
     }
-}
-
-// MainViewController Preview
-struct MainViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        MainVCRepresentable()
-            .edgesIgnoringSafeArea(.all)
+    
+    // MainViewController Preview
+    struct MainViewController_Previews: PreviewProvider {
+        static var previews: some View {
+            MainVCRepresentable()
+                .edgesIgnoringSafeArea(.all)
+        }
     }
-}
-
-struct MainVCRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        let mainViewController = MainViewController()
-        return UINavigationController(rootViewController: mainViewController)
+    
+    struct MainVCRepresentable: UIViewControllerRepresentable {
+        func makeUIViewController(context: Context) -> UIViewController {
+            let mainViewController = MainViewController()
+            return UINavigationController(rootViewController: mainViewController)
+        }
+        
+        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
+        
+        typealias UIViewControllerType = UIViewController
     }
-
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
-
-    typealias UIViewControllerType = UIViewController 
 }
