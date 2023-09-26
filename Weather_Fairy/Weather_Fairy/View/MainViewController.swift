@@ -1,5 +1,6 @@
 import CoreLocation
 import UIKit
+import SwiftUI
 
 class MainViewController: UIViewController {
     let locationManager = CLLocationManager()
