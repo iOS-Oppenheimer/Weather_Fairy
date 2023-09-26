@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DFA298232AC1659A00700EF1 /* SearchPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA298222AC1659A00700EF1 /* SearchPageViewController.swift */; };
+		DFA298252AC16BD200700EF1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA298242AC16BD200700EF1 /* User.swift */; };
+		DFF9011E2AC19F7E005BD423 /* SearchPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF9011D2AC19F7E005BD423 /* SearchPageTableViewCell.swift */; };
 		FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB1367E2AC15D300010CED0 /* AppDelegate.swift */; };
 		FBB136812AC15D300010CED0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136802AC15D300010CED0 /* SceneDelegate.swift */; };
 		FBB136832AC15D300010CED0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136822AC15D300010CED0 /* MainViewController.swift */; };
@@ -20,6 +23,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DFA298222AC1659A00700EF1 /* SearchPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageViewController.swift; sourceTree = "<group>"; };
+		DFA298242AC16BD200700EF1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = Weather_Fairy/Components/User.swift; sourceTree = SOURCE_ROOT; };
+		DFF9011D2AC19F7E005BD423 /* SearchPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageTableViewCell.swift; sourceTree = "<group>"; };
 		FBB1367B2AC15D300010CED0 /* Weather_Fairy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather_Fairy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBB1367E2AC15D300010CED0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FBB136802AC15D300010CED0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +51,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DFA298262AC16C0300700EF1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DFA298272AC16C0C00700EF1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DFA298282AC16C2700700EF1 /* UIViewItem */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UIViewItem;
+			sourceTree = "<group>";
+		};
+		DFF9011C2AC19F25005BD423 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DFF9011D2AC19F7E005BD423 /* SearchPageTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		FBB136722AC15D300010CED0 = {
 			isa = PBXGroup;
 			children = (
@@ -65,8 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				FBB136972AC15EFB0010CED0 /* Components */,
-				FBB136952AC15E6D0010CED0 /* Model */,
-				FBB136942AC15E670010CED0 /* ViewModel */,
+				DFA298272AC16C0C00700EF1 /* ViewModel */,
 				FBB136932AC15E5E0010CED0 /* View */,
 				FBB136922AC15E390010CED0 /* Resources */,
 				FBB1368C2AC15D320010CED0 /* Info.plist */,
@@ -89,30 +123,11 @@
 			isa = PBXGroup;
 			children = (
 				FBB136822AC15D300010CED0 /* MainViewController.swift */,
-				FBB136962AC15EDE0010CED0 /* UIViewItem */,
+				DFA298222AC1659A00700EF1 /* SearchPageViewController.swift */,
+				DFF9011C2AC19F25005BD423 /* Cell */,
+				DFA298282AC16C2700700EF1 /* UIViewItem */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		FBB136942AC15E670010CED0 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		FBB136952AC15E6D0010CED0 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		FBB136962AC15EDE0010CED0 /* UIViewItem */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UIViewItem;
 			sourceTree = "<group>";
 		};
 		FBB136972AC15EFB0010CED0 /* Components */ = {
@@ -122,6 +137,8 @@
 				FBB136982AC15F140010CED0 /* UIButton +.swift */,
 				FBB136992AC15F140010CED0 /* UILabel +.swift */,
 				FBB1369A2AC15F140010CED0 /* UIStackView +.swift */,
+				DFA298242AC16BD200700EF1 /* User.swift */,
+				DFA298262AC16C0300700EF1 /* Model */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -205,7 +222,10 @@
 				FBB1369E2AC15F140010CED0 /* UIStackView +.swift in Sources */,
 				FBB1369C2AC15F140010CED0 /* UIButton +.swift in Sources */,
 				FBB136832AC15D300010CED0 /* MainViewController.swift in Sources */,
+				DFA298232AC1659A00700EF1 /* SearchPageViewController.swift in Sources */,
+				DFF9011E2AC19F7E005BD423 /* SearchPageTableViewCell.swift in Sources */,
 				FBB1369F2AC15F140010CED0 /* DateFormatter.swift in Sources */,
+				DFA298252AC16BD200700EF1 /* User.swift in Sources */,
 				FBB1369D2AC15F140010CED0 /* UILabel +.swift in Sources */,
 				FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */,
 				FBB136812AC15D300010CED0 /* SceneDelegate.swift in Sources */,
