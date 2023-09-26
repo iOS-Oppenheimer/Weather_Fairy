@@ -25,6 +25,7 @@
 		FBB136AC2AC1EBE00010CED0 /* map.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136AB2AC1EBE00010CED0 /* map.swift */; };
 		FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136AD2AC26ABA0010CED0 /* MainView.swift */; };
 		FBB136B92AC2B6610010CED0 /* CurrentWeatherViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136B82AC2B6610010CED0 /* CurrentWeatherViewItem.swift */; };
+		FBB136BB2AC2BAB90010CED0 /* imageView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136BA2AC2BAB90010CED0 /* imageView +.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		FBB136AB2AC1EBE00010CED0 /* map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = map.swift; sourceTree = "<group>"; };
 		FBB136AD2AC26ABA0010CED0 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		FBB136B82AC2B6610010CED0 /* CurrentWeatherViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherViewItem.swift; sourceTree = "<group>"; };
+		FBB136BA2AC2BAB90010CED0 /* imageView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "imageView +.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 				FBB1369A2AC15F140010CED0 /* UIStackView +.swift */,
 				FBB136A52AC174B40010CED0 /* NavigationBarItem +.swift */,
 				DFA298242AC16BD200700EF1 /* User.swift */,
+				FBB136BA2AC2BAB90010CED0 /* imageView +.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 				FBB136832AC15D300010CED0 /* MainViewController.swift in Sources */,
 				FBB136A62AC174B40010CED0 /* NavigationBarItem +.swift in Sources */,
 				DFA298232AC1659A00700EF1 /* SearchPageViewController.swift in Sources */,
+				FBB136BB2AC2BAB90010CED0 /* imageView +.swift in Sources */,
 				DFF9011E2AC19F7E005BD423 /* SearchPageTableViewCell.swift in Sources */,
 				FBB1369F2AC15F140010CED0 /* DateFormatter.swift in Sources */,
 				FBB136B92AC2B6610010CED0 /* CurrentWeatherViewItem.swift in Sources */,

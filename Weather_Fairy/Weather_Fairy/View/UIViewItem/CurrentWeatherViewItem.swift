@@ -4,9 +4,7 @@ class CurrentWeatherViewItem: UIView {
     // 대기질
     lazy var airQualityImage: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "airQuality"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        imageView.customImageView()
         return imageView
     }()
     
@@ -32,9 +30,7 @@ class CurrentWeatherViewItem: UIView {
     // 바람
     lazy var windyImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "windy"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        imageView.customImageView()
         return imageView
     }()
     
@@ -60,9 +56,7 @@ class CurrentWeatherViewItem: UIView {
     // 습도
     lazy var humidityImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "humidity"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        imageView.customImageView()
         return imageView
     }()
     
@@ -88,9 +82,7 @@ class CurrentWeatherViewItem: UIView {
     // 강수확률
     lazy var rainfallImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "umbrella"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        imageView.customImageView()
         return imageView
     }()
     
