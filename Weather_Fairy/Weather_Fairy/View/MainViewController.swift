@@ -11,7 +11,6 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-
         locationView.locationManager.delegate = self
 
         // NavigationBarButton 구현

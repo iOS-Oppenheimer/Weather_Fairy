@@ -20,6 +20,7 @@
 		FBB136A62AC174B40010CED0 /* NavigationBarItem +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136A52AC174B40010CED0 /* NavigationBarItem +.swift */; };
 		FBB136A82AC17A3B0010CED0 /* MyLocationUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */; };
 		FBB136AC2AC1EBE00010CED0 /* map.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136AB2AC1EBE00010CED0 /* map.swift */; };
+		FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136AD2AC26ABA0010CED0 /* MainView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		FBB136A52AC174B40010CED0 /* NavigationBarItem +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationBarItem +.swift"; sourceTree = "<group>"; };
 		FBB136A72AC17A3B0010CED0 /* MyLocationUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLocationUIView.swift; sourceTree = "<group>"; };
 		FBB136AB2AC1EBE00010CED0 /* map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = map.swift; sourceTree = "<group>"; };
+		FBB136AD2AC26ABA0010CED0 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				FBB136822AC15D300010CED0 /* MainViewController.swift */,
+				FBB136AD2AC26ABA0010CED0 /* MainView.swift */,
 				FBB136962AC15EDE0010CED0 /* UIViewItem */,
 			);
 			path = View;
@@ -218,6 +221,7 @@
 				FBB1369F2AC15F140010CED0 /* DateFormatter.swift in Sources */,
 				FBB1369D2AC15F140010CED0 /* UILabel +.swift in Sources */,
 				FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */,
+				FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */,
 				FBB136812AC15D300010CED0 /* SceneDelegate.swift in Sources */,
 				FBB136AC2AC1EBE00010CED0 /* map.swift in Sources */,
 				FBB136A82AC17A3B0010CED0 /* MyLocationUIView.swift in Sources */,
