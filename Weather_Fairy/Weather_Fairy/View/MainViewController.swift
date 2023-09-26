@@ -7,7 +7,6 @@ import UIKit
 class MainViewController: UIViewController {
     let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 480, width: UIScreen.main.bounds
             .width, height: 250))
-    let currentLocationView = CurrentLocationViewItem(frame: CGRect(x: 40, y: 100, width: UIScreen.main.bounds.width, height: 0))
     let locationManager = CLLocationManager()
   
   lazy var cityName: UILabel = {
@@ -292,7 +291,6 @@ class MainViewController: UIViewController {
       
         // MapKit 띄우기
         view.addSubview(locationView)
-        view.addSubview(currentLocationView)
     } //: viewDidLoad()
   
   override func didReceiveMemoryWarning() {
