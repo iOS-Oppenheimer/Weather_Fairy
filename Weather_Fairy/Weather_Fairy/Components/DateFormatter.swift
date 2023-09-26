@@ -7,5 +7,5 @@ struct DateFormat {
         f.timeStyle = .short
         f.locale = Locale(identifier: "Ko_kr")
         return f
-    }()    
+    }()
 }

@@ -45,6 +45,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C77682C72AC164D600BDEB31 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C77682C82AC164DD00BDEB31 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C77682C92AC164FC00BDEB31 /* UIViewItem */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UIViewItem;
+			sourceTree = "<group>";
+		};
 		FBB136722AC15D300010CED0 = {
 			isa = PBXGroup;
 			children = (
@@ -65,8 +86,8 @@
 			isa = PBXGroup;
 			children = (
 				FBB136972AC15EFB0010CED0 /* Components */,
-				FBB136952AC15E6D0010CED0 /* Model */,
-				FBB136942AC15E670010CED0 /* ViewModel */,
+				C77682C72AC164D600BDEB31 /* Model */,
+				C77682C82AC164DD00BDEB31 /* ViewModel */,
 				FBB136932AC15E5E0010CED0 /* View */,
 				FBB136922AC15E390010CED0 /* Resources */,
 				FBB1368C2AC15D320010CED0 /* Info.plist */,
@@ -89,30 +110,9 @@
 			isa = PBXGroup;
 			children = (
 				FBB136822AC15D300010CED0 /* MainViewController.swift */,
-				FBB136962AC15EDE0010CED0 /* UIViewItem */,
+				C77682C92AC164FC00BDEB31 /* UIViewItem */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		FBB136942AC15E670010CED0 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		FBB136952AC15E6D0010CED0 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		FBB136962AC15EDE0010CED0 /* UIViewItem */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UIViewItem;
 			sourceTree = "<group>";
 		};
 		FBB136972AC15EFB0010CED0 /* Components */ = {
