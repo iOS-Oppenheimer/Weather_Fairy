@@ -7,7 +7,6 @@ import UIKit
 class MainViewController: UIViewController {
     let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 480, width: UIScreen.main.bounds
             .width, height: 250))
-    var locationView: MyLocationUIView!
     let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
