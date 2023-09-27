@@ -4,6 +4,7 @@ import UIKit
 
 class SearchPageViewController: UIViewController, UISearchBarDelegate {
     
+    
     private let viewModel = SearchPageVM()
     private var searchHistory = SearchHistory()
     private var searchResults: [(String, String, Double, Double)] = []
@@ -62,35 +63,35 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
     // 서치바 검색 시 메서드
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchText = searchBar.text {
-            viewModel.searchLocations(for: searchText) { [weak self] result in
+            viewModel.searchLocation(for: searchText) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let coordinates):
                         self?.searchResults = coordinates
                         self?.tableView.reloadData()
                     case .failure(let error):
-                    switch error {
-                    case .noCityName:
-                        print("에러: 유효하지 않은 도시 이름입니다.")
-                    case .noData:
-                        print("에러: 데이터가 없습니다.")
-                    case .invalidJSON:
-                        print("에러: JSON 파싱 에러입니다.")
-                    case .failedRequest:
-                        print("에러: 요청에 실패하였습니다.")
-                    case .invalidData:
-                        print("에러: 검색어와 일치하는 도시가 없습니다.")
-                    case .failedResponse:
-                        print("에러: 응답을 받을 수 없습니다.")
-                    case .invalidResponse:
-                        print("에러: 응답이 유효하지 않습니다.")
+                        switch error {
+                        case .noCityName:
+                            print("에러: 유효하지 않은 도시 이름입니다.")
+                        case .noData:
+                            print("에러: 데이터가 없습니다.")
+                        case .invalidJSON:
+                            print("에러: JSON 파싱 에러입니다.")
+                        case .failedRequest:
+                            print("에러: 요청에 실패하였습니다.")
+                        case .invalidData:
+                            print("에러: 검색어와 일치하는 도시가 없습니다.")
+                        case .failedResponse:
+                            print("에러: 응답을 받을 수 없습니다.")
+                        case .invalidResponse:
+                            print("에러: 응답이 유효하지 않습니다.")
+                        }
                     }
                 }
             }
         }
     }
 }
-
 // 테이블뷰 Delegate, DataSource 설정
 extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -99,13 +100,13 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchPageTableViewCell.identifier, for: indexPath) as! SearchPageTableViewCell
-
+        
         let result = searchResults[indexPath.row]
-
+        
         cell.nameLabel.text = result.1
         cell.englishNameLabel.text = result.0
         cell.coordinatesLabel.text = "Lat: \(result.2), Lon: \(result.3)"
-
+        
         
         return cell
     }
@@ -133,3 +134,4 @@ struct SearchVCRepresentable: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = UIViewController
 }
+
