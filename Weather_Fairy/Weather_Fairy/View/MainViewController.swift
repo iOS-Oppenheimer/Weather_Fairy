@@ -7,11 +7,14 @@ import UIKit
 class MainViewController: UIViewController {
     let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 480, width: UIScreen.main.bounds
             .width, height: 250))
+    let delme = CurrentLocationViewItem()
     let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        view.addSubview(locationView)
+        view.addSubview(delme)
         locationView.locationManager.delegate = self
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
