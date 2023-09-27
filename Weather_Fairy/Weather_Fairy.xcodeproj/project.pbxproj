@@ -36,6 +36,8 @@
 		FBB136EB2AC3CD340010CED0 /* UILabel +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136EA2AC3CD340010CED0 /* UILabel +.swift */; };
 		FBB136ED2AC3CD390010CED0 /* UIStackView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */; };
 		FBB136F12AC3CDD40010CED0 /* SearchPageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */; };
+		FBB136F42AC3E95E0010CED0 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136F32AC3E95E0010CED0 /* Enum.swift */; };
+		FBB136F72AC409320010CED0 /* Jua.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FBB136F62AC409320010CED0 /* Jua.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -84,6 +86,8 @@
 		FBB136EA2AC3CD340010CED0 /* UILabel +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel +.swift"; sourceTree = "<group>"; };
 		FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView +.swift"; sourceTree = "<group>"; };
 		FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPageVM.swift; sourceTree = "<group>"; };
+		FBB136F32AC3E95E0010CED0 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
+		FBB136F62AC409320010CED0 /* Jua.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Jua.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +166,7 @@
 		FBB1367D2AC15D300010CED0 /* Weather_Fairy */ = {
 			isa = PBXGroup;
 			children = (
+				FBB136F22AC3E9430010CED0 /* Constants */,
 				FBB136CF2AC3C8070010CED0 /* Model */,
 				1F5D683D2AC2776A00758EF7 /* Notification */,
 				FBB136972AC15EFB0010CED0 /* Components */,
@@ -240,6 +245,23 @@
 			path = API;
 			sourceTree = "<group>";
 		};
+		FBB136F22AC3E9430010CED0 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				FBB136F52AC408DB0010CED0 /* Font */,
+				FBB136F32AC3E95E0010CED0 /* Enum.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		FBB136F52AC408DB0010CED0 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				FBB136F62AC409320010CED0 /* Jua.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -306,6 +328,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBB136F72AC409320010CED0 /* Jua.ttf in Resources */,
 				FBB1368B2AC15D320010CED0 /* LaunchScreen.storyboard in Resources */,
 				FBB136882AC15D320010CED0 /* Assets.xcassets in Resources */,
 			);
@@ -361,6 +384,7 @@
 				FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */,
 				FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */,
 				FBB136C12AC3C7B50010CED0 /* CurrentLocationViewItem.swift in Sources */,
+				FBB136F42AC3E95E0010CED0 /* Enum.swift in Sources */,
 				FBB136CB2AC3C7D10010CED0 /* MainWeatherForecastView.swift in Sources */,
 				FBB136F12AC3CDD40010CED0 /* SearchPageVM.swift in Sources */,
 				1F5D683F2AC2779500758EF7 /* Notification.swift in Sources */,

@@ -3,10 +3,10 @@ import Foundation
 class SearchPageVM {
 
     // 도시 검색 메서드
-    func searchLocation(for cityName: String, completion: @escaping (Result<(String, String, Double, Double), Error>) -> Void) {
+    func searchLocation(for cityName: String, completion: @escaping (Result<(String, String, Double, Double), APIError>) -> Void) {
         // 한글 도시 이름을 URL 인코딩
         guard let encodedCityName = cityName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            completion(.failure(NSError(domain: "유효하지 않은 도시 이름입니다.", code: 0, userInfo: nil)))
+            completion(.failure(.noCityName))
             return
         }
 
@@ -15,7 +15,7 @@ class SearchPageVM {
         if let url = URL(string: urlString) {
             let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
                 if let error = error {
-                    completion(.failure(error))
+                    completion(.failure(.failedRequest))
                     return
                 }
 
@@ -30,10 +30,10 @@ class SearchPageVM {
                            let englishName = firstLocation["name"] as? String {
                             completion(.success((englishName, koreanName, lat, lon)))
                         } else {
-                            completion(.failure(NSError(domain: "유효하지 않은 JSON 요청입니다.", code: 0, userInfo: nil)))
+                            completion(.failure(.noCityName))
                         }
                     } catch {
-                        completion(.failure(error))
+                        completion(.failure(.invalidData))
                     }
                 }
             }
