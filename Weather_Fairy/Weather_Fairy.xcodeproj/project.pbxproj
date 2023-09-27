@@ -29,13 +29,13 @@
 		FBB136D12AC3C85A0010CED0 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136D02AC3C85A0010CED0 /* Location.swift */; };
 		FBB136D32AC3C8620010CED0 /* SearchHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136D22AC3C8620010CED0 /* SearchHistory.swift */; };
 		FBB136D52AC3C8790010CED0 /* GeocodingAPIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136D42AC3C8790010CED0 /* GeocodingAPIKey.swift */; };
-		FBB136D92AC3C8DA0010CED0 /* SearchPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136D82AC3C8DA0010CED0 /* SearchPageViewModel.swift */; };
-		FBB136DF2AC3C8F90010CED0 /* UIStackView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136DA2AC3C8F90010CED0 /* UIStackView +.swift */; };
 		FBB136E02AC3C8F90010CED0 /* imageView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136DB2AC3C8F90010CED0 /* imageView +.swift */; };
-		FBB136E12AC3C8F90010CED0 /* NavigationBarItem +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136DC2AC3C8F90010CED0 /* NavigationBarItem +.swift */; };
-		FBB136E22AC3C8F90010CED0 /* UILabel +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136DD2AC3C8F90010CED0 /* UILabel +.swift */; };
-		FBB136E32AC3C8F90010CED0 /* UIButton +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136DE2AC3C8F90010CED0 /* UIButton +.swift */; };
 		FBB136E52AC3C98E0010CED0 /* SearchPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136E42AC3C98E0010CED0 /* SearchPageViewController.swift */; };
+		FBB136E72AC3CD280010CED0 /* NavigationBarItem +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136E62AC3CD280010CED0 /* NavigationBarItem +.swift */; };
+		FBB136E92AC3CD2E0010CED0 /* UIButton +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136E82AC3CD2E0010CED0 /* UIButton +.swift */; };
+		FBB136EB2AC3CD340010CED0 /* UILabel +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136EA2AC3CD340010CED0 /* UILabel +.swift */; };
+		FBB136ED2AC3CD390010CED0 /* UIStackView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */; };
+		FBB136F12AC3CDD40010CED0 /* SearchPageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -77,13 +77,13 @@
 		FBB136D02AC3C85A0010CED0 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		FBB136D22AC3C8620010CED0 /* SearchHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHistory.swift; sourceTree = "<group>"; };
 		FBB136D42AC3C8790010CED0 /* GeocodingAPIKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodingAPIKey.swift; sourceTree = "<group>"; };
-		FBB136D82AC3C8DA0010CED0 /* SearchPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchPageViewModel.swift; path = ../../../../ViewModel/SearchPageViewModel.swift; sourceTree = "<group>"; };
-		FBB136DA2AC3C8F90010CED0 /* UIStackView +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIStackView +.swift"; path = "../../../../Components/UIStackView +.swift"; sourceTree = "<group>"; };
 		FBB136DB2AC3C8F90010CED0 /* imageView +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "imageView +.swift"; path = "../../../../Components/imageView +.swift"; sourceTree = "<group>"; };
-		FBB136DC2AC3C8F90010CED0 /* NavigationBarItem +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NavigationBarItem +.swift"; path = "../../../../Components/NavigationBarItem +.swift"; sourceTree = "<group>"; };
-		FBB136DD2AC3C8F90010CED0 /* UILabel +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UILabel +.swift"; path = "../../../../Components/UILabel +.swift"; sourceTree = "<group>"; };
-		FBB136DE2AC3C8F90010CED0 /* UIButton +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIButton +.swift"; path = "../../../../Components/UIButton +.swift"; sourceTree = "<group>"; };
 		FBB136E42AC3C98E0010CED0 /* SearchPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPageViewController.swift; sourceTree = "<group>"; };
+		FBB136E62AC3CD280010CED0 /* NavigationBarItem +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NavigationBarItem +.swift"; sourceTree = "<group>"; };
+		FBB136E82AC3CD2E0010CED0 /* UIButton +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton +.swift"; sourceTree = "<group>"; };
+		FBB136EA2AC3CD340010CED0 /* UILabel +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel +.swift"; sourceTree = "<group>"; };
+		FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView +.swift"; sourceTree = "<group>"; };
+		FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPageVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,7 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				FBB136D72AC3C8BF0010CED0 /* API */,
-				FBB136D82AC3C8DA0010CED0 /* SearchPageViewModel.swift */,
+				FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -213,11 +213,11 @@
 		FBB136972AC15EFB0010CED0 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				FBB136EA2AC3CD340010CED0 /* UILabel +.swift */,
+				FBB136E82AC3CD2E0010CED0 /* UIButton +.swift */,
+				FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */,
+				FBB136E62AC3CD280010CED0 /* NavigationBarItem +.swift */,
 				FBB136DB2AC3C8F90010CED0 /* imageView +.swift */,
-				FBB136DC2AC3C8F90010CED0 /* NavigationBarItem +.swift */,
-				FBB136DE2AC3C8F90010CED0 /* UIButton +.swift */,
-				FBB136DD2AC3C8F90010CED0 /* UILabel +.swift */,
-				FBB136DA2AC3C8F90010CED0 /* UIStackView +.swift */,
 				FBB1369B2AC15F140010CED0 /* DateFormatter.swift */,
 			);
 			path = Components;
@@ -343,26 +343,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FBB136DF2AC3C8F90010CED0 /* UIStackView +.swift in Sources */,
+				FBB136ED2AC3CD390010CED0 /* UIStackView +.swift in Sources */,
+				FBB136E92AC3CD2E0010CED0 /* UIButton +.swift in Sources */,
 				FBB136D12AC3C85A0010CED0 /* Location.swift in Sources */,
 				FBB136C82AC3C7D10010CED0 /* MainMyLocationView.swift in Sources */,
 				FBB136E52AC3C98E0010CED0 /* SearchPageViewController.swift in Sources */,
 				FBB136832AC15D300010CED0 /* MainViewController.swift in Sources */,
 				FBB136C92AC3C7D10010CED0 /* MainMiddleView.swift in Sources */,
-				FBB136E32AC3C8F90010CED0 /* UIButton +.swift in Sources */,
 				DFF9011E2AC19F7E005BD423 /* SearchPageTableViewCell.swift in Sources */,
+				FBB136EB2AC3CD340010CED0 /* UILabel +.swift in Sources */,
+				FBB136E72AC3CD280010CED0 /* NavigationBarItem +.swift in Sources */,
 				FBB1369F2AC15F140010CED0 /* DateFormatter.swift in Sources */,
-				FBB136E12AC3C8F90010CED0 /* NavigationBarItem +.swift in Sources */,
 				FBB136E02AC3C8F90010CED0 /* imageView +.swift in Sources */,
 				FBB136D32AC3C8620010CED0 /* SearchHistory.swift in Sources */,
-				FBB136D92AC3C8DA0010CED0 /* SearchPageViewModel.swift in Sources */,
 				FBB136CA2AC3C7D10010CED0 /* MainTopView.swift in Sources */,
 				FBB136D52AC3C8790010CED0 /* GeocodingAPIKey.swift in Sources */,
 				FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */,
 				FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */,
-				FBB136E22AC3C8F90010CED0 /* UILabel +.swift in Sources */,
 				FBB136C12AC3C7B50010CED0 /* CurrentLocationViewItem.swift in Sources */,
 				FBB136CB2AC3C7D10010CED0 /* MainWeatherForecastView.swift in Sources */,
+				FBB136F12AC3CDD40010CED0 /* SearchPageVM.swift in Sources */,
 				1F5D683F2AC2779500758EF7 /* Notification.swift in Sources */,
 				FBB136812AC15D300010CED0 /* SceneDelegate.swift in Sources */,
 				FBB136C32AC3C7BD0010CED0 /* MainCurrentWeatherView.swift in Sources */,
