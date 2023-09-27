@@ -1,12 +1,14 @@
-import UIKit
-import SwiftUI
 import SnapKit
+import SwiftUI
+import UIKit
 
 class SearchPageViewController: UIViewController, UISearchBarDelegate {
     
-    private let viewModel = SearchPageViewModel()
     
+    private let viewModel = SearchPageVM()
     private var searchHistory = SearchHistory()
+    private var searchResults: [(String, String, Double, Double)] = []
+    
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -36,6 +38,7 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
     func setupUI() {
         let backgroundColor = UIColor(red: 0.90, green: 0.92, blue: 0.94, alpha: 1.0)
         view.backgroundColor = backgroundColor
+        self.navigationController?.navigationBar.tintColor = .black
         
         // searchBar 추가
         view.addSubview(searchBar)
@@ -55,45 +58,54 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
             make.right.equalToSuperview().offset(-10)
             make.bottom.equalToSuperview()
         }
-        
     }
     
     // 서치바 검색 시 메서드
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchText = searchBar.text {
-            print("검색어: \(searchText)")
-            
-            viewModel.searchLocation(for: searchText) { result in
-                switch result {
-                case .success(let coordinates):
-                    print("결과: \(coordinates)")
-                    
-                    // 검색 결과를 SearchHistory에 추가
-                    let location = Location(name: coordinates.0, koreanName: coordinates.1, lat: coordinates.2, lon: coordinates.3)
-                    self.searchHistory.addSearch(location)
-                    print("검색기록: \(self.searchHistory.currentHistory)")
-                    
-                case .failure(let error):
-                    print("에러: \(error)")
+            viewModel.searchLocation(for: searchText) { [weak self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let coordinates):
+                        self?.searchResults = coordinates
+                        self?.tableView.reloadData()
+                    case .failure(let error):
+                        switch error {
+                        case .noCityName:
+                            print("에러: 유효하지 않은 도시 이름입니다.")
+                        case .noData:
+                            print("에러: 데이터가 없습니다.")
+                        case .invalidJSON:
+                            print("에러: JSON 파싱 에러입니다.")
+                        case .failedRequest:
+                            print("에러: 요청에 실패하였습니다.")
+                        case .invalidData:
+                            print("에러: 검색어와 일치하는 도시가 없습니다.")
+                        case .failedResponse:
+                            print("에러: 응답을 받을 수 없습니다.")
+                        case .invalidResponse:
+                            print("에러: 응답이 유효하지 않습니다.")
+                        }
+                    }
                 }
             }
         }
     }
-    
-    
 }
-
 // 테이블뷰 Delegate, DataSource 설정
-extension SearchPageViewController : UITableViewDataSource, UITableViewDelegate {
+extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return searchResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchPageTableViewCell.identifier, for: indexPath) as! SearchPageTableViewCell
-        cell.titleLabel.text = "테이블 뷰 셀 #\(indexPath.row + 1)"
         
+        let result = searchResults[indexPath.row]
+        
+        cell.nameLabel.text = result.1
+        cell.englishNameLabel.text = result.0
+        cell.coordinatesLabel.text = "Lat: \(result.2), Lon: \(result.3)"
         
         
         return cell
@@ -102,12 +114,7 @@ extension SearchPageViewController : UITableViewDataSource, UITableViewDelegate 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
     }
-    
 }
-
-
-
-
 
 // SwiftUI를 활용한 미리보기
 struct SearchViewController_Previews: PreviewProvider {
@@ -123,8 +130,8 @@ struct SearchVCRepresentable: UIViewControllerRepresentable {
         return UINavigationController(rootViewController: searchViewController)
     }
     
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
     
     typealias UIViewControllerType = UIViewController
 }
+

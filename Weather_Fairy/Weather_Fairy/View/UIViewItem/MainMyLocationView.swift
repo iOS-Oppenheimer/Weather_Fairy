@@ -1,15 +1,6 @@
-//
-//  MainMyLocationView.swift
-//  Weather_Fairy
-//
-//  Created by t2023-m0068 on 2023/09/26.
-//
-
 import UIKit
 
 class BottomMyLocationView: UIView {
-    let middleView = MiddleView()
-
     lazy var myLocationView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -19,19 +10,30 @@ class BottomMyLocationView: UIView {
 
         return view
     }()
-    
+
     private func setupConstraints() {
         addSubview(myLocationView)
 
         let safeArea = safeAreaLayoutGuide
 
         NSLayoutConstraint.activate([
-            myLocationView.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
-            myLocationView.topAnchor.constraint(equalTo: middleView.buttonOverlayView.bottomAnchor, constant: 50),
-            myLocationView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20),
-            myLocationView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20),
-            myLocationView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -80),
+            myLocationView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            myLocationView.topAnchor.constraint(equalTo: topAnchor, constant: 40),
+            myLocationView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            myLocationView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            myLocationView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
 
         ])
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = UIColor.clear
+        setupConstraints()
+    }
+
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("ERROR")
     }
 }
