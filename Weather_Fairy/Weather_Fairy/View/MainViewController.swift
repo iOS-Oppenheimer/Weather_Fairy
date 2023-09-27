@@ -4,13 +4,19 @@ import SnapKit
 import SwiftUI
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, MiddleViewDelegate {
+    let bottomMyLocationView = BottomMyLocationView()
+    let bottomWeatherForecastView = BottomWeatherForecastView()
+    let bottomCurrentWeatherView = BottomCurrentWeatherView()
+    let middleView = MiddleView()
+    let topView = TopView()
     let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 480, width: UIScreen.main.bounds
             .width, height: 250))
     let locationManager = CLLocationManager()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        middleView.delegate = self
         view.backgroundColor = .systemBackground
         locationView.locationManager.delegate = self
         locationManager.delegate = self
@@ -27,7 +33,36 @@ class MainViewController: UIViewController {
     }
 
     private func setupViews() {
+        view.addSubview(topView)
+        view.addSubview(middleView)
+        view.addSubview(bottomCurrentWeatherView)
+        view.addSubview(bottomWeatherForecastView)
+        view.addSubview(bottomMyLocationView)
+        // view.addSubview(locationView)
 
+        // topView 위치, 크기 설정
+        topView.frame = CGRect(x: 0, y: 110, width: UIScreen.main.bounds
+            .width, height: 230)
+
+        // middleView 위치, 크기 설정
+        let middleHeight: CGFloat = 50
+        let middleYPosition = topView.frame.origin.y + topView.frame.height
+        middleView.frame = CGRect(x: 0, y: middleYPosition, width: UIScreen.main.bounds.width, height: middleHeight)
+
+        // 현재 날씨 뷰의 위치, 크기 설정
+        let bottomCurrentWeatherViewHeight: CGFloat = 350
+        let bottomCurrentWeatherViewHeightYPosition = middleYPosition + middleHeight
+        bottomCurrentWeatherView.frame = CGRect(x: 0, y: bottomCurrentWeatherViewHeightYPosition, width: UIScreen.main.bounds.width, height: bottomCurrentWeatherViewHeight)
+
+        // 기상 예보 뷰의 위치, 크기 설정
+        let bottomWeatherForecastViewHeight: CGFloat = 350
+        let bottomWeatherForecastViewYPosition = middleYPosition + middleHeight
+        bottomWeatherForecastView.frame = CGRect(x: 0, y: bottomWeatherForecastViewYPosition, width: UIScreen.main.bounds.width, height: bottomWeatherForecastViewHeight)
+
+        // 나의 위치 뷰의 위치, 크기 설정
+        let bottomMyLocationViewHeight: CGFloat = 350
+        let bottomMyLocationViewYPosition = middleYPosition + middleHeight
+        bottomMyLocationView.frame = CGRect(x: 0, y: bottomMyLocationViewYPosition, width: UIScreen.main.bounds.width, height: bottomMyLocationViewHeight)
     }
 
     private func setupBackgroundImage() {
@@ -88,7 +123,7 @@ class MainViewController: UIViewController {
     @objc func resetLocationButtonTapped() {
         locationManager.startUpdatingLocation()
         let status = locationView.locationManager.authorizationStatus
-      
+
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
             if let currentLocation = locationView.locationManager.location {
@@ -117,25 +152,43 @@ class MainViewController: UIViewController {
         let searchPageVC = SearchPageViewController()
         navigationController?.pushViewController(searchPageVC, animated: true)
     }
+
+    func didTapCurrentWeatherButton() {
+        bottomCurrentWeatherView.currentWeatherView.isHidden = false
+        bottomWeatherForecastView.weatherForecastView.isHidden = true
+        bottomMyLocationView.myLocationView.isHidden = true
+    }
+
+    func didTapWeatherForecastButton() {
+        bottomCurrentWeatherView.currentWeatherView.isHidden = true
+        bottomWeatherForecastView.weatherForecastView.isHidden = false
+        bottomMyLocationView.myLocationView.isHidden = true
+    }
+
+    func didTapMyLocationButton() {
+        bottomCurrentWeatherView.currentWeatherView.isHidden = true
+        bottomWeatherForecastView.weatherForecastView.isHidden = true
+        bottomMyLocationView.myLocationView.isHidden = false
+    }
 }
 
 extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[locations.count - 1]
         if location.horizontalAccuracy > 0 {
-            //locationManager.stopUpdatingLocation()
-            
+            // locationManager.stopUpdatingLocation()
+
             let geocoder = CLGeocoder()
             geocoder.reverseGeocodeLocation(location) { placemarks, error in
                 if error == nil {
                     let firstPlacemark = placemarks?[0]
-                    //self.cityName.text = firstPlacemark?.locality ?? "Unknown"
+                    // self.cityName.text = firstPlacemark?.locality ?? "Unknown"
                 } else {
                     print("error")
                 }
             }
         }
-        
+
         func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
             print("Error \(error)")
         }
@@ -146,7 +199,7 @@ extension MainViewController: CLLocationManagerDelegate {
         //         }
         //         print("location: \(location.coordinate.latitude),\(location.coordinate.longitude)")
         //     }
-        
+
         // 위치 권한이 변경될 때 호출되는 메서드
         func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
             switch status {
@@ -169,7 +222,7 @@ extension MainViewController: CLLocationManagerDelegate {
             }
         }
     }
-    
+
     // MainViewController Preview
     struct MainViewController_Previews: PreviewProvider {
         static var previews: some View {
@@ -177,15 +230,15 @@ extension MainViewController: CLLocationManagerDelegate {
                 .edgesIgnoringSafeArea(.all)
         }
     }
-    
+
     struct MainVCRepresentable: UIViewControllerRepresentable {
         func makeUIViewController(context: Context) -> UIViewController {
             let mainViewController = MainViewController()
             return UINavigationController(rootViewController: mainViewController)
         }
-        
+
         func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
-        
+
         typealias UIViewControllerType = UIViewController
     }
 }
