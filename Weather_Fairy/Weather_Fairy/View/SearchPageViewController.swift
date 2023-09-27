@@ -67,12 +67,6 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
                 switch result {
                 case .success(let coordinates):
                     print("결과: \(coordinates)")
-                    
-                    // 검색 결과를 SearchHistory에 추가
-                    let location = Location(name: coordinates.0, koreanName: coordinates.1, lat: coordinates.2, lon: coordinates.3)
-                    self.searchHistory.addSearch(location)
-                    print("검색기록: \(self.searchHistory.currentHistory)")
-                    
                 case .failure(let error):
                     print("에러: \(error)")
                 }
