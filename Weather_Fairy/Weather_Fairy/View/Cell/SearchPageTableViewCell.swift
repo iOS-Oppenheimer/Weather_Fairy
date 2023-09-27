@@ -3,32 +3,59 @@ import SwiftUI
 import SnapKit
 
 class SearchPageTableViewCell: UITableViewCell {
-    
     static let identifier = "SearchPageTableViewCell"
     
-    let titleLabel: UILabel = {
+    lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 16)
         return label
     }()
     
+    lazy var englishNameLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 14)
+        return label
+    }()
+    
+    lazy var coordinatesLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .darkGray
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }()
+    
+//    private lazy var tempLabel: UILabel
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        contentView.backgroundColor = .blue
+        contentView.backgroundColor = .lightGray
         self.backgroundColor = .clear
 
-        contentView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(englishNameLabel)
+        contentView.addSubview(coordinatesLabel)
+
+        nameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.centerY.equalToSuperview()
+            make.top.equalToSuperview().offset(10)
+        }
+        
+        englishNameLabel.snp.makeConstraints { make in
+            make.leading.equalTo(nameLabel.snp.leading)
+            make.top.equalTo(nameLabel.snp.bottom).offset(5)
+        }
+        
+        coordinatesLabel.snp.makeConstraints { make in
+            make.leading.equalTo(nameLabel.snp.leading)
+            make.top.equalTo(englishNameLabel.snp.bottom).offset(5)
+            make.bottom.equalToSuperview().offset(-10)
         }
         
         contentView.layer.cornerRadius = 15
         contentView.layer.masksToBounds = true
-        
-
     }
     
     override func layoutSubviews() {
@@ -38,9 +65,8 @@ class SearchPageTableViewCell: UITableViewCell {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:)가 구현되지 않음")
     }
-    
 }
 
 
