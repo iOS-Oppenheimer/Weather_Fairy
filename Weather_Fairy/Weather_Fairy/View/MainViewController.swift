@@ -5,10 +5,11 @@ import SwiftUI
 import UIKit
 
 class MainViewController: UIViewController {
+    let topView = TopView()
     let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 480, width: UIScreen.main.bounds
             .width, height: 250))
     let locationManager = CLLocationManager()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -17,9 +18,9 @@ class MainViewController: UIViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+        setupViews()
         setupNavigationBar()
         setupBackgroundImage()
-        setupViews()
     }
 
     override func didReceiveMemoryWarning() {
@@ -27,7 +28,8 @@ class MainViewController: UIViewController {
     }
 
     private func setupViews() {
-
+        view.addSubview(topView.topStackView)
+        view.addSubview(locationView)
     }
 
     private func setupBackgroundImage() {
@@ -88,7 +90,7 @@ class MainViewController: UIViewController {
     @objc func resetLocationButtonTapped() {
         locationManager.startUpdatingLocation()
         let status = locationView.locationManager.authorizationStatus
-      
+
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
             if let currentLocation = locationView.locationManager.location {
@@ -123,19 +125,19 @@ extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[locations.count - 1]
         if location.horizontalAccuracy > 0 {
-            //locationManager.stopUpdatingLocation()
-            
+            // locationManager.stopUpdatingLocation()
+
             let geocoder = CLGeocoder()
             geocoder.reverseGeocodeLocation(location) { placemarks, error in
                 if error == nil {
                     let firstPlacemark = placemarks?[0]
-                    //self.cityName.text = firstPlacemark?.locality ?? "Unknown"
+                    // self.cityName.text = firstPlacemark?.locality ?? "Unknown"
                 } else {
                     print("error")
                 }
             }
         }
-        
+
         func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
             print("Error \(error)")
         }
@@ -146,7 +148,7 @@ extension MainViewController: CLLocationManagerDelegate {
         //         }
         //         print("location: \(location.coordinate.latitude),\(location.coordinate.longitude)")
         //     }
-        
+
         // 위치 권한이 변경될 때 호출되는 메서드
         func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
             switch status {
@@ -169,7 +171,7 @@ extension MainViewController: CLLocationManagerDelegate {
             }
         }
     }
-    
+
     // MainViewController Preview
     struct MainViewController_Previews: PreviewProvider {
         static var previews: some View {
@@ -177,15 +179,15 @@ extension MainViewController: CLLocationManagerDelegate {
                 .edgesIgnoringSafeArea(.all)
         }
     }
-    
+
     struct MainVCRepresentable: UIViewControllerRepresentable {
         func makeUIViewController(context: Context) -> UIViewController {
             let mainViewController = MainViewController()
             return UINavigationController(rootViewController: mainViewController)
         }
-        
+
         func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
-        
+
         typealias UIViewControllerType = UIViewController
     }
 }
