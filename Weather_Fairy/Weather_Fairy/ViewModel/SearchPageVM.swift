@@ -1,6 +1,6 @@
 import Foundation
 
-class SearchPageViewModel {
+class SearchPageVM {
 
 
     // 도시 검색 메서드

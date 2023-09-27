@@ -35,7 +35,7 @@
 		FBB136E92AC3CD2E0010CED0 /* UIButton +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136E82AC3CD2E0010CED0 /* UIButton +.swift */; };
 		FBB136EB2AC3CD340010CED0 /* UILabel +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136EA2AC3CD340010CED0 /* UILabel +.swift */; };
 		FBB136ED2AC3CD390010CED0 /* UIStackView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */; };
-		FBB136F12AC3CDD40010CED0 /* SearchPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136F02AC3CDD40010CED0 /* SearchPageViewModel.swift */; };
+		FBB136F12AC3CDD40010CED0 /* SearchPageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -83,7 +83,7 @@
 		FBB136E82AC3CD2E0010CED0 /* UIButton +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton +.swift"; sourceTree = "<group>"; };
 		FBB136EA2AC3CD340010CED0 /* UILabel +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel +.swift"; sourceTree = "<group>"; };
 		FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView +.swift"; sourceTree = "<group>"; };
-		FBB136F02AC3CDD40010CED0 /* SearchPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPageViewModel.swift; sourceTree = "<group>"; };
+		FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPageVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,7 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				DFE8A23E2AC3D12B00ED6917 /* API */,
-				FBB136F02AC3CDD40010CED0 /* SearchPageViewModel.swift */,
+				FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -362,7 +362,7 @@
 				FBB136D32AC3C8620010CED0 /* SearchHistory.swift in Sources */,
 				FBB1367F2AC15D300010CED0 /* AppDelegate.swift in Sources */,
 				FBB136AE2AC26ABA0010CED0 /* MainView.swift in Sources */,
-				FBB136F12AC3CDD40010CED0 /* SearchPageViewModel.swift in Sources */,
+				FBB136F12AC3CDD40010CED0 /* SearchPageVM.swift in Sources */,
 				DFE8A2312AC3D10900ED6917 /* CurrentLocationViewItem.swift in Sources */,
 				1F5D683F2AC2779500758EF7 /* Notification.swift in Sources */,
 				FBB136812AC15D300010CED0 /* SceneDelegate.swift in Sources */,

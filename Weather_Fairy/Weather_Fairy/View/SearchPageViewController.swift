@@ -4,7 +4,7 @@ import SnapKit
 
 class SearchPageViewController: UIViewController, UISearchBarDelegate {
     
-    private let viewModel = SearchPageViewModel()
+    private let viewModel = SearchPageVM()
     private var searchHistory = SearchHistory()
     private var searchResults: [(String, String, Double, Double)] = []
     
