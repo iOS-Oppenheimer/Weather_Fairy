@@ -1,10 +1,17 @@
-import MapKit
 import CoreLocation
+import MapKit
 import SnapKit
 import UIKit
 
 class MyLocationUIView: UIView {
     var mapView: MKMapView!
+    
+    lazy var currentLocationLabel: UILabel = {
+        let label = UILabel()
+        label.currentLocationLabel(text: "부산광역시", textColor: .white, font: UIFont(name: "Jua", size: 20) ?? UIFont())
+        label.textAlignment = .left
+        return label
+    }()
     
     lazy var locationManager: CLLocationManager = {
         let manager = CLLocationManager()
@@ -32,6 +39,7 @@ class MyLocationUIView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setupMapView()
     }
     
@@ -41,9 +49,16 @@ class MyLocationUIView: UIView {
     }
     
     private func setupMapView() {
+        addSubview(currentLocationLabel)
         addSubview(customMapView)
-        mapView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        currentLocationLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(10)
+            make.leading.trailing.equalToSuperview()
+        }
+                
+        customMapView.snp.makeConstraints { make in
+            make.top.equalTo(currentLocationLabel.snp.bottom).offset(10)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
