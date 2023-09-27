@@ -6,6 +6,7 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
     
     private let viewModel = SearchPageVM()
     private var searchHistory = SearchHistory()
+    private var searchResults: [(String, String, Double, Double)] = []
     
     
     private lazy var searchBar: UISearchBar = {
@@ -36,6 +37,7 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
     func setupUI() {
         let backgroundColor = UIColor(red: 0.90, green: 0.92, blue: 0.94, alpha: 1.0)
         view.backgroundColor = backgroundColor
+        self.navigationController?.navigationBar.tintColor = .black
         
         // searchBar 추가
         view.addSubview(searchBar)
@@ -60,13 +62,13 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
     // 서치바 검색 시 메서드
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchText = searchBar.text {
-            print("검색어: \(searchText)")
-            
-            viewModel.searchLocation(for: searchText) { result in
-                switch result {
-                case .success(let coordinates):
-                    print("결과: \(coordinates)")
-                case .failure(let error):
+            viewModel.searchLocations(for: searchText) { [weak self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let coordinates):
+                        self?.searchResults = coordinates
+                        self?.tableView.reloadData()
+                    case .failure(let error):
                     switch error {
                     case .noCityName:
                         print("에러: 유효하지 않은 도시 이름입니다.")
@@ -92,12 +94,18 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
 // 테이블뷰 Delegate, DataSource 설정
 extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return searchResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchPageTableViewCell.identifier, for: indexPath) as! SearchPageTableViewCell
-        cell.titleLabel.text = "테이블 뷰 셀 #\(indexPath.row + 1)"
+
+        let result = searchResults[indexPath.row]
+
+        cell.nameLabel.text = result.1
+        cell.englishNameLabel.text = result.0
+        cell.coordinatesLabel.text = "Lat: \(result.2), Lon: \(result.3)"
+
         
         return cell
     }
