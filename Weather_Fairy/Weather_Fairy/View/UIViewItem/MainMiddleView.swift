@@ -1,8 +1,18 @@
-
 import UIKit
 
+protocol MiddleViewDelegate: AnyObject {
+    func didTapCurrentWeatherButton()
+    func didTapWeatherForecastButton()
+    func didTapMyLocationButton()
+}
+
 class MiddleView: UIView {
+    weak var delegate: MiddleViewDelegate?
+
     let topView = TopView()
+    let bottomCurrentWeatherView = BottomCurrentWeatherView()
+    let bottomWeatherForecastView = BottomWeatherForecastView()
+    let bottomMyLocationView = BottomMyLocationView()
 
     lazy var currentWeatherButton: UIButton = {
         let button = UIButton(type: .system)
@@ -17,7 +27,7 @@ class MiddleView: UIView {
         button.layer.cornerRadius = 7
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
 
-        // button.addTarget(self, action: #selector(currentWeatherButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(currentWeatherButtonTapped), for: .touchUpInside)
 
         return button
     }()
@@ -35,7 +45,7 @@ class MiddleView: UIView {
         button.layer.cornerRadius = 7
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
 
-        // button.addTarget(self, action: #selector(weatherForecastButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(weatherForecastButtonTapped), for: .touchUpInside)
 
         return button
     }()
@@ -53,7 +63,7 @@ class MiddleView: UIView {
         button.layer.cornerRadius = 7
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
 
-        // button.addTarget(self, action: #selector(myLocationButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(myLocationButtonTapped), for: .touchUpInside)
 
         return button
     }()
@@ -78,21 +88,23 @@ class MiddleView: UIView {
     }()
 
     private func setupConstraints() {
-        addSubview(middleButtonStackView)
         addSubview(buttonOverlayView)
-        middleButtonStackView.translatesAutoresizingMaskIntoConstraints = false
-        buttonOverlayView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(middleButtonStackView)
+
         let safeArea = safeAreaLayoutGuide
 
         NSLayoutConstraint.activate([
             currentWeatherButton.widthAnchor.constraint(equalToConstant: 80),
             currentWeatherButton.heightAnchor.constraint(equalToConstant: 25),
+
             weatherForecastButton.widthAnchor.constraint(equalToConstant: 80),
-            weatherForecastButton.heightAnchor.constraint(equalToConstant: 25), myLocationButton.widthAnchor.constraint(equalToConstant: 80),
+            weatherForecastButton.heightAnchor.constraint(equalToConstant: 25),
+
+            myLocationButton.widthAnchor.constraint(equalToConstant: 80),
             myLocationButton.heightAnchor.constraint(equalToConstant: 25),
 
-            middleButtonStackView.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
-            middleButtonStackView.topAnchor.constraint(equalTo: topView.conditionsLabel.bottomAnchor, constant: 50),
+            middleButtonStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            middleButtonStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             middleButtonStackView.heightAnchor.constraint(equalToConstant: 25),
 
             buttonOverlayView.centerXAnchor.constraint(equalTo: middleButtonStackView.centerXAnchor),
@@ -102,8 +114,21 @@ class MiddleView: UIView {
         ])
     }
 
+    @objc func currentWeatherButtonTapped() {
+        delegate?.didTapCurrentWeatherButton()
+    }
+
+    @objc func weatherForecastButtonTapped() {
+        delegate?.didTapWeatherForecastButton()
+    }
+
+    @objc func myLocationButtonTapped() {
+        delegate?.didTapMyLocationButton()
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = UIColor.systemGray2
         setupConstraints()
     }
 

@@ -1,13 +1,11 @@
-
 import UIKit
 
 class BottomCurrentWeatherView: UIView {
-    let middleView = MiddleView()
     lazy var currentWeatherView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.4)
-        view.layer.cornerRadius = 9
+        view.layer.cornerRadius = 25
         view.isHidden = false
 
         return view
@@ -17,14 +15,25 @@ class BottomCurrentWeatherView: UIView {
         addSubview(currentWeatherView)
 
         let safeArea = safeAreaLayoutGuide
-        
+
         NSLayoutConstraint.activate([
-            currentWeatherView.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
-            currentWeatherView.topAnchor.constraint(equalTo: middleView.buttonOverlayView.bottomAnchor, constant: 50),
-            currentWeatherView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20),
-            currentWeatherView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20),
-            currentWeatherView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -80),
+            currentWeatherView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            currentWeatherView.topAnchor.constraint(equalTo: topAnchor, constant: 40),
+            currentWeatherView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            currentWeatherView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            currentWeatherView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
 
         ])
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = UIColor.clear
+        setupConstraints()
+    }
+
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("ERROR")
     }
 }

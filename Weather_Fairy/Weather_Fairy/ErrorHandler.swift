@@ -1,10 +1,3 @@
-//
-//  ErrorHandling.swift
-//  Weather_Fairy
-//
-//  Created by t2023-m0050 on 2023/09/27.
-//
-
 import Foundation
 
 enum Result<Success, Failure: Error> {

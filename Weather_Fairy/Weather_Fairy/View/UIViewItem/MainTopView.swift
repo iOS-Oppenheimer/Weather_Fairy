@@ -1,7 +1,7 @@
-
 import UIKit
 
 class TopView: UIView {
+    var originalCelsiusValue: Double?
     lazy var cityName: UILabel = {
         let label = UILabel()
         label.topLabel(text: "서울특별시", font: UIFont.systemFont(ofSize: 32, weight: .bold), textColor: .white)
@@ -11,7 +11,16 @@ class TopView: UIView {
 
     lazy var celsiusLabel: UILabel = {
         let label = UILabel()
-        label.topLabel(text: "21", font: UIFont.systemFont(ofSize: 100, weight: .bold), textColor: .systemBackground)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "25"
+        label.font = UIFont.systemFont(ofSize: 100, weight: .bold)
+        label.sizeToFit()
+        label.textAlignment = .center
+        label.textColor = .systemBackground
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOffset = CGSize(width: 0, height: 2)
+        label.layer.shadowOpacity = 0.8
+        label.layer.shadowRadius = 2
 
         return label
     }()
@@ -96,7 +105,7 @@ class TopView: UIView {
         label.sizeToFit()
         label.textAlignment = .center
         label.textColor = .systemBackground
-        label.layer.shadowColor = UIColor.systemBackground.cgColor
+        label.layer.shadowColor = UIColor.black.cgColor
         label.layer.shadowOffset = CGSize(width: 0, height: 2)
         label.layer.shadowOpacity = 0.8
         label.layer.shadowRadius = 2
@@ -139,31 +148,50 @@ class TopView: UIView {
         stackView.alignment = .center
         stackView.axis = .vertical
         stackView.spacing = 5
-        stackView.backgroundColor = .black
 
         return stackView
     }()
 
     private func setupConstraints() {
         addSubview(topStackView)
-
         topStackView.translatesAutoresizingMaskIntoConstraints = false
 
+        let safeArea = safeAreaLayoutGuide
+
         NSLayoutConstraint.activate([
-            topStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            topStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            topStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            topStackView.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor) // 추가된 제약 조건
+            topStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            topStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            topStackView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            topStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
+            topStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            topStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+
         ])
     }
 
     @objc func signChangeButtonTapped() {
-        celsiusStackView.isHidden = !celsiusStackView.isHidden
-        fahrenheitStackView.isHidden = !fahrenheitStackView.isHidden
+        if celsiusStackView.isHidden {
+            // 화씨 -> 섭씨
+            if let originalCelsiusValue = originalCelsiusValue {
+                celsiusLabel.text = String(format: "%d", Int(originalCelsiusValue))
+            }
+        } else {
+            // 섭씨 -> 화씨
+            if let celsiusText = celsiusLabel.text, let celsiusValue = Double(celsiusText) {
+                originalCelsiusValue = celsiusValue
+                let fahrenheitValue = (celsiusValue * 1.8) + 32
+                fahrenheitLabel.text = String(format: "%d", Int(fahrenheitValue))
+            }
+        }
+
+        // 뷰 전환
+        celsiusStackView.isHidden.toggle()
+        fahrenheitStackView.isHidden.toggle()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = UIColor.systemGray
         setupConstraints()
     }
 
