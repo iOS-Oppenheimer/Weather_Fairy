@@ -18,8 +18,6 @@ class BottomCurrentWeatherView: UIView {
         currentLocationItem.translatesAutoresizingMaskIntoConstraints = false
         currentWeatherView.addSubview(currentLocationItem)
 
-        let safeArea = safeAreaLayoutGuide
-
         NSLayoutConstraint.activate([
             currentWeatherView.centerXAnchor.constraint(equalTo: centerXAnchor),
             currentWeatherView.topAnchor.constraint(equalTo: topAnchor, constant: 40),
@@ -29,8 +27,8 @@ class BottomCurrentWeatherView: UIView {
 
             currentLocationItem.centerXAnchor.constraint(equalTo: currentWeatherView.centerXAnchor),
             currentLocationItem.centerYAnchor.constraint(equalTo: currentWeatherView.centerYAnchor),
-            currentLocationItem.widthAnchor.constraint(equalToConstant: 340), // 원하는 너비 설정
-            currentLocationItem.heightAnchor.constraint(equalToConstant: 120) // 원하는 높이 설정
+            currentLocationItem.widthAnchor.constraint(equalToConstant: 340),
+            currentLocationItem.heightAnchor.constraint(equalToConstant: 120)
 
         ])
     }
