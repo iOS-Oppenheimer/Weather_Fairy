@@ -3,7 +3,7 @@ import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions laNSLayoutYAxisAnchorunchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
         UNUserNotificationCenter.current().delegate = self
@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
+
 
     // MARK: UISceneSession Lifecycle
 
@@ -38,16 +39,26 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     // 알림이 표시될 때 (앱이 활성/비활성 상태와 관계없이 표시)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound, .badge, .list])
+
+        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
+                if granted {
+                    print("로컬 알림 권한 허용됨")
+                } else {
+                    print("로컬 알림 권한 거부됨")
+                }
+            }
+            return true
+        }
     }
 
 //     푸시 알림을 클릭시
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
         completionHandler()
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        // 사용자 정의 알림 컨텐츠 처리
+       
         let newContent = response.notification.request.content.mutableCopy() as! UNMutableNotificationContent
         newContent.body = "사용자 정의 알림 메시지"
         contentHandler(newContent)

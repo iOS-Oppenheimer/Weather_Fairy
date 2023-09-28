@@ -6,14 +6,6 @@
 	<array>
 		<string>Jua.ttf</string>
 	</array>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>위치정보 권한이 필요합니다</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>위치정보 권한이 필요합니다</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>위치정보 권한이 필요합니다</string>
-	<key>CFBundleIdentifier</key>
-	<string></string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -31,5 +23,10 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>

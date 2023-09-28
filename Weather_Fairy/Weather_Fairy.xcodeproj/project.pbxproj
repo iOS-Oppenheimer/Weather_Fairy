@@ -10,6 +10,7 @@
 		1F5D683A2AC275C800758EF7 /* Pods_Weather_Fairy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5316D0FD1C697B4F5FB0B126 /* Pods_Weather_Fairy.framework */; };
 		1F5D683B2AC275C800758EF7 /* Pods_Weather_Fairy.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5316D0FD1C697B4F5FB0B126 /* Pods_Weather_Fairy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1F5D683F2AC2779500758EF7 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5D683E2AC2779500758EF7 /* Notification.swift */; };
+		1F8254812AC480F60029C8FF /* GeocodingAPIkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8254802AC480F60029C8FF /* GeocodingAPIkey.swift */; };
 		DFE8A22B2AC3D01000ED6917 /* imageView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE8A22A2AC3D01000ED6917 /* imageView +.swift */; };
 		DFE8A2312AC3D10900ED6917 /* CurrentLocationViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE8A2302AC3D10900ED6917 /* CurrentLocationViewItem.swift */; };
 		DFE8A2332AC3D10E00ED6917 /* MainCurrentWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE8A2322AC3D10E00ED6917 /* MainCurrentWeatherView.swift */; };
@@ -18,7 +19,6 @@
 		DFE8A2392AC3D11B00ED6917 /* MainTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE8A2382AC3D11B00ED6917 /* MainTopView.swift */; };
 		DFE8A23B2AC3D11F00ED6917 /* MainWeatherForecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE8A23A2AC3D11F00ED6917 /* MainWeatherForecastView.swift */; };
 		DFE8A23D2AC3D12300ED6917 /* MyLocationUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE8A23C2AC3D12300ED6917 /* MyLocationUIView.swift */; };
-		DFE8A2402AC3D15500ED6917 /* GeocodingAPIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE8A23F2AC3D15500ED6917 /* GeocodingAPIKey.swift */; };
 		DFE9A8992AC458360021184C /* Jua.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFE9A8982AC458360021184C /* Jua.ttf */; };
 		DFE9A89B2AC458490021184C /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE9A89A2AC458490021184C /* ErrorHandler.swift */; };
 		DFF9011E2AC19F7E005BD423 /* SearchPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF9011D2AC19F7E005BD423 /* SearchPageTableViewCell.swift */; };
@@ -58,6 +58,7 @@
 /* Begin PBXFileReference section */
 		000F2C10AEC75063171A8CB1 /* Pods-Weather_Fairy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weather_Fairy.release.xcconfig"; path = "Target Support Files/Pods-Weather_Fairy/Pods-Weather_Fairy.release.xcconfig"; sourceTree = "<group>"; };
 		1F5D683E2AC2779500758EF7 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		1F8254802AC480F60029C8FF /* GeocodingAPIkey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocodingAPIkey.swift; sourceTree = "<group>"; };
 		5316D0FD1C697B4F5FB0B126 /* Pods_Weather_Fairy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Weather_Fairy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFE8A22A2AC3D01000ED6917 /* imageView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "imageView +.swift"; sourceTree = "<group>"; };
 		DFE8A2302AC3D10900ED6917 /* CurrentLocationViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLocationViewItem.swift; sourceTree = "<group>"; };
@@ -67,7 +68,6 @@
 		DFE8A2382AC3D11B00ED6917 /* MainTopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTopView.swift; sourceTree = "<group>"; };
 		DFE8A23A2AC3D11F00ED6917 /* MainWeatherForecastView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWeatherForecastView.swift; sourceTree = "<group>"; };
 		DFE8A23C2AC3D12300ED6917 /* MyLocationUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyLocationUIView.swift; sourceTree = "<group>"; };
-		DFE8A23F2AC3D15500ED6917 /* GeocodingAPIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocodingAPIKey.swift; sourceTree = "<group>"; };
 		DFE9A8982AC458360021184C /* Jua.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Jua.ttf; sourceTree = "<group>"; };
 		DFE9A89A2AC458490021184C /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		DFF9011D2AC19F7E005BD423 /* SearchPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageTableViewCell.swift; sourceTree = "<group>"; };
@@ -113,6 +113,14 @@
 			path = Notification;
 			sourceTree = "<group>";
 		};
+		1F82547F2AC480E30029C8FF /* API */ = {
+			isa = PBXGroup;
+			children = (
+				1F8254802AC480F60029C8FF /* GeocodingAPIkey.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
 		383AEDFFDB11186793050C76 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,7 +141,7 @@
 		DFA298272AC16C0C00700EF1 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				DFE8A23E2AC3D12B00ED6917 /* API */,
+				1F82547F2AC480E30029C8FF /* API */,
 				FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */,
 			);
 			path = ViewModel;
@@ -151,14 +159,6 @@
 				DFE8A2302AC3D10900ED6917 /* CurrentLocationViewItem.swift */,
 			);
 			path = UIViewItem;
-			sourceTree = "<group>";
-		};
-		DFE8A23E2AC3D12B00ED6917 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				DFE8A23F2AC3D15500ED6917 /* GeocodingAPIKey.swift */,
-			);
-			path = API;
 			sourceTree = "<group>";
 		};
 		DFE9A8962AC457FF0021184C /* Font */ = {
@@ -361,9 +361,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F8254812AC480F60029C8FF /* GeocodingAPIkey.swift in Sources */,
 				DFE8A23D2AC3D12300ED6917 /* MyLocationUIView.swift in Sources */,
 				FBB136ED2AC3CD390010CED0 /* UIStackView +.swift in Sources */,
-				DFE8A2402AC3D15500ED6917 /* GeocodingAPIKey.swift in Sources */,
 				FBB136E92AC3CD2E0010CED0 /* UIButton +.swift in Sources */,
 				FBB136D12AC3C85A0010CED0 /* Location.swift in Sources */,
 				FBB136E52AC3C98E0010CED0 /* SearchPageViewController.swift in Sources */,
@@ -530,6 +530,9 @@
 				DEVELOPMENT_TEAM = V7K58MBUV9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Weather_Fairy/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "위치정보 권한이 필요합니다";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "위치정보 권한이 필요합니다";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "위치정보 권한이 필요합니다";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -558,6 +561,9 @@
 				DEVELOPMENT_TEAM = V7K58MBUV9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Weather_Fairy/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "위치정보 권한이 필요합니다";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "위치정보 권한이 필요합니다";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "위치정보 권한이 필요합니다";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
