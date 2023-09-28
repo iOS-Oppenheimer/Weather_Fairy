@@ -36,8 +36,9 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         view.addSubview(topView)
         view.addSubview(middleView)
         view.addSubview(bottomCurrentWeatherView)
-        view.addSubview(bottomWeatherForecastView)
         view.addSubview(bottomMyLocationView)
+        view.addSubview(bottomWeatherForecastView)
+
         // view.addSubview(locationView)
 
         // topView 위치, 크기 설정
@@ -157,20 +158,25 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         bottomCurrentWeatherView.currentWeatherView.isHidden = false
         bottomWeatherForecastView.weatherForecastView.isHidden = true
         bottomMyLocationView.myLocationView.isHidden = true
+        view.bringSubviewToFront(bottomCurrentWeatherView)
     }
 
     func didTapWeatherForecastButton() {
         bottomCurrentWeatherView.currentWeatherView.isHidden = true
         bottomWeatherForecastView.weatherForecastView.isHidden = false
         bottomMyLocationView.myLocationView.isHidden = true
+        view.bringSubviewToFront(bottomWeatherForecastView)
     }
 
     func didTapMyLocationButton() {
         bottomCurrentWeatherView.currentWeatherView.isHidden = true
         bottomWeatherForecastView.weatherForecastView.isHidden = true
         bottomMyLocationView.myLocationView.isHidden = false
+        view.bringSubviewToFront(bottomMyLocationView)
     }
 }
+
+// MARK: - CLLocationManagerDelegate
 
 extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -223,7 +229,8 @@ extension MainViewController: CLLocationManagerDelegate {
         }
     }
 
-    // MainViewController Preview
+    // MARK: - Preview
+
     struct MainViewController_Previews: PreviewProvider {
         static var previews: some View {
             MainVCRepresentable()

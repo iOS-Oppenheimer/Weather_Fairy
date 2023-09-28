@@ -1,22 +1,19 @@
 import Foundation
 
 class SearchPageVM {
-
-
     // 도시 검색 메서드
 
     func searchLocation(for cityName: String, completion: @escaping (Result<[(String, String, Double, Double)], APIError>) -> Void) {
-
         // 한글 도시 이름을 URL 인코딩
         guard let encodedCityName = cityName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             completion(.failure(.noCityName))
             return
         }
 
-        let urlString = "https://api.openweathermap.org/geo/1.0/direct?q=\(encodedCityName)&limit=5&appid=\(APIKeys.geoAPIKey)"
+        let urlString = "https://api.openweathermap.org/geo/1.0/direct?q=\(encodedCityName)&limit=5&appid=\(geoAPIKey)"
 
         if let url = URL(string: urlString) {
-            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            let task = URLSession.shared.dataTask(with: url) { data, _, error in
                 if let error = error {
                     completion(.failure(.failedRequest))
                     return
@@ -25,7 +22,7 @@ class SearchPageVM {
                 if let data = data {
                     do {
                         let json = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]]
-                        
+
                         var cities: [(String, String, Double, Double)] = []
 
                         for location in json ?? [] {
@@ -33,11 +30,12 @@ class SearchPageVM {
                                let lon = location["lon"] as? Double,
                                let localNames = location["local_names"] as? [String: String],
                                let koreanName = localNames["ko"],
-                               let englishName = location["name"] as? String {
+                               let englishName = location["name"] as? String
+                            {
                                 cities.append((englishName, koreanName, lat, lon))
                             }
                         }
-                        
+
                         if !cities.isEmpty {
                             completion(.success(cities))
                         } else {
@@ -53,10 +51,10 @@ class SearchPageVM {
     }
 }
 
-//#if canImport(SwiftUI) && DEBUG
-//import SwiftUI
+// #if canImport(SwiftUI) && DEBUG
+// import SwiftUI
 //
-//struct SearchPageTableViewCell_Previews: PreviewProvider {
+// struct SearchPageTableViewCell_Previews: PreviewProvider {
 //    static var previews: some View {
 //        Group {
 //            UIViewPreview {
@@ -69,9 +67,9 @@ class SearchPageVM {
 //            .previewLayout(.fixed(width: 375, height: 120))
 //        }
 //    }
-//}
+// }
 //
-//struct UIViewPreview<View: UIView>: UIViewRepresentable {
+// struct UIViewPreview<View: UIView>: UIViewRepresentable {
 //    let view: View
 //
 //    init(_ builder: @escaping () -> View) {
@@ -80,7 +78,6 @@ class SearchPageVM {
 //
 //    func makeUIView(context: Context) -> UIView { view }
 //    func updateUIView(_ view: UIView, context: Context) { }
-//}
+// }
 //
-//#endif
-
+// #endif

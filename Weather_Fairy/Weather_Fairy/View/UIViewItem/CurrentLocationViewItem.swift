@@ -10,13 +10,15 @@ class CurrentLocationViewItem: UIView {
     
     lazy var airQuality: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "대기질", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "대기질", textColor: .black, fontSize: 20)
+     
         return label
     }()
     
     lazy var airQualityValue: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "34 좋음", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "34 좋음", textColor: .black, fontSize: 20)
+
         return label
     }()
     
@@ -36,13 +38,15 @@ class CurrentLocationViewItem: UIView {
     
     lazy var windy: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "바람", textColor: .white, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "바람", textColor: .white, fontSize: 20)
+
         return label
     }()
     
     lazy var windyValue: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "2/ms", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "2/ms", textColor: .black, fontSize: 20)
+
         return label
     }()
     
@@ -62,13 +66,15 @@ class CurrentLocationViewItem: UIView {
     
     lazy var humidity: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "습도", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "습도", textColor: .black, fontSize: 20)
+
         return label
     }()
     
     lazy var humidityValue: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "60%", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "60%", textColor: .black, fontSize: 20)
+
         return label
     }()
     
@@ -88,13 +94,15 @@ class CurrentLocationViewItem: UIView {
     
     lazy var rainfall: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "강수확률", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "강수확률", textColor: .black, fontSize: 20)
+
         return label
     }()
     
     lazy var rainfallValue: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "80%", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "80%", textColor: .black, fontSize: 20)
+
         return label
     }()
     
