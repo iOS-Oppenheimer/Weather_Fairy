@@ -10,6 +10,7 @@ class MyLocationUIView: UIView {
         let label = UILabel()
         label.customLabel(text: "부산광역시", textColor: .white, fontSize: 25)
         label.textAlignment = .left
+        
         return label
     }()
     

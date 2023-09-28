@@ -9,6 +9,7 @@ class BottomMyLocationView: UIView {
         //view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         view.layer.cornerRadius = 25
         view.isHidden = true
+        view.isUserInteractionEnabled = true
         return view
     }()
 

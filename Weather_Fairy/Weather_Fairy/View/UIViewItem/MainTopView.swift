@@ -11,64 +11,28 @@ class TopView: UIView {
 
     lazy var celsiusLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "25"
-        label.font = UIFont.systemFont(ofSize: 100, weight: .bold)
-        label.sizeToFit()
-        label.textAlignment = .center
-        label.textColor = .systemBackground
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowOffset = CGSize(width: 0, height: 2)
-        label.layer.shadowOpacity = 0.8
-        label.layer.shadowRadius = 2
+        label.customLabel(text: "25", textColor: .white, fontSize: 100)
 
         return label
     }()
 
     lazy var celsiusSignLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "℃"
-        label.font = UIFont.systemFont(ofSize: 80, weight: .bold)
-        label.sizeToFit()
-        label.textAlignment = .center
-        label.textColor = .systemBackground
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowOffset = CGSize(width: 0, height: 2)
-        label.layer.shadowOpacity = 0.8
-        label.layer.shadowRadius = 2
+        label.customLabel(text: "℃", textColor: .white, fontSize: 65)
 
         return label
     }()
 
     lazy var fahrenheitLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "69.8"
-        label.font = UIFont.systemFont(ofSize: 100, weight: .bold)
-        label.sizeToFit()
-        label.textAlignment = .center
-        label.textColor = .systemBackground
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowOffset = CGSize(width: 0, height: 2)
-        label.layer.shadowOpacity = 0.8
-        label.layer.shadowRadius = 2
+        label.customLabel(text: "69", textColor: .white, fontSize: 100)
 
         return label
     }()
 
     lazy var fahrenheitSignLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "℉"
-        label.font = UIFont.systemFont(ofSize: 80, weight: .bold)
-        label.sizeToFit()
-        label.textAlignment = .center
-        label.textColor = .systemBackground
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowOffset = CGSize(width: 0, height: 2)
-        label.layer.shadowOpacity = 0.8
-        label.layer.shadowRadius = 2
+        label.customLabel(text: "℉", textColor: .white, fontSize: 65)
 
         return label
     }()
@@ -99,16 +63,7 @@ class TopView: UIView {
 
     lazy var conditionsLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "한때 흐림"
-        label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
-        label.sizeToFit()
-        label.textAlignment = .center
-        label.textColor = .systemBackground
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowOffset = CGSize(width: 0, height: 2)
-        label.layer.shadowOpacity = 0.8
-        label.layer.shadowRadius = 2
+        label.customLabel(text: "한때 흐림", textColor: .white, fontSize: 22)
 
         return label
     }()

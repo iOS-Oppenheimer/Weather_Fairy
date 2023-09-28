@@ -1,7 +1,6 @@
 import UIKit
 
 extension UILabel {
-    
     func customLabel(text: String, textColor: UIColor, fontSize: CGFloat){
         self.translatesAutoresizingMaskIntoConstraints = false
         self.text = text
