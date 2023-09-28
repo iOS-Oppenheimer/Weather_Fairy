@@ -4,7 +4,9 @@ import SnapKit
 import SwiftUI
 import UIKit
 
+
 class MainViewController: UIViewController, MiddleViewDelegate {
+    let notificationForUmbrella = NotificationForUmbrella() //박철우
     let bottomMyLocationView = BottomMyLocationView()
     let bottomWeatherForecastView = BottomWeatherForecastView()
     let bottomCurrentWeatherView = BottomCurrentWeatherView()
@@ -27,6 +29,9 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         setupBackgroundImage()
         setupViews()
     }
+    override func viewDidAppear(_ animated: Bool) {//박철우
+        notificationForUmbrella.sendingPushNotification() //박철우
+    }//박철우
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
