@@ -1,20 +1,22 @@
 import UIKit
 
 class BottomMyLocationView: UIView {
+    let mapkit = MyLocationUIView()
+
     lazy var myLocationView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        //view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         view.layer.cornerRadius = 25
         view.isHidden = true
-
+        view.isUserInteractionEnabled = true
         return view
     }()
 
     private func setupConstraints() {
         addSubview(myLocationView)
-
-        let safeArea = safeAreaLayoutGuide
+        mapkit.translatesAutoresizingMaskIntoConstraints = false
+        myLocationView.addSubview(mapkit)
 
         NSLayoutConstraint.activate([
             myLocationView.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -23,6 +25,10 @@ class BottomMyLocationView: UIView {
             myLocationView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             myLocationView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
 
+            mapkit.centerXAnchor.constraint(equalTo: myLocationView.centerXAnchor),
+            mapkit.centerYAnchor.constraint(equalTo: myLocationView.centerYAnchor),
+            mapkit.widthAnchor.constraint(equalTo: myLocationView.widthAnchor),
+            mapkit.heightAnchor.constraint(equalTo: myLocationView.heightAnchor)
         ])
     }
 
