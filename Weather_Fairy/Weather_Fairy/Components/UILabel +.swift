@@ -13,4 +13,6 @@ extension UILabel {
         self.layer.shadowOpacity = 0.8
         self.layer.shadowRadius = 2
     }
+    
 }
+

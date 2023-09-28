@@ -10,15 +10,13 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     let bottomCurrentWeatherView = BottomCurrentWeatherView()
     let middleView = MiddleView()
     let topView = TopView()
-    let locationView = MyLocationUIView(frame: CGRect(x: 0, y: 480, width: UIScreen.main.bounds
-            .width, height: 250))
     let locationManager = CLLocationManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         middleView.delegate = self
         view.backgroundColor = .systemBackground
-        locationView.locationManager.delegate = self
+        bottomMyLocationView.mapkit.locationManager.delegate = self
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -123,11 +121,11 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
     @objc func resetLocationButtonTapped() {
         locationManager.startUpdatingLocation()
-        let status = locationView.locationManager.authorizationStatus
+        let status = bottomMyLocationView.mapkit.locationManager.authorizationStatus
 
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
-            if let currentLocation = locationView.locationManager.location {
+            if let currentLocation = bottomMyLocationView.mapkit.locationManager.location {
                 let latitude = currentLocation.coordinate.latitude
                 let longitude = currentLocation.coordinate.longitude
                 print("현재 위치 - 위도: \(latitude), 경도: \(longitude)")
@@ -136,7 +134,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
                 let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
                 let regionRadius: CLLocationDistance = 10000
                 let coordinateRegion = MKCoordinateRegion(center: location, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
-                locationView.customMapView.setRegion(coordinateRegion, animated: true)
+                bottomMyLocationView.mapkit.customMapView.setRegion(coordinateRegion, animated: true)
             } else {
                 print("위치 정보를 가져올 수 없습니다.")
             }
@@ -215,13 +213,13 @@ extension MainViewController: CLLocationManagerDelegate {
                 print("GPS 권한 설정되지 않음")
                 DispatchQueue.main.async {
                     // 위치 권한을 요청하는 코드 추가
-                    self.locationView.locationManager.requestWhenInUseAuthorization()
+                    self.bottomMyLocationView.mapkit.locationManager.requestWhenInUseAuthorization()
                 }
             case .denied:
                 print("GPS 권한 요청 거부됨")
                 DispatchQueue.main.async {
                     // 위치 권한을 요청하는 코드 추가
-                    self.locationView.locationManager.requestWhenInUseAuthorization()
+                    self.bottomMyLocationView.mapkit.locationManager.requestWhenInUseAuthorization()
                 }
             default:
                 print("GPS: Default")
