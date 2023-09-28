@@ -4,7 +4,7 @@ class TopView: UIView {
     var originalCelsiusValue: Double?
     lazy var cityName: UILabel = {
         let label = UILabel()
-        label.topLabel(text: "서울특별시", font: UIFont.systemFont(ofSize: 32, weight: .bold), textColor: .white)
+        label.customLabel(text: "서울특별시", textColor: .white, fontSize: 32)
 
         return label
     }()

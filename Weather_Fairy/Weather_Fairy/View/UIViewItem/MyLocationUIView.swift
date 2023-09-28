@@ -8,7 +8,7 @@ class MyLocationUIView: UIView {
     
     lazy var currentLocationLabel: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "부산광역시", textColor: .white, font: UIFont(name: "Jua", size: 20) ?? UIFont())
+        label.customLabel(text: "부산광역시", textColor: .white, fontSize: 25)
         label.textAlignment = .left
         return label
     }()

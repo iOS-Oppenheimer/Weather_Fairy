@@ -10,13 +10,13 @@ class CurrentLocationViewItem: UIView {
     
     lazy var airQuality: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "대기질", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "대기질", textColor: .white, fontSize: 25)
         return label
     }()
     
     lazy var airQualityValue: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "34 좋음", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "34 좋음", textColor: .white, fontSize: 25)
         return label
     }()
     
@@ -36,13 +36,13 @@ class CurrentLocationViewItem: UIView {
     
     lazy var windy: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "바람", textColor: .white, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "바람", textColor: .white, fontSize: 25)
         return label
     }()
     
     lazy var windyValue: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "2/ms", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "2/ms", textColor: .white, fontSize: 25)
         return label
     }()
     
@@ -62,13 +62,13 @@ class CurrentLocationViewItem: UIView {
     
     lazy var humidity: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "습도", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "습도", textColor: .white, fontSize: 25)
         return label
     }()
     
     lazy var humidityValue: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "60%", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "60%", textColor: .white, fontSize: 25)
         return label
     }()
     
@@ -88,13 +88,13 @@ class CurrentLocationViewItem: UIView {
     
     lazy var rainfall: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "강수확률", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "강수확률", textColor: .white, fontSize: 25)
         return label
     }()
     
     lazy var rainfallValue: UILabel = {
         let label = UILabel()
-        label.currentLocationLabel(text: "80%", textColor: .black, font: UIFont.systemFont(ofSize: 20, weight: .bold))
+        label.customLabel(text: "80%", textColor: .white, fontSize: 25)
         return label
     }()
     
@@ -107,9 +107,9 @@ class CurrentLocationViewItem: UIView {
     
     private func setupCurrentWeatherView() {
         let stackView = UIStackView(arrangedSubviews: [airQualityStackView, windyStackView, humidityStackView, rainfallStackView])
-        stackView.horizontalStackView(spacing: 30)
-        stackView.layer.borderColor = UIColor.red.cgColor
-        stackView.layer.borderWidth = 2.0
+        stackView.horizontalStackView(spacing: 25)
+        //stackView.layer.borderColor = UIColor.red.cgColor
+        //stackView.layer.borderWidth = 2.0
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)

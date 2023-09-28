@@ -1,13 +1,13 @@
 import UIKit
 
 class BottomMyLocationView: UIView {
+    
     lazy var myLocationView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         view.layer.cornerRadius = 25
         view.isHidden = true
-
         return view
     }()
 
