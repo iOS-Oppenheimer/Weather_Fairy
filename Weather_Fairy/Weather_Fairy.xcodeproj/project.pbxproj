@@ -39,6 +39,8 @@
 		FBB136EB2AC3CD340010CED0 /* UILabel +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136EA2AC3CD340010CED0 /* UILabel +.swift */; };
 		FBB136ED2AC3CD390010CED0 /* UIStackView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */; };
 		FBB136F12AC3CDD40010CED0 /* SearchPageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */; };
+		FBB7C7612AC6D59B0048098F /* MapMarkerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB7C7602AC6D59B0048098F /* MapMarkerModel.swift */; };
+		FBB7C7632AC6DB2A0048098F /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB7C7622AC6DB2A0048098F /* MapAnnotation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -90,6 +92,8 @@
 		FBB136EA2AC3CD340010CED0 /* UILabel +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel +.swift"; sourceTree = "<group>"; };
 		FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView +.swift"; sourceTree = "<group>"; };
 		FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPageVM.swift; sourceTree = "<group>"; };
+		FBB7C7602AC6D59B0048098F /* MapMarkerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMarkerModel.swift; sourceTree = "<group>"; };
+		FBB7C7622AC6DB2A0048098F /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +161,7 @@
 				DFE8A2342AC3D11300ED6917 /* MainMiddleView.swift */,
 				DFE8A2322AC3D10E00ED6917 /* MainCurrentWeatherView.swift */,
 				DFE8A2302AC3D10900ED6917 /* CurrentLocationViewItem.swift */,
+				FBB7C7622AC6DB2A0048098F /* MapAnnotation.swift */,
 			);
 			path = UIViewItem;
 			sourceTree = "<group>";
@@ -253,6 +258,7 @@
 			children = (
 				FBB136D02AC3C85A0010CED0 /* Location.swift */,
 				FBB136D22AC3C8620010CED0 /* SearchHistory.swift */,
+				FBB7C7602AC6D59B0048098F /* MapMarkerModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -377,6 +383,7 @@
 				DFE8A2372AC3D11800ED6917 /* MainMyLocationView.swift in Sources */,
 				DFE8A23B2AC3D11F00ED6917 /* MainWeatherForecastView.swift in Sources */,
 				DFE8A2332AC3D10E00ED6917 /* MainCurrentWeatherView.swift in Sources */,
+				FBB7C7612AC6D59B0048098F /* MapMarkerModel.swift in Sources */,
 				DFE8A2392AC3D11B00ED6917 /* MainTopView.swift in Sources */,
 				FBB136D32AC3C8620010CED0 /* SearchHistory.swift in Sources */,
 				FBB136D32AC3C8620010CED0 /* SearchHistory.swift in Sources */,
@@ -385,6 +392,7 @@
 				FBB136F12AC3CDD40010CED0 /* SearchPageVM.swift in Sources */,
 				DFE8A2312AC3D10900ED6917 /* CurrentLocationViewItem.swift in Sources */,
 				1F5D683F2AC2779500758EF7 /* Notification.swift in Sources */,
+				FBB7C7632AC6DB2A0048098F /* MapAnnotation.swift in Sources */,
 				FBB136812AC15D300010CED0 /* SceneDelegate.swift in Sources */,
 				DFE8A2352AC3D11300ED6917 /* MainMiddleView.swift in Sources */,
 				FB0CD8A22AC53FE80014461F /* Constants.swift in Sources */,

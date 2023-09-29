@@ -127,7 +127,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     @objc func resetLocationButtonTapped() {
         locationManager.startUpdatingLocation()
         let status = bottomMyLocationView.mapkit.locationManager.authorizationStatus
-
+        //지도의 위치로 화면전환
+        didTapMyLocationButton()
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
             if let currentLocation = bottomMyLocationView.mapkit.locationManager.location {
@@ -137,9 +138,11 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
                 // 현재 위치를 중심으로 지도를 이동
                 let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                let annotation = MapAnnotation(coordinate: location, title: "BUSAN", subtitle: "")
                 let regionRadius: CLLocationDistance = 10000
                 let coordinateRegion = MKCoordinateRegion(center: location, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
                 bottomMyLocationView.mapkit.customMapView.setRegion(coordinateRegion, animated: true)
+                bottomMyLocationView.mapkit.customMapView.addAnnotation(annotation)
             } else {
                 print("위치 정보를 가져올 수 없습니다.")
             }
