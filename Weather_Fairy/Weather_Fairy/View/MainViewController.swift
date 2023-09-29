@@ -17,6 +17,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         middleView.delegate = self
+        //mapview delegate 설정 : mapMaker 디자인을 위해서!
+        bottomMyLocationView.mapkit.customMapView.delegate = self
         view.backgroundColor = .systemBackground
         bottomMyLocationView.mapkit.locationManager.delegate = self
         locationManager.delegate = self
@@ -138,8 +140,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
                 // 현재 위치를 중심으로 지도를 이동
                 let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                let annotation = MapAnnotation(coordinate: location, title: "BUSAN", subtitle: "")
-                let regionRadius: CLLocationDistance = 10000
+                let annotation = MapAnnotation(coordinate: location, title: "25")
+                let regionRadius: CLLocationDistance = ZOOM_OUT
                 let coordinateRegion = MKCoordinateRegion(center: location, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
                 bottomMyLocationView.mapkit.customMapView.setRegion(coordinateRegion, animated: true)
                 bottomMyLocationView.mapkit.customMapView.addAnnotation(annotation)
@@ -182,7 +184,28 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 }
 
-// MARK: - CLLocationManagerDelegate
+extension MainViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? MapAnnotation {
+            let identifier = "customAnnotation"
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+
+            if annotationView == nil {
+                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView?.image = UIImage(named: "pin")
+                annotationView?.canShowCallout = true
+                let imageSize = CGSize(width: 20, height: 25)
+                annotationView?.frame = CGRect(origin: .zero, size: imageSize)
+            } else {
+                annotationView?.annotation = annotation
+            }
+
+            return annotationView
+        }
+        return nil
+    }
+
+}
 
 extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
