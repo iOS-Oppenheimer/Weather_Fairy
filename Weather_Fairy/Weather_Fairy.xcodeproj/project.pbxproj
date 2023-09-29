@@ -40,6 +40,7 @@
 		FBB136ED2AC3CD390010CED0 /* UIStackView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */; };
 		FBB136F12AC3CDD40010CED0 /* SearchPageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */; };
 		FBB7C7632AC6DB2A0048098F /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB7C7622AC6DB2A0048098F /* MapAnnotation.swift */; };
+		FBB7C7652AC7081E0048098F /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB7C7642AC7081E0048098F /* MainViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -92,6 +93,7 @@
 		FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView +.swift"; sourceTree = "<group>"; };
 		FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPageVM.swift; sourceTree = "<group>"; };
 		FBB7C7622AC6DB2A0048098F /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
+		FBB7C7642AC7081E0048098F /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 			children = (
 				1F82547F2AC480E30029C8FF /* API */,
 				FBB136F02AC3CDD40010CED0 /* SearchPageVM.swift */,
+				FBB7C7642AC7081E0048098F /* MainViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -372,6 +375,7 @@
 				FBB136E52AC3C98E0010CED0 /* SearchPageViewController.swift in Sources */,
 				FBB136832AC15D300010CED0 /* MainViewController.swift in Sources */,
 				DFE8A22B2AC3D01000ED6917 /* imageView +.swift in Sources */,
+				FBB7C7652AC7081E0048098F /* MainViewModel.swift in Sources */,
 				DFF9011E2AC19F7E005BD423 /* SearchPageTableViewCell.swift in Sources */,
 				FBB136EB2AC3CD340010CED0 /* UILabel +.swift in Sources */,
 				FBB136E72AC3CD280010CED0 /* NavigationBarItem +.swift in Sources */,

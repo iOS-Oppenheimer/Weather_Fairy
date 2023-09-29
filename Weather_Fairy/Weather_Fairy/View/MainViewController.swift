@@ -4,20 +4,26 @@ import SnapKit
 import SwiftUI
 import UIKit
 
-
 class MainViewController: UIViewController, MiddleViewDelegate {
-    let notificationForUmbrella = NotificationForUmbrella() //박철우
+    private var viewModel: MainViewModel?
+    let locationManager = CLLocationManager()
+    
+    let notificationForUmbrella = NotificationForUmbrella() // 박철우
     let bottomMyLocationView = BottomMyLocationView()
     let bottomWeatherForecastView = BottomWeatherForecastView()
     let bottomCurrentWeatherView = BottomCurrentWeatherView()
     let middleView = MiddleView()
     let topView = TopView()
-    let locationManager = CLLocationManager()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // MainViewModel 인스턴스 생성 및 초기화
+        viewModel = MainViewModel(locationManager: locationManager, mapView: bottomMyLocationView.mapkit.customMapView)
+        // viewModel?.delegate = self
+
         middleView.delegate = self
-        //mapview delegate 설정 : mapMaker 디자인을 위해서!
+        // mapview delegate 설정 : mapMaker 디자인을 위해서!
         bottomMyLocationView.mapkit.customMapView.delegate = self
         view.backgroundColor = .systemBackground
         bottomMyLocationView.mapkit.locationManager.delegate = self
@@ -29,9 +35,10 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         setupBackgroundImage()
         setupViews()
     }
-    override func viewDidAppear(_ animated: Bool) {//박철우
-        notificationForUmbrella.sendingPushNotification() //박철우
-    }//박철우
+
+    override func viewDidAppear(_ animated: Bool) { // 박철우
+        notificationForUmbrella.sendingPushNotification() // 박철우
+    } // 박철우
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -127,34 +134,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 
     @objc func resetLocationButtonTapped() {
-        locationManager.startUpdatingLocation()
-        let status = bottomMyLocationView.mapkit.locationManager.authorizationStatus
-        //지도의 위치로 화면전환
         didTapMyLocationButton()
-        switch status {
-        case .authorizedWhenInUse, .authorizedAlways:
-            if let currentLocation = bottomMyLocationView.mapkit.locationManager.location {
-                let latitude = currentLocation.coordinate.latitude
-                let longitude = currentLocation.coordinate.longitude
-                print("현재 위치 - 위도: \(latitude), 경도: \(longitude)")
-
-                // 현재 위치를 중심으로 지도를 이동
-                let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                let annotation = MapAnnotation(coordinate: location, title: "25")
-                let regionRadius: CLLocationDistance = ZOOM_OUT
-                let coordinateRegion = MKCoordinateRegion(center: location, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
-                bottomMyLocationView.mapkit.customMapView.setRegion(coordinateRegion, animated: true)
-                bottomMyLocationView.mapkit.customMapView.addAnnotation(annotation)
-            } else {
-                print("위치 정보를 가져올 수 없습니다.")
-            }
-        case .notDetermined:
-            print("위치 권한이 아직 요청되지 않았습니다.")
-        case .denied, .restricted:
-            print("위치 정보에 동의하지 않았거나 액세스가 제한되었습니다.")
-        @unknown default:
-            print("알 수 없는 위치 권한 상태입니다.")
-        }
+        viewModel?.resetLocation()
     }
 
     @objc func SearchPageButtonTapped() {
@@ -185,6 +166,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 }
 
 extension MainViewController: MKMapViewDelegate {
+    // UI 관련 로직은 View에서 해야함.
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? MapAnnotation {
             let identifier = "customAnnotation"
@@ -204,57 +186,20 @@ extension MainViewController: MKMapViewDelegate {
         }
         return nil
     }
-
 }
 
 extension MainViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location = locations[locations.count - 1]
-        if location.horizontalAccuracy > 0 {
-            // locationManager.stopUpdatingLocation()
-
-            let geocoder = CLGeocoder()
-            geocoder.reverseGeocodeLocation(location) { placemarks, error in
-                if error == nil {
-                    let firstPlacemark = placemarks?[0]
-                    // self.cityName.text = firstPlacemark?.locality ?? "Unknown"
-                } else {
-                    print("error")
-                }
-            }
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            viewModel?.locationManager(manager, didUpdateLocations: locations)
         }
 
         func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-            print("Error \(error)")
+            viewModel?.locationManager(manager, didFailWithError: error)
         }
-        //     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        //         guard let location = locations.last else {
-        //             print("위치 업데이트 실패")
-        //             return
-        //         }
-        //         print("location: \(location.coordinate.latitude),\(location.coordinate.longitude)")
-        //     }
-
+      
         // 위치 권한이 변경될 때 호출되는 메서드
         func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-            switch status {
-            case .authorizedAlways, .authorizedWhenInUse:
-                print("GPS 권한 설정됨")
-            case .restricted, .notDetermined:
-                print("GPS 권한 설정되지 않음")
-                DispatchQueue.main.async {
-                    // 위치 권한을 요청하는 코드 추가
-                    self.bottomMyLocationView.mapkit.locationManager.requestWhenInUseAuthorization()
-                }
-            case .denied:
-                print("GPS 권한 요청 거부됨")
-                DispatchQueue.main.async {
-                    // 위치 권한을 요청하는 코드 추가
-                    self.bottomMyLocationView.mapkit.locationManager.requestWhenInUseAuthorization()
-                }
-            default:
-                print("GPS: Default")
-            }
+            viewModel?.locationManager(manager, didChangeAuthorization: status)
         }
     }
 
@@ -277,4 +222,3 @@ extension MainViewController: CLLocationManagerDelegate {
 
         typealias UIViewControllerType = UIViewController
     }
-}
