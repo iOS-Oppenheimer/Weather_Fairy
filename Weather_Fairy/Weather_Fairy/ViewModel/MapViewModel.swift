@@ -40,31 +40,17 @@ class MapViewModel: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
         }
         return nil
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // 위치 업데이트가 발생했을 때의 로직을 여기에 구현
-        let location = locations[locations.count - 1]
-        if location.horizontalAccuracy > 0 {
-            // locationManager.stopUpdatingLocation()
-
-            let geocoder = CLGeocoder()
-            geocoder.reverseGeocodeLocation(location) { placemarks, error in
-                if error == nil {
-                    let firstPlacemark = placemarks?[0]
-                    //self.cityName.text = firstPlacemark?.locality ?? "Unknown"
-                } else {
-                    print("error")
-                }
-            }
-        }
+     
     }
-    
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         // 위치 업데이트 실패 시의 로직을 여기에 구현
         print("Error \(error)")
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:

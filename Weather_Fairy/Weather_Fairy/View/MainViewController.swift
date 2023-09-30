@@ -19,12 +19,12 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     private var mapViewModel: MapViewModel?
     private let locationManager = CLLocationManager()
     private let notificationForUmbrella = NotificationForUmbrella() // 박철우
-    
-    private let mainView = MainView()
-    private let currentWeather: BottomCurrentWeatherView
-    private let forecast: BottomWeatherForecastView
-    private let myLocation: BottomMyLocationView
-    
+
+    let mainView = MainView()
+    let currentWeather: BottomCurrentWeatherView
+    let forecast: BottomWeatherForecastView
+    let myLocation: BottomMyLocationView
+
     override func loadView() {
         view = mainView
     }
@@ -83,14 +83,15 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         myLocation.myLocationView.isHidden = false
         view.bringSubviewToFront(myLocation)
     }
-    
+
     init() {
         self.currentWeather = mainView.bottomCurrentWeatherView
         self.forecast = mainView.bottomWeatherForecastView
         self.myLocation = mainView.bottomMyLocationView
         super.init(nibName: nil, bundle: nil)
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -115,7 +116,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
                         if let mainDict = jsonResult["main"] as? [String: Any],
                            let tempValue = mainDict["temp"] as? Double
                         {
-                            self.topView.celsiusLabel.text = "\(Int(tempValue))"
+                            self.mainView.topView.celsiusLabel.text = "\(Int(tempValue))"
                         }
                     }
                 }
@@ -142,7 +143,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
                 let weatherData = try decoder.decode(WeatherData.self, from: data)
 
                 DispatchQueue.main.async {
-                    self?.bottomWeatherForecastView.updateForecastData(with: weatherData.list)
+                    self?.mainView.bottomWeatherForecastView.updateForecastData(with: weatherData.list)
                 }
 
             } catch {
@@ -160,28 +161,35 @@ extension MainViewController: MKMapViewDelegate {
 }
 
 extension MainViewController: CLLocationManagerDelegate {
-        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            mapViewModel?.locationManager(manager, didUpdateLocations: locations)
-        }
-  
-        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-            mapViewModel?.locationManager(manager, didFailWithError: error)
-        }
-      
-        // 위치 권한이 변경될 때 호출되는 메서드
-        func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-            mapViewModel?.locationManager(manager, didChangeAuthorization: status)
-        }
-        // 주소를 받아오는 함수
-        func geocode(location: CLLocation) {
-            CLGeocoder().reverseGeocodeLocation(location) { placemarks, _ in
-                if let placemark = placemarks?.first,
-                   let cityName = placemark.locality
-                {
-                    DispatchQueue.main.async {
-                        self.topView.cityName.text = cityName
-                    }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+
+        fetchWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+
+        geocode(location: location)
+
+        manager.stopUpdatingLocation()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        mapViewModel?.locationManager(manager, didFailWithError: error)
+    }
+
+    // 위치 권한이 변경될 때 호출되는 메서드
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        mapViewModel?.locationManager(manager, didChangeAuthorization: status)
+    }
+
+    // 주소를 받아오는 함수
+    func geocode(location: CLLocation) {
+        CLGeocoder().reverseGeocodeLocation(location) { placemarks, _ in
+            if let placemark = placemarks?.first,
+               let cityName = placemark.locality
+            {
+                DispatchQueue.main.async {
+                    self.mainView.topView.cityName.text = cityName
                 }
             }
         }
     }
+}
