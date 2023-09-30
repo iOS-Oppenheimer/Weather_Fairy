@@ -2,6 +2,19 @@ import CoreLocation
 import MapKit
 import UIKit
 
+struct WeatherData: Codable {
+    let list: [WeatherInfo]
+
+    struct WeatherInfo: Codable {
+        let main: MainInfo
+        let dt_txt: String
+
+        struct MainInfo: Codable {
+            let temp: Double
+        }
+    }
+}
+
 class MainViewController: UIViewController, MiddleViewDelegate {
     private var mapViewModel: MapViewModel?
     private let locationManager = CLLocationManager()
@@ -15,7 +28,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     override func loadView() {
         view = mainView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         MainNavigationBar.setupNavigationBar(for: self, resetButton: #selector(resetLocationButtonTapped), searchPageButton: #selector(SearchPageButtonTapped))
@@ -32,9 +45,9 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.startUpdatingLocation()
     }
 
-//    override func viewDidAppear(_ animated: Bool) { // 박철우
-//        notificationForUmbrella.sendingPushNotification() // 박철우
-//    } // 박철우
+    override func viewDidAppear(_ animated: Bool) { // 박철우
+        notificationForUmbrella.sendingPushNotification() // 박철우
+    } // 박철우
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -81,6 +94,63 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func fetchWeatherData(latitude: Double, longitude: Double) {
+        let apiKey = "9156be3c6ef5ecaa3de3ae9adb9063cd"
+        let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric&lang=kr"
+
+        guard let url = URL(string: urlStr) else { return }
+
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
+                print("Failed to fetch data with error: ", error)
+                return
+            }
+
+            guard let data = data else { return }
+
+            do {
+                if let jsonResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] {
+                    DispatchQueue.main.async {
+                        if let mainDict = jsonResult["main"] as? [String: Any],
+                           let tempValue = mainDict["temp"] as? Double
+                        {
+                            self.topView.celsiusLabel.text = "\(Int(tempValue))"
+                        }
+                    }
+                }
+
+            } catch {
+                print("Failed to parse JSON with error: ", error)
+            }
+        }
+
+        task.resume()
+    }
+
+    func fetchThreeHourForecastData(city: String) {
+        let apiKey = "\(geoAPIKey)"
+        let urlString = "http://api.openweathermap.org/data/2.5/forecast?q=\(city)&appid=\(apiKey)&units=metric"
+
+        guard let url = URL(string: urlString) else { return }
+
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+            guard let data = data, error == nil else { return }
+
+            do {
+                let decoder = JSONDecoder()
+                let weatherData = try decoder.decode(WeatherData.self, from: data)
+
+                DispatchQueue.main.async {
+                    self?.bottomWeatherForecastView.updateForecastData(with: weatherData.list)
+                }
+
+            } catch {
+                print("Failed to parse JSON data: \(error.localizedDescription)")
+            }
+        }
+        task.resume()
+    }
 }
 
 extension MainViewController: MKMapViewDelegate {
@@ -93,7 +163,7 @@ extension MainViewController: CLLocationManagerDelegate {
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
             mapViewModel?.locationManager(manager, didUpdateLocations: locations)
         }
-
+  
         func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
             mapViewModel?.locationManager(manager, didFailWithError: error)
         }
@@ -101,5 +171,17 @@ extension MainViewController: CLLocationManagerDelegate {
         // 위치 권한이 변경될 때 호출되는 메서드
         func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
             mapViewModel?.locationManager(manager, didChangeAuthorization: status)
+        }
+        // 주소를 받아오는 함수
+        func geocode(location: CLLocation) {
+            CLGeocoder().reverseGeocodeLocation(location) { placemarks, _ in
+                if let placemark = placemarks?.first,
+                   let cityName = placemark.locality
+                {
+                    DispatchQueue.main.async {
+                        self.topView.cityName.text = cityName
+                    }
+                }
+            }
         }
     }

@@ -4,14 +4,14 @@ class TopView: UIView {
     var originalCelsiusValue: Double?
     lazy var cityName: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "서울특별시", textColor: .white, fontSize: 32)
+        label.customLabel(text: "시", textColor: .white, fontSize: 32)
 
         return label
     }()
 
     lazy var celsiusLabel: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "25", textColor: .white, fontSize: 100)
+        label.customLabel(text: "0", textColor: .white, fontSize: 100)
 
         return label
     }()
@@ -25,7 +25,7 @@ class TopView: UIView {
 
     lazy var fahrenheitLabel: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "69", textColor: .white, fontSize: 100)
+        label.customLabel(text: "0", textColor: .white, fontSize: 100)
 
         return label
     }()
