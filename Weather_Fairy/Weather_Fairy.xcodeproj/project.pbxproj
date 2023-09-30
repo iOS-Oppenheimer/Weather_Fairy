@@ -34,7 +34,7 @@
 		FBB136D12AC3C85A0010CED0 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136D02AC3C85A0010CED0 /* Location.swift */; };
 		FBB136D32AC3C8620010CED0 /* SearchHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136D22AC3C8620010CED0 /* SearchHistory.swift */; };
 		FBB136E52AC3C98E0010CED0 /* SearchPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136E42AC3C98E0010CED0 /* SearchPageViewController.swift */; };
-		FBB136E72AC3CD280010CED0 /* NavigationBarItem +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136E62AC3CD280010CED0 /* NavigationBarItem +.swift */; };
+		FBB136E72AC3CD280010CED0 /* MainNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136E62AC3CD280010CED0 /* MainNavigationBar.swift */; };
 		FBB136E92AC3CD2E0010CED0 /* UIButton +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136E82AC3CD2E0010CED0 /* UIButton +.swift */; };
 		FBB136EB2AC3CD340010CED0 /* UILabel +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136EA2AC3CD340010CED0 /* UILabel +.swift */; };
 		FBB136ED2AC3CD390010CED0 /* UIStackView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */; };
@@ -87,7 +87,7 @@
 		FBB136D02AC3C85A0010CED0 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		FBB136D22AC3C8620010CED0 /* SearchHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHistory.swift; sourceTree = "<group>"; };
 		FBB136E42AC3C98E0010CED0 /* SearchPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPageViewController.swift; sourceTree = "<group>"; };
-		FBB136E62AC3CD280010CED0 /* NavigationBarItem +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NavigationBarItem +.swift"; sourceTree = "<group>"; };
+		FBB136E62AC3CD280010CED0 /* MainNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainNavigationBar.swift; sourceTree = "<group>"; };
 		FBB136E82AC3CD2E0010CED0 /* UIButton +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton +.swift"; sourceTree = "<group>"; };
 		FBB136EA2AC3CD340010CED0 /* UILabel +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel +.swift"; sourceTree = "<group>"; };
 		FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView +.swift"; sourceTree = "<group>"; };
@@ -247,7 +247,7 @@
 				FBB136EA2AC3CD340010CED0 /* UILabel +.swift */,
 				FBB136E82AC3CD2E0010CED0 /* UIButton +.swift */,
 				FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */,
-				FBB136E62AC3CD280010CED0 /* NavigationBarItem +.swift */,
+				FBB136E62AC3CD280010CED0 /* MainNavigationBar.swift */,
 				FBB1369B2AC15F140010CED0 /* DateFormatter.swift */,
 				DFE8A22A2AC3D01000ED6917 /* imageView +.swift */,
 			);
@@ -378,7 +378,7 @@
 				FBB7C7652AC7081E0048098F /* MainViewModel.swift in Sources */,
 				DFF9011E2AC19F7E005BD423 /* SearchPageTableViewCell.swift in Sources */,
 				FBB136EB2AC3CD340010CED0 /* UILabel +.swift in Sources */,
-				FBB136E72AC3CD280010CED0 /* NavigationBarItem +.swift in Sources */,
+				FBB136E72AC3CD280010CED0 /* MainNavigationBar.swift in Sources */,
 				FBB1369F2AC15F140010CED0 /* DateFormatter.swift in Sources */,
 				DFE9A89B2AC458490021184C /* ErrorHandler.swift in Sources */,
 				DFE8A2372AC3D11800ED6917 /* MainMyLocationView.swift in Sources */,
