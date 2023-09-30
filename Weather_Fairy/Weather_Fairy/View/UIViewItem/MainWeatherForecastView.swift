@@ -1,6 +1,14 @@
 import UIKit
 
 class BottomWeatherForecastView: UIView, UICollectionViewDelegate {
+    var forecastData: [WeatherData.WeatherInfo]?
+
+    func updateForecastData(with data: [WeatherData.WeatherInfo]) {
+        print("updateForecastData is called with data count: \(data.count)")
+        forecastData = data
+        firstCollectionView.reloadData() // 데이터 업데이트 후 콜렉션 뷰 리로드
+    }
+
     lazy var weatherForecastView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -29,8 +37,8 @@ class BottomWeatherForecastView: UIView, UICollectionViewDelegate {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.layer.cornerRadius = 20
         collectionView.layer.masksToBounds = true
-        layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 10
+        layout.minimumLineSpacing = 7
+        layout.minimumInteritemSpacing = 7
 
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -55,8 +63,8 @@ class BottomWeatherForecastView: UIView, UICollectionViewDelegate {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.layer.cornerRadius = 20
         collectionView.layer.masksToBounds = true
-        layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 10
+        layout.minimumLineSpacing = 7
+        layout.minimumInteritemSpacing = 7
 
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -118,18 +126,59 @@ class BottomWeatherForecastView: UIView, UICollectionViewDelegate {
 // 데이터 소스 메서드에서 셀 구성
 extension BottomWeatherForecastView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        if collectionView == firstCollectionView {
+            return 10
+        } else {
+            return 5
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == firstCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FirstCollectionViewCell.reuseIdentifier, for: indexPath) as! FirstCollectionViewCell
-            cell.timeLabel.text = "Time \(indexPath.item)"
-            cell.timeTempLabel.text = "Temp \(indexPath.item)"
+
+            let currentDate = Date()
+            var calendar = Calendar.current
+            calendar.timeZone = TimeZone.current
+            let components = calendar.dateComponents([.hour], from: currentDate)
+
+            // 시간 설정
+            if let hour = components.hour {
+                let nextHour = (hour + (indexPath.item * 3) + 1) % 24
+                cell.timeLabel.text = String(format: "%02d:00", nextHour)
+            } else {
+                cell.timeLabel.text = "Time \(indexPath.item)"
+            }
+
+            // 온도 설정
+            if let data = forecastData?[indexPath.item] {
+                cell.timeTempLabel.text = String(format: "%.1f℃", data.main.temp)
+            } else {
+                cell.timeTempLabel.text = "Temp \(indexPath.item)"
+            }
+
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SecondCollectionViewCell.reuseIdentifier, for: indexPath) as! SecondCollectionViewCell
-            cell.dateLabel.text = "Date \(indexPath.item)"
+
+            // 오늘로부터 indexPath.item + 1 일 후의 날짜를 계산
+            let currentDate = Date()
+            var dateComponent = DateComponents()
+            dateComponent.day = indexPath.item + 1
+            if let futureDate = Calendar.current.date(byAdding: dateComponent, to: currentDate) {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MM/dd"
+                let dateString = dateFormatter.string(from: futureDate)
+
+                let dayFormatter = DateFormatter()
+                dayFormatter.dateFormat = "E"
+                let dayString = dayFormatter.string(from: futureDate) // 요일을 문자열로 변환
+
+                cell.dateLabel.text = "\(dateString)(\(dayString))"
+            } else {
+                cell.dateLabel.text = "Date \(indexPath.item)"
+            }
+
             cell.dateTempLabel.text = "Temp \(indexPath.item)"
             return cell
         }
@@ -139,7 +188,7 @@ extension BottomWeatherForecastView: UICollectionViewDataSource {
 // 셀 크기 조절
 extension BottomWeatherForecastView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 70, height: 70)
+        return CGSize(width: 90, height: 90)
     }
 }
 
@@ -206,7 +255,7 @@ class SecondCollectionViewCell: UICollectionViewCell {
 
     lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "", textColor: .black, fontSize: 15)
+        label.customLabel(text: "", textColor: .black, fontSize: 13)
         label.layer.shadowColor = UIColor.black.cgColor
         label.layer.shadowOffset = CGSize(width: 0, height: 0)
         label.layer.shadowOpacity = 0
