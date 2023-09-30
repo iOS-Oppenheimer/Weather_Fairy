@@ -2,7 +2,7 @@ import CoreLocation
 import Foundation
 import MapKit
 
-class MainViewModel: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
+class MapViewModel: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
     private var locationManager: CLLocationManager
     private var mapView: MKMapView
 

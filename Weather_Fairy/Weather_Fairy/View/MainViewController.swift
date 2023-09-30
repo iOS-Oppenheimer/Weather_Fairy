@@ -1,11 +1,9 @@
 import CoreLocation
 import MapKit
-import SnapKit
-import SwiftUI
 import UIKit
 
 class MainViewController: UIViewController, MiddleViewDelegate {
-    private var viewModel: MainViewModel?
+    private var mapViewModel: MapViewModel?
     private let locationManager = CLLocationManager()
     private let notificationForUmbrella = NotificationForUmbrella() // 박철우
     
@@ -13,16 +11,16 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     private let currentWeather: BottomCurrentWeatherView
     private let forecast: BottomWeatherForecastView
     private let myLocation: BottomMyLocationView
+    
     override func loadView() {
         view = mainView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
         MainNavigationBar.setupNavigationBar(for: self, resetButton: #selector(resetLocationButtonTapped), searchPageButton: #selector(SearchPageButtonTapped))
         // MainViewModel 인스턴스 생성 및 초기화
-        viewModel = MainViewModel(locationManager: locationManager, mapView: mainView.bottomMyLocationView.mapkit.customMapView)
+        mapViewModel = MapViewModel(locationManager: locationManager, mapView: mainView.bottomMyLocationView.mapkit.customMapView)
         // viewModel?.delegate = self
         mainView.middleView.delegate = self
         // mapview delegate 설정 : mapMaker 디자인을 위해서!
@@ -34,9 +32,9 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.startUpdatingLocation()
     }
 
-    override func viewDidAppear(_ animated: Bool) { // 박철우
-        notificationForUmbrella.sendingPushNotification() // 박철우
-    } // 박철우
+//    override func viewDidAppear(_ animated: Bool) { // 박철우
+//        notificationForUmbrella.sendingPushNotification() // 박철우
+//    } // 박철우
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -44,7 +42,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
     @objc func resetLocationButtonTapped() {
         didTapMyLocationButton()
-        viewModel?.resetLocation()
+        mapViewModel?.resetLocation()
     }
 
     @objc func SearchPageButtonTapped() {
@@ -87,22 +85,21 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
 extension MainViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        viewModel?.mapView(mapView, viewFor: annotation)
+        mapViewModel?.mapView(mapView, viewFor: annotation)
     }
 }
 
 extension MainViewController: CLLocationManagerDelegate {
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            viewModel?.locationManager(manager, didUpdateLocations: locations)
+            mapViewModel?.locationManager(manager, didUpdateLocations: locations)
         }
 
         func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-            viewModel?.locationManager(manager, didFailWithError: error)
+            mapViewModel?.locationManager(manager, didFailWithError: error)
         }
       
         // 위치 권한이 변경될 때 호출되는 메서드
         func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-            viewModel?.locationManager(manager, didChangeAuthorization: status)
+            mapViewModel?.locationManager(manager, didChangeAuthorization: status)
         }
     }
-
