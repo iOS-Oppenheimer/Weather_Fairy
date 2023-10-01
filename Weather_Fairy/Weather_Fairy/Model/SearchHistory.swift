@@ -1,7 +1,7 @@
 import Foundation
 
 class SearchHistory {
-    private var searchHistory: [Location] = []
+    var searchHistory: [Location] = []
     
     init() {
         loadSearchHistory()
@@ -37,6 +37,11 @@ class SearchHistory {
         saveSearchHistory()
     }
     
+    // 검색 기록 비우는 메서드
+    func clearSearchHistory() {
+        searchHistory.removeAll()
+        saveSearchHistory()
+    }
 
     func getSearchHistory() -> [Location] {
         return searchHistory

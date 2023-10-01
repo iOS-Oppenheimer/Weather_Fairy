@@ -6,6 +6,7 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
     
     private let viewModel = SearchPageVM()
     private var searchResults: [(String, String, Double, Double)] = []
+    private let searchHistory = SearchHistory()
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -31,12 +32,21 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
         super.viewDidLoad()
         setupUI()
         displaySearchHistory()
+        setupNavigationBar()
+    }
+    
+    // 네비게이션 바 설정 및 삭제 버튼 추가
+    func setupNavigationBar() {
+        self.navigationController?.navigationBar.tintColor = .black
+        let deleteButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deleteSearchHistory(_:)))
+        navigationItem.rightBarButtonItem = deleteButton
     }
     
     func setupUI() {
         let backgroundColor = UIColor(red: 0.90, green: 0.92, blue: 0.94, alpha: 1.0)
         view.backgroundColor = backgroundColor
-        self.navigationController?.navigationBar.tintColor = .black
+
+        
         
         view.addSubview(searchBar)
         view.addSubview(tableView)
@@ -102,6 +112,20 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
 
         tableView.reloadData()
     }
+    
+    // 검색 기록 삭제 버튼 메서드
+    @objc func deleteSearchHistory(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "검색 기록 삭제", message: "검색 기록을 모두 삭제하시겠습니까?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
+            // 검색 기록 삭제
+            SearchHistory().clearSearchHistory()
+            // 검색 결과 초기화
+            self?.searchResults = []
+            self?.tableView.reloadData()
+        }))
+        present(alert, animated: true, completion: nil)
+    }
 
 }
 
@@ -136,7 +160,6 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
                         cell.hideLoadingSpinner()
                         cell.setWeatherData(weatherInfo: weatherInfo)
                         cell.configure()
-                        print(weatherInfo)
                     }
                 case .failure(let error):
                     print("날씨 정보를 가져오는 데 실패했습니다: \(error)")
@@ -152,23 +175,6 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if searchResults.isEmpty {
-            // 검색 결과가 없는 경우, 검색 기록 선택
-            let searchHistory = SearchHistory().getSearchHistory()
-            if indexPath.row < searchHistory.count {
-                let selectedResult = searchHistory[indexPath.row]
-                addToSearchHistory(selectedResult)
-                
-                let mainVC = MainViewController()
-                mainVC.cityEngName = selectedResult.engName
-                mainVC.cityKorName = selectedResult.korName
-                mainVC.cityLat = selectedResult.lat
-                mainVC.cityLon = selectedResult.lon
-                
-                navigationController?.pushViewController(mainVC, animated: true)
-            }
-        } else {
-            // 검색 결과가 있는 경우, 검색 결과 선택
             let selectedResult = searchResults[indexPath.row]
             addToSearchHistory(Location(engName: selectedResult.0, korName: selectedResult.1, lat: selectedResult.2, lon: selectedResult.3))
             
@@ -178,13 +184,12 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
             mainVC.cityLat = selectedResult.2
             mainVC.cityLon = selectedResult.3
             
+            print("3:\(selectedResult)")
+            
             navigationController?.pushViewController(mainVC, animated: true)
-        }
     }
     
-    // 검색 기록에 도시 추가
     func addToSearchHistory(_ location: Location) {
-        let searchHistory = SearchHistory()
         searchHistory.addLocationToHistory(location)
     }
 }

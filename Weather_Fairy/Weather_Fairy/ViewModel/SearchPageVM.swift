@@ -53,7 +53,6 @@ class SearchPageVM {
     func fetchWeatherData(lat: Double, lon: Double, completion: @escaping (Result<(Int, String, String, Int, Int, Int, String), Error>) -> Void) {
         // API 키와 좌표를 이용해 URL 생성
         let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(geoAPIKey)&units=metric&lang=kr"
-        print(urlStr)
         guard let url = URL(string: urlStr) else {
             completion(.failure(NSError(domain: "유효하지 않은 URL", code: 0, userInfo: nil)))
             return
@@ -86,7 +85,6 @@ class SearchPageVM {
                         dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss a"
                         dateFormatter.timeZone = timezone
                         let formattedDate = dateFormatter.string(from: currentDateInCity)
-                        print("도시의 현재 시간: \(formattedDate)")
                         
                         let timeFormatter = DateFormatter()
                         timeFormatter.dateFormat = "hh:mm a"
@@ -101,7 +99,6 @@ class SearchPageVM {
                             Int(Double(weatherData.main.temp_max).rounded()),
                             currentFormattedTime
                         )
-                        print(weatherInfo)
                         completion(.success(weatherInfo))
                     } else {
                         completion(.failure(NSError(domain: "시간 변환 실패", code: 0, userInfo: nil)))
