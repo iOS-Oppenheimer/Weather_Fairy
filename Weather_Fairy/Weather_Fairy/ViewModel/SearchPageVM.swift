@@ -14,7 +14,7 @@ class SearchPageVM {
 
         if let url = URL(string: urlString) {
             let task = URLSession.shared.dataTask(with: url) { data, _, error in
-                if let error = error {
+                if error != nil {
                     completion(.failure(.failedRequest))
                     return
                 }
@@ -50,10 +50,10 @@ class SearchPageVM {
         }
     }
 
-    func fetchWeatherData(lat: Double, lon: Double, completion: @escaping (Result<(String, String, Int, Int, Int, String), Error>) -> Void) {
+    func fetchWeatherData(lat: Double, lon: Double, completion: @escaping (Result<(Int, String, String, Int, Int, Int, String), Error>) -> Void) {
         // API 키와 좌표를 이용해 URL 생성
         let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(geoAPIKey)&units=metric&lang=kr"
-        
+        print(urlStr)
         guard let url = URL(string: urlStr) else {
             completion(.failure(NSError(domain: "유효하지 않은 URL", code: 0, userInfo: nil)))
             return
@@ -74,17 +74,42 @@ class SearchPageVM {
                 let decoder = JSONDecoder()
                 let weatherData = try decoder.decode(WeatherModel.self, from: data)
                 
-                // 원하는 정보 추출
-                let weatherInfo: (String, String, Int, Int, Int, String) = (
-                    weatherData.weather.first?.main ?? "",
-                    weatherData.weather.first?.icon ?? "아이콘 없음",
-                    Int(weatherData.main.temp),
-                    Int(weatherData.main.temp_min),
-                    Int(weatherData.main.temp_max),
-                    DateFormat.formattedTime(from: weatherData.dt)
-                )
-                
-                completion(.success(weatherInfo))
+                if let timezoneOffset = weatherData.timezone as? Int {
+
+                    let adjustedTimezoneOffset = timezoneOffset - 32400
+                    let timezone = TimeZone(secondsFromGMT: adjustedTimezoneOffset)
+                    let currentUTCDate = Date()
+                    
+                    var calendar = Calendar(identifier: .gregorian)
+                    calendar.timeZone = timezone ?? TimeZone.current
+                    if let currentDateInCity = calendar.date(byAdding: .second, value: Int(adjustedTimezoneOffset), to: currentUTCDate) {
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        dateFormatter.timeZone = timezone
+                        let formattedDate = dateFormatter.string(from: currentDateInCity)
+                        print("도시의 현재 시간: \(formattedDate)")
+                        
+                        let timeFormatter = DateFormatter()
+                        timeFormatter.dateFormat = "HH:mm"
+                        let currentFormattedTime = timeFormatter.string(from: currentDateInCity)
+                        
+                        let weatherInfo: (Int, String, String, Int, Int, Int, String) = (
+                            weatherData.weather.first?.id ?? 0,
+                            weatherData.weather.first?.description ?? "",
+                            weatherData.weather.first?.icon ?? "아이콘 없음",
+                            Int(Double(weatherData.main.temp).rounded()),
+                            Int(Double(weatherData.main.temp_min).rounded()),
+                            Int(Double(weatherData.main.temp_max).rounded()),
+                            currentFormattedTime
+                        )
+                        print(weatherInfo)
+                        completion(.success(weatherInfo))
+                    } else {
+                        completion(.failure(NSError(domain: "시간 변환 실패", code: 0, userInfo: nil)))
+                    }
+                } else {
+                    completion(.failure(NSError(domain: "타임존 정보 없음", code: 0, userInfo: nil)))
+                }
             } catch {
                 completion(.failure(error))
             }
@@ -92,10 +117,4 @@ class SearchPageVM {
         
         task.resume()
     }
-
-
-
-
-    
 }
-

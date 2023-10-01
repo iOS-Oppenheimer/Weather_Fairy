@@ -9,6 +9,7 @@ class SearchPageTableViewCell: UITableViewCell {
     var cityEngName: String?
     var cityLat: Double?
     var cityLon: Double?
+    var weatherId : Int?
     var weatherMain: String?
     var weatherIcon: String?
     var weatherTemp: Int?
@@ -16,51 +17,49 @@ class SearchPageTableViewCell: UITableViewCell {
     var weatherMaxTemp: Int?
     var cityTime: String?
     
+    
     private let loadingIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .medium)
         indicator.color = .white
         return indicator
     }()
+  
     
     lazy var korNameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.customLabel(text: "", textColor: .white, fontSize: 20)
         return label
     }()
     
+    
+    
     lazy var engNameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.customLabel(text: "", textColor: .white, fontSize: 12)
         return label
     }()
     
     lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.customLabel(text: "", textColor: .white, fontSize: 12)
         return label
     }()
     
     lazy var weatherLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.customLabel(text: "", textColor: .white, fontSize: 20)
         return label
     }()
     
     lazy var tempLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 40)
+        label.customLabel(text: "", textColor: .white, fontSize: 40)
         return label
     }()
     
     lazy var maxMinTempLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.customLabel(text: "", textColor: .white, fontSize: 12)
         return label
     }()
     
@@ -71,13 +70,22 @@ class SearchPageTableViewCell: UITableViewCell {
         cityLon = data.3
     }
     
-    func setWeatherData(weatherInfo: (String, String, Int, Int, Int, String)) {
-        weatherMain = weatherInfo.0
-        weatherIcon = weatherInfo.1
-        weatherTemp = weatherInfo.2
-        weatherMinTemp = weatherInfo.3
-        weatherMaxTemp = weatherInfo.4
-        cityTime = weatherInfo.5
+    func setWeatherData(weatherInfo: (Int, String, String, Int, Int, Int, String)) {
+        weatherId = weatherInfo.0
+        weatherMain = weatherInfo.1
+        weatherIcon = weatherInfo.2
+        weatherTemp = weatherInfo.3
+        weatherMinTemp = weatherInfo.4
+        weatherMaxTemp = weatherInfo.5
+        cityTime = weatherInfo.6
+
+        if let id = weatherId {
+            let backgroundImage = UIImageView()
+            backgroundImage.contentMode = .scaleAspectFill
+            backgroundImage.clipsToBounds = true
+            backgroundImage.image = WeatherCellBackgroundImage().getImage(id: id)
+            backgroundView = backgroundImage
+        }
     }
     
     func configure() {
@@ -106,8 +114,8 @@ class SearchPageTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        let backgroundImage = UIImageView(image: UIImage(named: "cloudyBG.png"))
-        backgroundView = backgroundImage
+//        let backgroundImage = UIImageView(image: UIImage(named: "cloudyBG.png"))
+//        backgroundView = backgroundImage
         selectionStyle = .none
         
         self.backgroundColor = .clear
@@ -122,7 +130,7 @@ class SearchPageTableViewCell: UITableViewCell {
         
         korNameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.top.equalToSuperview().offset(12)
+            make.top.equalToSuperview().offset(16)
         }
         
         engNameLabel.snp.makeConstraints { make in
@@ -137,16 +145,16 @@ class SearchPageTableViewCell: UITableViewCell {
         
         weatherLabel.snp.makeConstraints { make in
             make.leading.equalTo(korNameLabel.snp.leading)
-            make.bottom.equalToSuperview().offset(-12)
+            make.bottom.equalToSuperview().offset(-16)
         }
         
         tempLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-24)
-            make.top.equalTo(korNameLabel.snp.top).offset(-5)
+            make.top.equalTo(korNameLabel.snp.top).offset(5)
         }
         
         maxMinTempLabel.snp.makeConstraints { make in
-            make.top.equalTo(weatherLabel.snp.top)
+            make.bottom.equalTo(weatherLabel.snp.bottom)
             make.trailing.equalTo(tempLabel.snp.trailing)
         }
         
@@ -161,7 +169,6 @@ class SearchPageTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0))
     }
     
     required init?(coder aDecoder: NSCoder) {

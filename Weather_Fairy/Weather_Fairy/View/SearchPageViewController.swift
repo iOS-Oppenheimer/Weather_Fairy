@@ -38,20 +38,16 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
         view.backgroundColor = backgroundColor
         self.navigationController?.navigationBar.tintColor = .black
         
-        // searchBar 추가
         view.addSubview(searchBar)
-        
-        // tableView 추가
         view.addSubview(tableView)
         
-        // SnapKit을 사용하여 레이아웃 설정
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
         }
         
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom) // searchBar 아래에 위치
+            make.top.equalTo(searchBar.snp.bottom)
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
             make.bottom.equalToSuperview()
@@ -103,15 +99,16 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
         let result = searchResults[indexPath.row]
         
         cell.setLocationData(data: result)
-        cell.showLoadingSpinner() // 로딩 스피너 표시
+        cell.showLoadingSpinner()
         
         viewModel.fetchWeatherData(lat: result.2, lon: result.3) { result in
             switch result {
             case .success(let weatherInfo):
                 DispatchQueue.main.async {
-                    cell.hideLoadingSpinner() // 로딩 스피너 숨김
+                    cell.hideLoadingSpinner()
                     cell.setWeatherData(weatherInfo: weatherInfo)
                     cell.configure()
+                    print(weatherInfo)
                 }
             case .failure(let error):
                 print("날씨 정보를 가져오는 데 실패했습니다: \(error)")
