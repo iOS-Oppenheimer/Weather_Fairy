@@ -49,63 +49,51 @@ class SearchPageVM {
             task.resume()
         }
     }
-    
-    func fetchWeatherData(latitude: Double, longitude: Double, completion: @escaping (Result<(String, String, Int, Int, Int, String), Error>) -> Void) {
-        let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"
 
+    func fetchWeatherData(lat: Double, lon: Double, completion: @escaping (Result<(String, String, Int, Int, Int, String), Error>) -> Void) {
+        // API 키와 좌표를 이용해 URL 생성
+        let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(geoAPIKey)&units=metric&lang=kr"
+        
         guard let url = URL(string: urlStr) else {
             completion(.failure(NSError(domain: "유효하지 않은 URL", code: 0, userInfo: nil)))
             return
         }
-
+        
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-
+            
             guard let data = data else {
                 completion(.failure(NSError(domain: "데이터 없음", code: 0, userInfo: nil)))
                 return
             }
-
+            
             do {
                 let decoder = JSONDecoder()
-                let weatherData = try decoder.decode(WeatherData.self, from: data)
-
+                let weatherData = try decoder.decode(WeatherModel.self, from: data)
+                
                 // 원하는 정보 추출
-                var weatherInfo: (String, String, Int, Int, Int, String) = ("", "", 0, 0, 0, "")
-
-                if let weather = weatherData.weather {
-                    let weatherMain = weather.main
-                    let weatherIcon = weather.icon ?? "No Icon"
-                    weatherInfo.0 = weatherMain
-                    weatherInfo.1 = weatherIcon
-                }
-
-                if let main = weatherData.main {
-                    let temperature = Int(main.temp)
-                    let tempMin = Int(main.temp_min)
-                    let tempMax = Int(main.temp_max)
-                    weatherInfo.2 = temperature
-                    weatherInfo.3 = tempMin
-                    weatherInfo.4 = tempMax
-                }
-
-                let currentTime = Date(timeIntervalSince1970: TimeInterval(weatherData.dt))
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                let formattedTime = dateFormatter.string(from: currentTime)
-                weatherInfo.5 = formattedTime
-
+                let weatherInfo: (String, String, Int, Int, Int, String) = (
+                    weatherData.weather.first?.main ?? "",
+                    weatherData.weather.first?.icon ?? "아이콘 없음",
+                    Int(weatherData.main.temp),
+                    Int(weatherData.main.temp_min),
+                    Int(weatherData.main.temp_max),
+                    DateFormat.formattedTime(from: weatherData.dt)
+                )
+                
                 completion(.success(weatherInfo))
             } catch {
                 completion(.failure(error))
             }
         }
-
+        
         task.resume()
     }
+
+
 
 
     

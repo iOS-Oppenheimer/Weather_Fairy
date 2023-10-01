@@ -4,11 +4,9 @@ import UIKit
 
 class SearchPageViewController: UIViewController, UISearchBarDelegate {
     
-    
     private let viewModel = SearchPageVM()
     private var searchHistory = SearchHistory()
     private var searchResults: [(String, String, Double, Double)] = []
-    
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -92,6 +90,7 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
         }
     }
 }
+
 // 테이블뷰 Delegate, DataSource 설정
 extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -103,7 +102,21 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
         
         let result = searchResults[indexPath.row]
         
-        cell.configure(data: result)
+        cell.setLocationData(data: result)
+        cell.showLoadingSpinner() // 로딩 스피너 표시
+        
+        viewModel.fetchWeatherData(lat: result.2, lon: result.3) { result in
+            switch result {
+            case .success(let weatherInfo):
+                DispatchQueue.main.async {
+                    cell.hideLoadingSpinner() // 로딩 스피너 숨김
+                    cell.setWeatherData(weatherInfo: weatherInfo)
+                    cell.configure()
+                }
+            case .failure(let error):
+                print("날씨 정보를 가져오는 데 실패했습니다: \(error)")
+            }
+        }
         
         return cell
     }
@@ -131,4 +144,3 @@ struct SearchVCRepresentable: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = UIViewController
 }
-
