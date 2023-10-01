@@ -75,7 +75,6 @@ class SearchPageVM {
                 let weatherData = try decoder.decode(WeatherModel.self, from: data)
                 
                 if let timezoneOffset = weatherData.timezone as? Int {
-
                     let adjustedTimezoneOffset = timezoneOffset - 32400
                     let timezone = TimeZone(secondsFromGMT: adjustedTimezoneOffset)
                     let currentUTCDate = Date()
@@ -84,13 +83,13 @@ class SearchPageVM {
                     calendar.timeZone = timezone ?? TimeZone.current
                     if let currentDateInCity = calendar.date(byAdding: .second, value: Int(adjustedTimezoneOffset), to: currentUTCDate) {
                         let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss a"
                         dateFormatter.timeZone = timezone
                         let formattedDate = dateFormatter.string(from: currentDateInCity)
                         print("도시의 현재 시간: \(formattedDate)")
                         
                         let timeFormatter = DateFormatter()
-                        timeFormatter.dateFormat = "HH:mm"
+                        timeFormatter.dateFormat = "hh:mm a"
                         let currentFormattedTime = timeFormatter.string(from: currentDateInCity)
                         
                         let weatherInfo: (Int, String, String, Int, Int, Int, String) = (
@@ -117,4 +116,5 @@ class SearchPageVM {
         
         task.resume()
     }
+
 }

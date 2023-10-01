@@ -121,6 +121,18 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedResult = searchResults[indexPath.row]
+        
+        let mainVC = MainViewController()
+        mainVC.cityEngName = selectedResult.0
+        mainVC.cityKorName = selectedResult.1
+        mainVC.cityLat = selectedResult.2
+        mainVC.cityLon = selectedResult.3
+        
+        navigationController?.pushViewController(mainVC, animated: true)
+    }
 }
 
 // SwiftUI를 활용한 미리보기

@@ -24,6 +24,10 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     let currentWeather: BottomCurrentWeatherView
     let forecast: BottomWeatherForecastView
     let myLocation: BottomMyLocationView
+    var cityEngName: String?
+    var cityKorName: String?
+    var cityLat: Double?
+    var cityLon: Double?
 
     override func loadView() {
         view = mainView

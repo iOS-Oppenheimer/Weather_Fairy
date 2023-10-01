@@ -30,7 +30,7 @@ class SearchPageTableViewCell: UITableViewCell {
         label.customLabel(text: "", textColor: .white, fontSize: 20)
         return label
     }()
-    
+
     
     
     lazy var engNameLabel: UILabel = {
@@ -41,7 +41,7 @@ class SearchPageTableViewCell: UITableViewCell {
     
     lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "", textColor: .white, fontSize: 12)
+        label.customLabel(text: "", textColor: .white, fontSize: 20)
         return label
     }()
     
@@ -90,7 +90,16 @@ class SearchPageTableViewCell: UITableViewCell {
     
     func configure() {
         DispatchQueue.main.async {
-            self.korNameLabel.text = self.cityKorName
+            let letterSpacing: CGFloat = 10.0
+            let attributedText = NSAttributedString(string: self.cityKorName ?? "",
+                                                   attributes: [
+                                                       NSAttributedString.Key.kern: letterSpacing,
+                                                       NSAttributedString.Key.foregroundColor: UIColor.white,
+                                                       NSAttributedString.Key.font: UIFont(name: "Jua", size: 24) as Any
+                                                   ])
+            self.korNameLabel.attributedText = attributedText
+            
+            // 나머지 레이블에는 자간을 적용하지 않음
             self.engNameLabel.text = self.cityEngName
             self.weatherLabel.text = self.weatherMain
             self.tempLabel.text = self.weatherTemp.map { "\($0)°" }
@@ -102,6 +111,7 @@ class SearchPageTableViewCell: UITableViewCell {
             self.timeLabel.text = self.cityTime
         }
     }
+
     
     func showLoadingSpinner() {
         loadingIndicator.startAnimating()
@@ -129,32 +139,32 @@ class SearchPageTableViewCell: UITableViewCell {
         contentView.addSubview(loadingIndicator)
         
         korNameLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.top.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(20)
         }
         
         engNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(korNameLabel.snp.leading)
-            make.top.equalTo(korNameLabel.snp.bottom).offset(6)
+            make.top.equalTo(korNameLabel.snp.bottom).offset(5)
         }
         
         timeLabel.snp.makeConstraints { make in
             make.leading.equalTo(korNameLabel.snp.leading)
-            make.top.equalTo(engNameLabel.snp.bottom).offset(6)
+            make.bottom.equalToSuperview().offset(-12)
         }
         
-        weatherLabel.snp.makeConstraints { make in
-            make.leading.equalTo(korNameLabel.snp.leading)
-            make.bottom.equalToSuperview().offset(-16)
+        maxMinTempLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(tempLabel.snp.trailing)
+            make.top.equalTo(tempLabel.snp.bottom).offset(6)
         }
         
         tempLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-24)
-            make.top.equalTo(korNameLabel.snp.top).offset(5)
+            make.top.equalTo(korNameLabel.snp.top)
         }
         
-        maxMinTempLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(weatherLabel.snp.bottom)
+        weatherLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(timeLabel.snp.bottom)
             make.trailing.equalTo(tempLabel.snp.trailing)
         }
         
