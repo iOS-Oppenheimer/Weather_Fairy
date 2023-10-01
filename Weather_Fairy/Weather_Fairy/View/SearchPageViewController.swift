@@ -103,10 +103,7 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
         
         let result = searchResults[indexPath.row]
         
-        cell.nameLabel.text = result.1
-        cell.englishNameLabel.text = result.0
-        cell.coordinatesLabel.text = "Lat: \(result.2), Lon: \(result.3)"
-        
+        cell.configure(data: result)
         
         return cell
     }

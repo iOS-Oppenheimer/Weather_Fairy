@@ -49,35 +49,65 @@ class SearchPageVM {
             task.resume()
         }
     }
+    
+    func fetchWeatherData(latitude: Double, longitude: Double, completion: @escaping (Result<(String, String, Int, Int, Int, String), Error>) -> Void) {
+        let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"
+
+        guard let url = URL(string: urlStr) else {
+            completion(.failure(NSError(domain: "유효하지 않은 URL", code: 0, userInfo: nil)))
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(NSError(domain: "데이터 없음", code: 0, userInfo: nil)))
+                return
+            }
+
+            do {
+                let decoder = JSONDecoder()
+                let weatherData = try decoder.decode(WeatherData.self, from: data)
+
+                // 원하는 정보 추출
+                var weatherInfo: (String, String, Int, Int, Int, String) = ("", "", 0, 0, 0, "")
+
+                if let weather = weatherData.weather {
+                    let weatherMain = weather.main
+                    let weatherIcon = weather.icon ?? "No Icon"
+                    weatherInfo.0 = weatherMain
+                    weatherInfo.1 = weatherIcon
+                }
+
+                if let main = weatherData.main {
+                    let temperature = Int(main.temp)
+                    let tempMin = Int(main.temp_min)
+                    let tempMax = Int(main.temp_max)
+                    weatherInfo.2 = temperature
+                    weatherInfo.3 = tempMin
+                    weatherInfo.4 = tempMax
+                }
+
+                let currentTime = Date(timeIntervalSince1970: TimeInterval(weatherData.dt))
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                let formattedTime = dateFormatter.string(from: currentTime)
+                weatherInfo.5 = formattedTime
+
+                completion(.success(weatherInfo))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+
+        task.resume()
+    }
+
+
+    
 }
 
-// #if canImport(SwiftUI) && DEBUG
-// import SwiftUI
-//
-// struct SearchPageTableViewCell_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            UIViewPreview {
-//                let cell = SearchPageTableViewCell()
-//                cell.nameLabel.text = "서울"
-//                cell.englishNameLabel.text = "Seoul"
-//                cell.coordinatesLabel.text = "Lat: 37.5665, Lon: 126.9780"
-//                return cell
-//            }
-//            .previewLayout(.fixed(width: 375, height: 120))
-//        }
-//    }
-// }
-//
-// struct UIViewPreview<View: UIView>: UIViewRepresentable {
-//    let view: View
-//
-//    init(_ builder: @escaping () -> View) {
-//        view = builder()
-//    }
-//
-//    func makeUIView(context: Context) -> UIView { view }
-//    func updateUIView(_ view: UIView, context: Context) { }
-// }
-//
-// #endif

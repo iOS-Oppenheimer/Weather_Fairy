@@ -45,9 +45,9 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.startUpdatingLocation()
     }
 
-    override func viewDidAppear(_ animated: Bool) { // 박철우
-        notificationForUmbrella.sendingPushNotification() // 박철우
-    } // 박철우
+//    override func viewDidAppear(_ animated: Bool) { // 박철우
+//        notificationForUmbrella.sendingPushNotification() // 박철우
+//    } // 박철우
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -97,8 +97,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 
     func fetchWeatherData(latitude: Double, longitude: Double) {
-        let apiKey = "9156be3c6ef5ecaa3de3ae9adb9063cd"
-        let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric&lang=kr"
+        let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"
 
         guard let url = URL(string: urlStr) else { return }
 
@@ -130,8 +129,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 
     func fetchThreeHourForecastData(city: String) {
-        let apiKey = "\(geoAPIKey)"
-        let urlString = "http://api.openweathermap.org/data/2.5/forecast?q=\(city)&appid=\(apiKey)&units=metric"
+        let urlString = "http://api.openweathermap.org/data/2.5/forecast?q=\(city)&appid=\(geoAPIKey)&units=metric"
 
         guard let url = URL(string: urlString) else { return }
 

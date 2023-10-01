@@ -5,6 +5,11 @@ import SnapKit
 class SearchPageTableViewCell: UITableViewCell {
     static let identifier = "SearchPageTableViewCell"
     
+    var cityKorName : String?
+    var cityEngName : String?
+    var cityLat : Double?
+    var cityLon : Double?
+    
     lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
@@ -58,7 +63,16 @@ class SearchPageTableViewCell: UITableViewCell {
         return label
     }()
     
-
+    func setData(data:(String, String, Double, Double)) {
+        cityKorName = data.0
+        cityEngName = data.1
+        cityLat = data.2
+        cityLon = data.3
+    }
+    
+    func configure() {
+        
+    }
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -66,6 +80,7 @@ class SearchPageTableViewCell: UITableViewCell {
         
         let backgroundImage = UIImageView(image: UIImage(named: "cloudyBG.png"))
         backgroundView = backgroundImage
+        selectionStyle = .none
         
 
         self.backgroundColor = .clear
