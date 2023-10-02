@@ -1,7 +1,6 @@
 import UIKit
+import CoreLocation
 
-let screenWidth = UIScreen.main.bounds.width
-let screenHeight = UIScreen.main.bounds.height
+let ZOOM_IN: CLLocationDistance = 10000
+let ZOOM_OUT: CLLocationDistance = 20000
 
-let viewWidth: CGFloat = 200
-let viewHeight: CGFloat = 100
