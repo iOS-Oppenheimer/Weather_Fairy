@@ -17,7 +17,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     var cityKorName: String?
     var cityLat: Double?
     var cityLon: Double?
-
+    var celsius: Double? //박철우
     override func loadView() {
         view = mainView
     }
@@ -38,9 +38,20 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.startUpdatingLocation()
         notificationForWeather_Fairy.openingNotification()//박철우 - 어플이 처음 켜졌을때 메인페이지에서 딱 한번만 보여줄 알림 만들었습니다.
     }
-    override func viewDidAppear(_ animated: Bool) {//박철우
-        notificationForWeather_Fairy.sendingPushNotification() //박철우
-    }//박철우
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if let currentLocation = locationManager.location {
+            let latitude = currentLocation.coordinate.latitude
+            let longitude = currentLocation.coordinate.longitude
+
+            notificationForWeather_Fairy.apiForNotification(latitude: latitude, longitude: longitude)
+            notificationForWeather_Fairy.updateCelsiusLabel(self.celsius ?? 5)
+            notificationForWeather_Fairy.sendingPushNotification()
+        } else {
+            print("Failed to get current location.")
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
