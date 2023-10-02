@@ -2,13 +2,14 @@ import UIKit
 
 class BottomCurrentWeatherView: UIView {
     let currentLocationItem = CurrentLocationViewItem()
-    
+
     lazy var currentWeatherView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        //view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.4)
+        view.backgroundColor = UIColor.white.withAlphaComponent(0.4)
         view.layer.cornerRadius = 25
         view.isHidden = false
+        // view.backgroundColor = .clear
 
         return view
     }()
@@ -27,9 +28,14 @@ class BottomCurrentWeatherView: UIView {
 
             currentLocationItem.centerXAnchor.constraint(equalTo: currentWeatherView.centerXAnchor),
             currentLocationItem.centerYAnchor.constraint(equalTo: currentWeatherView.centerYAnchor),
-            currentLocationItem.widthAnchor.constraint(equalToConstant: 340),
-            currentLocationItem.heightAnchor.constraint(equalToConstant: 120)
+            currentLocationItem.leadingAnchor.constraint(equalTo: currentWeatherView.leadingAnchor, constant: 5),
+            currentLocationItem.trailingAnchor.constraint(equalTo: currentWeatherView.trailingAnchor, constant: -5),
+            currentLocationItem.heightAnchor.constraint(equalToConstant: 120),
 
+            currentLocationItem.mainStackView.topAnchor.constraint(equalTo: currentLocationItem.topAnchor),
+            currentLocationItem.mainStackView.bottomAnchor.constraint(equalTo: currentLocationItem.bottomAnchor),
+            currentLocationItem.mainStackView.leadingAnchor.constraint(equalTo: currentLocationItem.leadingAnchor),
+            currentLocationItem.mainStackView.trailingAnchor.constraint(equalTo: currentLocationItem.trailingAnchor)
         ])
     }
 

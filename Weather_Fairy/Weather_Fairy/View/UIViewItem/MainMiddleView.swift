@@ -119,7 +119,7 @@ class MiddleView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.systemGray2
+        self.backgroundColor = UIColor.clear
         setupConstraints()
     }
 

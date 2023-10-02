@@ -16,8 +16,8 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
         return searchBar
     }()
     
-    private lazy var tableView: CustomTableView = {
-        let tableView = CustomTableView()
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
         
         tableView.backgroundColor = .clear
         tableView.dataSource = self
