@@ -146,7 +146,7 @@ class TopView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.systemGray
+        self.backgroundColor = UIColor.clear
         setupConstraints()
     }
 

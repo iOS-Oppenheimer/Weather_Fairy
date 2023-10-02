@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "windy.png",
+      "filename" : "sunset.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "windy@2x.png",
+      "filename" : "sunset@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "windy@3x.png",
+      "filename" : "sunset@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

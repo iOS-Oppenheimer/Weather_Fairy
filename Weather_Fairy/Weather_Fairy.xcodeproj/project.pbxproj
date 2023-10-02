@@ -255,8 +255,8 @@
 			children = (
 				FBB136EA2AC3CD340010CED0 /* UILabel +.swift */,
 				FBB136E82AC3CD2E0010CED0 /* UIButton +.swift */,
-				FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */,
 				FBB136E62AC3CD280010CED0 /* MainNavigationBar.swift */,
+				FBB136EC2AC3CD390010CED0 /* UIStackView +.swift */,
 				FBB1369B2AC15F140010CED0 /* DateFormatter.swift */,
 				DFE8A22A2AC3D01000ED6917 /* imageView +.swift */,
 			);

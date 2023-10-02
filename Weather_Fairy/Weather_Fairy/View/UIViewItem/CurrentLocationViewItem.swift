@@ -2,27 +2,35 @@ import UIKit
 
 class CurrentLocationViewItem: UIView {
     // 대기질
-    lazy var airQualityImage: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "airQuality"))
+    lazy var sunriseImage: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "sunrise"))
         imageView.customImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.shadowColor = UIColor.black.cgColor
+        imageView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        imageView.layer.shadowOpacity = 0.7
+        imageView.layer.shadowRadius = 2.0
         return imageView
     }()
     
-    lazy var airQuality: UILabel = {
+    lazy var sunrise: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "대기질", textColor: .white, fontSize: 25)
+        label.customLabel(text: "일출시간", textColor: .white, fontSize: 23)
         return label
     }()
     
-    lazy var airQualityValue: UILabel = {
+    lazy var sunriseValue: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "34 좋음", textColor: .white, fontSize: 25)
+        label.customLabel(text: "00", textColor: .white, fontSize: 18)
         return label
     }()
     
-    lazy var airQualityStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [airQualityImage, airQuality, airQualityValue])
-        stackView.verticalStackView(spacing: 10)
+    lazy var sunriseStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [sunriseImage, sunrise, sunriseValue])
+        stackView.verticalStackView(spacing: 5)
         stackView.alignment = .center
         return stackView
     }()
@@ -30,25 +38,34 @@ class CurrentLocationViewItem: UIView {
     // 바람
     lazy var windyImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "windy"))
+        imageView.contentMode = .scaleAspectFit
+        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.shadowColor = UIColor.black.cgColor
+        imageView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        imageView.layer.shadowOpacity = 0.7
+        imageView.layer.shadowRadius = 2.0
+
         imageView.customImageView()
         return imageView
     }()
     
     lazy var windy: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "바람", textColor: .white, fontSize: 25)
+        label.customLabel(text: "바람", textColor: .white, fontSize: 23)
         return label
     }()
     
     lazy var windyValue: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "2/ms", textColor: .white, fontSize: 25)
+        label.customLabel(text: "00", textColor: .white, fontSize: 18)
         return label
     }()
     
     lazy var windyStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [windyImageView, windy, windyValue])
-        stackView.verticalStackView(spacing: 10)
+        stackView.verticalStackView(spacing: 5)
         stackView.alignment = .center
         return stackView
     }()
@@ -56,63 +73,86 @@ class CurrentLocationViewItem: UIView {
     // 습도
     lazy var humidityImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "humidity"))
+        imageView.contentMode = .scaleAspectFit
+        imageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.shadowColor = UIColor.black.cgColor
+        imageView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        imageView.layer.shadowOpacity = 0.7
+        imageView.layer.shadowRadius = 2.0
         imageView.customImageView()
         return imageView
     }()
     
     lazy var humidity: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "습도", textColor: .white, fontSize: 25)
+        label.customLabel(text: "습도", textColor: .white, fontSize: 23)
         return label
     }()
     
     lazy var humidityValue: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "60%", textColor: .white, fontSize: 25)
+        label.customLabel(text: "00", textColor: .white, fontSize: 18)
         return label
     }()
     
     lazy var humidityStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [humidityImageView, humidity, humidityValue])
-        stackView.verticalStackView(spacing: 10)
+        stackView.verticalStackView(spacing: 5)
         stackView.alignment = .center
         return stackView
     }()
     
     // 강수확률
-    lazy var rainfallImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "umbrella"))
+    lazy var sunsetImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "sunset"))
+        imageView.contentMode = .scaleAspectFit
+        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.shadowColor = UIColor.black.cgColor
+        imageView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        imageView.layer.shadowOpacity = 0.7
+        imageView.layer.shadowRadius = 2.0
         imageView.customImageView()
         return imageView
     }()
     
-    lazy var rainfall: UILabel = {
+    lazy var sunset: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "강수확률", textColor: .white, fontSize: 25)
+        label.customLabel(text: "일몰시간", textColor: .white, fontSize: 23)
         return label
     }()
     
-    lazy var rainfallValue: UILabel = {
+    lazy var sunsetValue: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "80%", textColor: .white, fontSize: 25)
+        label.customLabel(text: "00", textColor: .white, fontSize: 18)
         return label
     }()
     
-    lazy var rainfallStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [rainfallImageView, rainfall, rainfallValue])
-        stackView.verticalStackView(spacing: 10)
+    lazy var sunsetStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [sunsetImageView, sunset, sunsetValue])
+        stackView.verticalStackView(spacing: 5)
         stackView.alignment = .center
         return stackView
     }()
     
-    private func setupCurrentWeatherView() {
-        let stackView = UIStackView(arrangedSubviews: [airQualityStackView, windyStackView, humidityStackView, rainfallStackView])
-        stackView.horizontalStackView(spacing: 25)
-        //stackView.layer.borderColor = UIColor.red.cgColor
-        //stackView.layer.borderWidth = 2.0
-        
+    let mainStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 5
+        stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(stackView)
+        return stackView
+    }()
+     
+    func setupCurrentWeatherView() {
+        mainStackView.addArrangedSubview(sunriseStackView)
+        mainStackView.addArrangedSubview(windyStackView)
+        mainStackView.addArrangedSubview(humidityStackView)
+        mainStackView.addArrangedSubview(sunsetStackView)
+        addSubview(mainStackView)
     }
 
     override init(frame: CGRect) {

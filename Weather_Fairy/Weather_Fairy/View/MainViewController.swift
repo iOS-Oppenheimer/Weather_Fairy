@@ -2,12 +2,10 @@ import CoreLocation
 import MapKit
 import UIKit
 
-
 class MainViewController: UIViewController, MiddleViewDelegate {
-
     private var mapViewModel: MapViewModel?
     private let locationManager = CLLocationManager()
-    let notificationForWeather_Fairy = NotificationForWeather_Fairy() //박철우 - 알림기능들에 접근하기위함
+    let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
 
     let mainView = MainView()
     let currentWeather: BottomCurrentWeatherView
@@ -36,11 +34,13 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        notificationForWeather_Fairy.openingNotification()//박철우 - 어플이 처음 켜졌을때 메인페이지에서 딱 한번만 보여줄 알림 만들었습니다.
+        notificationForWeather_Fairy.openingNotification() // 박철우 - 어플이 처음 켜졌을때 메인페이지에서 딱 한번만 보여줄 알림 만들었습니다.
+        // currentWeather.currentLocationItem.sunriseValue.text =
     }
-    override func viewDidAppear(_ animated: Bool) {//박철우
-        notificationForWeather_Fairy.sendingPushNotification() //박철우
-    }//박철우
+
+//    override func viewDidAppear(_ animated: Bool) {//박철우
+//        notificationForWeather_Fairy.sendingPushNotification() //박철우
+//    }//박철우
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -49,11 +49,12 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     @objc func resetLocationButtonTapped() {
         didTapMyLocationButton()
         mapViewModel?.resetLocation()
+        locationManager.startUpdatingLocation()
     }
 
     @objc func SearchPageButtonTapped() {
-            let searchPageVC = SearchPageViewController()
-            navigationController?.pushViewController(searchPageVC, animated: true)
+        let searchPageVC = SearchPageViewController()
+        navigationController?.pushViewController(searchPageVC, animated: true)
     }
 
     func didTapCurrentWeatherButton() {
@@ -94,7 +95,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
         guard let url = URL(string: urlStr) else { return }
 
-        let task = URLSession.shared.dataTask(with: url) { data, _, error in
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
             if let error = error {
                 print("Failed to fetch data with error: ", error)
                 return
@@ -103,20 +104,12 @@ class MainViewController: UIViewController, MiddleViewDelegate {
             guard let data = data else { return }
 
             do {
-                if let jsonResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] {
-                    DispatchQueue.main.async {
-                        if let mainDict = jsonResult["main"] as? [String: Any],
-                           let tempValue = mainDict["temp"] as? Double
-                        {
-                            self.mainView.topView.celsiusLabel.text = "\(Int(tempValue))"
-                        }
-                        if let weatherArray = jsonResult["weather"] as? [[String: Any]],
-                           let weatherDict = weatherArray.first,
-                           let weatherDescription = weatherDict["description"] as? String
-                        {
-                            self.mainView.topView.conditionsLabel.text = weatherDescription
-                        }
-                    }
+                let decoder = JSONDecoder()
+                let weatherData = try decoder.decode(WeatherData.self, from: data)
+
+                DispatchQueue.main.async {
+                    // UI 업데이트 및 배경 이미지 변경
+                    self?.updateUI(with: weatherData)
                 }
 
             } catch {
@@ -127,11 +120,37 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         task.resume()
     }
 
+    func updateUI(with data: WeatherData) {
+        mainView.topView.celsiusLabel.text = "\(Int(data.main.temp))"
+
+        currentWeather.currentLocationItem.sunriseValue.text = convertTime(data.sys.sunrise)
+        currentWeather.currentLocationItem.sunsetValue.text = convertTime(data.sys.sunset)
+        currentWeather.currentLocationItem.windyValue.text = "\(data.wind.speed)m/s"
+        currentWeather.currentLocationItem.humidityValue.text = "\(data.main.humidity)%"
+
+        if let weatherDescription = data.weather.first?.description {
+            mainView.topView.conditionsLabel.text = weatherDescription
+        }
+
+        let weatherImageInstance = WeatherImage()
+
+        if let weatherId = data.weather.first?.id {
+            let image = weatherImageInstance.getImage(id: weatherId)
+            mainView.changeBackgroundImage(to: image)
+        }
+    }
+
+    func convertTime(_ timestamp: TimeInterval) -> String {
+        let date = Date(timeIntervalSince1970: timestamp)
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        return dateFormatter.string(from: date)
+    }
+
     func fetchHourlyWeatherData(latitude: Double, longitude: Double) {
         let urlString = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"
 
         guard let url = URL(string: urlString) else {
-            print("Invalid URL: \(urlString)")
             return
         }
 
