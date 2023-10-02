@@ -1,3 +1,4 @@
+import SnapKit
 import UIKit
 
 class TopView: UIView {
@@ -109,44 +110,40 @@ class TopView: UIView {
 
     private func setupConstraints() {
         addSubview(topStackView)
-        topStackView.translatesAutoresizingMaskIntoConstraints = false
-
-        let safeArea = safeAreaLayoutGuide
-
-        NSLayoutConstraint.activate([
-            topStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            topStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            topStackView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            topStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
-            topStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            topStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-        ])
+        topStackView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.top.equalToSuperview().offset(20)
+            make.bottom.equalToSuperview().offset(-20)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
     }
 
     @objc func signChangeButtonTapped() {
-        if celsiusStackView.isHidden {
-            // 화씨 -> 섭씨
-            if let originalCelsiusValue = originalCelsiusValue {
-                celsiusLabel.text = String(format: "%d", Int(originalCelsiusValue))
+        DispatchQueue.main.async {
+            if self.celsiusStackView.isHidden {
+                // 화씨 -> 섭씨
+                if let originalCelsiusValue = self.originalCelsiusValue {
+                    self.celsiusLabel.text = String(format: "%d", Int(originalCelsiusValue))
+                }
+            } else {
+                // 섭씨 -> 화씨
+                if let celsiusText = self.celsiusLabel.text, let celsiusValue = Double(celsiusText) {
+                    self.originalCelsiusValue = celsiusValue
+                    let fahrenheitValue = (celsiusValue * 1.8) + 32
+                    self.fahrenheitLabel.text = String(format: "%d", Int(fahrenheitValue))
+                }
             }
-        } else {
-            // 섭씨 -> 화씨
-            if let celsiusText = celsiusLabel.text, let celsiusValue = Double(celsiusText) {
-                originalCelsiusValue = celsiusValue
-                let fahrenheitValue = (celsiusValue * 1.8) + 32
-                fahrenheitLabel.text = String(format: "%d", Int(fahrenheitValue))
-            }
-        }
 
-        // 뷰 전환
-        celsiusStackView.isHidden.toggle()
-        fahrenheitStackView.isHidden.toggle()
+            // 뷰 전환
+            self.celsiusStackView.isHidden.toggle()
+            self.fahrenheitStackView.isHidden.toggle()
+        }
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.systemGray
         setupConstraints()
     }
 
