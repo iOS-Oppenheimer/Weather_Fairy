@@ -5,7 +5,6 @@ class CurrentLocationViewItem: UIView {
     lazy var sunriseImage: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "sunrise"))
         imageView.customImageView(widthAnchor: 80, heightAnchor: 80)
-        
         return imageView
     }()
     

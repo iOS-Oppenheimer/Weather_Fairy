@@ -1,10 +1,3 @@
-//
-//  Notification.swift
-//  Weather_Fairy
-//
-//  Created by t2023-m0081 on 2023/09/26.
-//
-
 import Foundation
 import UIKit
 import UserNotifications
@@ -55,15 +48,15 @@ class NotificationForWeather_Fairy {
                 }
             }
             
-//            if (0..<24).contains(components.hour!), (0..<60).contains(components.minute!) {
-//                let rainfallText = currentLocationViewItem.tempMin.text ?? "0%"
-//                if rainfallText.hasSuffix("%") {
-//                    let rainfallPercentage = Int(rainfallText.trimmingCharacters(in: .punctuationCharacters).trimmingCharacters(in: .whitespaces)) ?? 0
-//                    if rainfallPercentage >= 50, rainfallPercentage <= 100 {
-//                        notificationForWeather(title: "ウェザ フェアリー(웨쟈 페아리)", body: "비 올 확률이 높아요! 우산을 챙기세요!")
-//                    }
-//                }
-//            }
+            if (0..<24).contains(components.hour!), (0..<60).contains(components.minute!) {
+                let rainfallText = currentLocationViewItem.sunsetValue.text ?? "0%"
+                if rainfallText.hasSuffix("%") {
+                    let rainfallPercentage = Int(rainfallText.trimmingCharacters(in: .punctuationCharacters).trimmingCharacters(in: .whitespaces)) ?? 0
+                    if rainfallPercentage >= 50, rainfallPercentage <= 100 {
+                        notificationForWeather(title: "ウェザ フェアリー(웨쟈 페아리)", body: "비 올 확률이 높아요! 우산을 챙기세요!")
+                    }
+                }
+            }
         }
             
         // MARK: - 즉시알림이 뜬후 두번더 알림 생성

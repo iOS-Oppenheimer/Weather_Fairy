@@ -38,9 +38,9 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         changeTexts()
     }
 
-    override func viewDidAppear(_ animated: Bool) { // 박철우
-        // notificationForWeather_Fairy.sendingPushNotification() // 박철우
-    } // 박철우
+//    override func viewDidAppear(_ animated: Bool) {//박철우
+//        notificationForWeather_Fairy.sendingPushNotification() //박철우
+//    }//박철우
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -49,6 +49,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     @objc func resetLocationButtonTapped() {
         didTapMyLocationButton()
         mapViewModel?.resetLocation()
+        locationManager.startUpdatingLocation()
     }
 
     @objc func signChangeButtonTapped() {
@@ -158,7 +159,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
             mainView.topView.conditionsLabel.text = weatherDescription
         }
 
-        let weatherImageInstance = WeatherCellBackgroundImage()
+        let weatherImageInstance = WeatherImage()
 
         if let weatherId = data.weather.first?.id {
             let image = weatherImageInstance.getImage(id: weatherId)
@@ -177,7 +178,6 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         let urlString = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"
 
         guard let url = URL(string: urlString) else {
-            print("Invalid URL: \(urlString)")
             return
         }
 
