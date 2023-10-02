@@ -2,6 +2,8 @@ import CoreLocation
 import MapKit
 import UIKit
 
+var flag : Bool = true
+
 struct WeatherData: Codable {
     let list: [WeatherInfo]
 
@@ -63,8 +65,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 
     @objc func SearchPageButtonTapped() {
-        let searchPageVC = SearchPageViewController()
-        navigationController?.pushViewController(searchPageVC, animated: true)
+            let searchPageVC = SearchPageViewController()
+            navigationController?.pushViewController(searchPageVC, animated: true)
     }
 
     func didTapCurrentWeatherButton() {

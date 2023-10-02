@@ -8,7 +8,7 @@ class SearchHistory {
     }
     
     private func saveSearchHistory() {
-
+        // 7개 이하까지만 저장
         if searchHistory.count > 7 {
             searchHistory.removeLast(searchHistory.count - 7)
         }
@@ -18,7 +18,7 @@ class SearchHistory {
             UserDefaults.standard.set(encoded, forKey: "SearchHistory")
         }
     }
-    
+    // 검색기록 UserDefaultes에 저장
     private func loadSearchHistory() {
         if let data = UserDefaults.standard.data(forKey: "SearchHistory") {
             let decoder = JSONDecoder()
@@ -30,9 +30,9 @@ class SearchHistory {
     
     // 검색 기록 추가
     func addLocationToHistory(_ location: Location) {
-
+        // 이미 저장된 도시 삭제
         searchHistory = searchHistory.filter { $0.engName != location.engName }
-
+        // 새로운 검색 기록 맨 앞에 추가
         searchHistory.insert(location, at: 0)
         saveSearchHistory()
     }

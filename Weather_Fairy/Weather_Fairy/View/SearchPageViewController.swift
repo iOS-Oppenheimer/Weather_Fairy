@@ -4,7 +4,7 @@ import SnapKit
 
 class SearchPageViewController: UIViewController, UISearchBarDelegate {
     
-    private let viewModel = SearchPageVM()
+    private let viewModel = APIViewModel()
     private var searchResults: [(String, String, Double, Double)] = []
     private let searchHistory = SearchHistory()
     
@@ -186,29 +186,10 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
             
             print("3:\(selectedResult)")
             
-            navigationController?.pushViewController(mainVC, animated: true)
+            navigationController?.setViewControllers([mainVC], animated: true)
     }
     
     func addToSearchHistory(_ location: Location) {
         searchHistory.addLocationToHistory(location)
     }
-}
-
-// SwiftUI를 활용한 미리보기
-struct SearchViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchVCRepresentable()
-            .edgesIgnoringSafeArea(.all)
-    }
-}
-
-struct SearchVCRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        let searchViewController = SearchPageViewController()
-        return UINavigationController(rootViewController: searchViewController)
-    }
-    
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
-    
-    typealias UIViewControllerType = UIViewController
 }

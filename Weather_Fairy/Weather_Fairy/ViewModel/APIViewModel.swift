@@ -1,6 +1,6 @@
 import Foundation
 
-class SearchPageVM {
+class APIViewModel {
     // 도시 검색 메서드
 
     func searchLocation(for cityName: String, completion: @escaping (Result<[(String, String, Double, Double)], APIError>) -> Void) {
