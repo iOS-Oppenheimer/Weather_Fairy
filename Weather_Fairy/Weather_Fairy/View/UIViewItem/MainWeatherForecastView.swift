@@ -17,7 +17,8 @@ class BottomWeatherForecastView: UIView, UICollectionViewDelegate {
     lazy var weatherForecastView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.gray.withAlphaComponent(0.4)
+        // view.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+        view.backgroundColor = .gray
         view.layer.cornerRadius = 25
         view.isHidden = true
         view.isUserInteractionEnabled = true
@@ -146,36 +147,55 @@ extension BottomWeatherForecastView: UICollectionViewDataSource {
             var calendar = Calendar.current
             calendar.timeZone = TimeZone.current
             let components = calendar.dateComponents([.hour], from: currentDate)
+
             if let hour = components.hour {
-                let nextHour = (hour + (indexPath.item * 3) + 1) % 24 // 현재 시간의 다음 시간부터 시작, 각 항목은 이전 항목보다 세 시간 뒤
+                let nextHour = (hour + (indexPath.item * 3) + 1) % 24
                 cell.timeLabel.text = String(format: "%02d:00", nextHour)
             } else {
                 cell.timeLabel.text = "Time \(indexPath.item)"
             }
 
-            // 새로운 온도 설정 로직 추가
             if indexPath.item < hourlyWeatherList.count {
                 let hourlyWeather = hourlyWeatherList[indexPath.item]
                 cell.timeTempLabel.text = "\(Int(hourlyWeather.main.temp))°"
+
+                if let weather = hourlyWeather.weather.first {
+                    // let iconId = weather.id
+                    let iconURLString = "https://openweathermap.org/img/wn/\(weather.icon).png"
+                    if let url = URL(string: iconURLString) {
+                        URLSession.shared.dataTask(with: url) { data, _, _ in
+                            if let data = data {
+                                DispatchQueue.main.async {
+                                    let image = UIImage(data: data)
+                                    if image == nil {}
+                                    cell.weatherIconImageView.image = image
+                                    cell.weatherIconImageView.tintColor = UIColor.black // 원하는 색상으로 변경
+                                }
+                            }
+                        }.resume()
+                    }
+                }
             } else {
                 cell.timeTempLabel.text = "Temp \(indexPath.item)"
             }
+
             return cell
-        } else {
+
+        } else if collectionView == secondCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SecondCollectionViewCell.reuseIdentifier, for: indexPath) as! SecondCollectionViewCell
 
-            // 오늘로부터 indexPath.item + 1 일 후의 날짜를 계산
             let currentDate = Date()
             var dateComponent = DateComponents()
             dateComponent.day = indexPath.item + 1
+
             if let futureDate = Calendar.current.date(byAdding: dateComponent, to: currentDate) {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "MM/dd"
-                let dateString = dateFormatter.string(from: futureDate) // MM/dd 형태의 문자열로 변환
+                let dateString = dateFormatter.string(from: futureDate)
 
                 let dayFormatter = DateFormatter()
                 dayFormatter.dateFormat = "E"
-                let dayString = dayFormatter.string(from: futureDate) // 요일을 문자열로 변환
+                let dayString = dayFormatter.string(from: futureDate)
 
                 cell.dateLabel.text = "\(dateString)(\(dayString))"
             } else {
@@ -188,8 +208,10 @@ extension BottomWeatherForecastView: UICollectionViewDataSource {
             } else {
                 cell.dateTempLabel.text = "Temp \(indexPath.item)"
             }
+
             return cell
         }
+        return UICollectionViewCell()
     }
 }
 
@@ -217,6 +239,17 @@ class FirstCollectionViewCell: UICollectionViewCell {
         return label
     }()
 
+    lazy var weatherIconImageView: UIImageView = {
+        let imageView = UIImageView()
+        let templateImage = UIImage(named: "your_image_name")?.withRenderingMode(.alwaysTemplate)
+
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = templateImage
+        imageView.tintColor = UIColor.black
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+
     lazy var timeTempLabel: UILabel = {
         let label = UILabel()
         label.customLabel(text: "", textColor: .black, fontSize: 15)
@@ -240,17 +273,25 @@ class FirstCollectionViewCell: UICollectionViewCell {
 
     private func setupViews() {
         addSubview(timeLabel)
+        addSubview(weatherIconImageView)
         addSubview(timeTempLabel)
-
-        backgroundColor = .white
+        // backgroundColor = .clear
+        backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        layer.cornerRadius = 10
+        layer.masksToBounds = true
         NSLayoutConstraint.activate([
             timeLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             timeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
 
+            weatherIconImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            weatherIconImageView.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 5),
+            weatherIconImageView.bottomAnchor.constraint(equalTo: timeTempLabel.topAnchor, constant: -5),
+            weatherIconImageView.widthAnchor.constraint(equalToConstant: 20),
+
             timeTempLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            timeTempLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 10),
+            timeTempLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             timeTempLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             timeTempLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
         ])
@@ -296,8 +337,10 @@ class SecondCollectionViewCell: UICollectionViewCell {
     private func setupViews() {
         addSubview(dateLabel)
         addSubview(dateTempLabel)
-
-        backgroundColor = .white
+        // backgroundColor = .clear
+        backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        layer.cornerRadius = 10
+        layer.masksToBounds = true
         NSLayoutConstraint.activate([
             dateLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             dateLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
@@ -305,7 +348,7 @@ class SecondCollectionViewCell: UICollectionViewCell {
             dateLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
 
             dateTempLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            dateTempLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 10),
+            dateTempLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             dateTempLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             dateTempLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
         ])

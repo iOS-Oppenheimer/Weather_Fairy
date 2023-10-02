@@ -16,7 +16,6 @@ class MapViewModel: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
-
         // MapView 설정
         self.mapView.delegate = self
     }
@@ -43,7 +42,6 @@ class MapViewModel: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // 위치 업데이트가 발생했을 때의 로직을 여기에 구현
-     
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -96,6 +94,18 @@ class MapViewModel: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
             print("위치 정보에 동의하지 않았거나 액세스가 제한되었습니다.")
         @unknown default:
             print("알 수 없는 위치 권한 상태입니다.")
+        }
+    }
+    
+    func geocode(location: CLLocation, topViewCityName: UILabel) {
+        CLGeocoder().reverseGeocodeLocation(location) { placemarks, _ in
+            if let placemark = placemarks?.first,
+               let cityName = placemark.locality
+            {
+                DispatchQueue.main.async {
+                    topViewCityName.text = cityName
+                }
+            }
         }
     }
 }

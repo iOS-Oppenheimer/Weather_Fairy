@@ -1,12 +1,11 @@
 import UIKit
+import SnapKit
 
 class BottomMyLocationView: UIView {
     let mapkit = MyLocationUIView()
 
     lazy var myLocationView: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        //view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         view.layer.cornerRadius = 25
         view.isHidden = true
         view.isUserInteractionEnabled = true
@@ -18,18 +17,19 @@ class BottomMyLocationView: UIView {
         mapkit.translatesAutoresizingMaskIntoConstraints = false
         myLocationView.addSubview(mapkit)
 
-        NSLayoutConstraint.activate([
-            myLocationView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            myLocationView.topAnchor.constraint(equalTo: topAnchor, constant: 40),
-            myLocationView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            myLocationView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            myLocationView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
-
-            mapkit.centerXAnchor.constraint(equalTo: myLocationView.centerXAnchor),
-            mapkit.centerYAnchor.constraint(equalTo: myLocationView.centerYAnchor),
-            mapkit.widthAnchor.constraint(equalTo: myLocationView.widthAnchor),
-            mapkit.heightAnchor.constraint(equalTo: myLocationView.heightAnchor)
-        ])
+        myLocationView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(40)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview().offset(-20)
+        }
+        mapkit.snp.makeConstraints { make in
+            make.centerX.equalTo(myLocationView)
+            make.centerY.equalTo(myLocationView)
+            make.width.equalTo(myLocationView)
+            make.height.equalTo(myLocationView)
+        }
     }
 
     override init(frame: CGRect) {

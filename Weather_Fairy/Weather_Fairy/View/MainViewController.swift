@@ -2,12 +2,10 @@ import CoreLocation
 import MapKit
 import UIKit
 
-
 class MainViewController: UIViewController, MiddleViewDelegate {
-
     private var mapViewModel: MapViewModel?
     private let locationManager = CLLocationManager()
-    let notificationForWeather_Fairy = NotificationForWeather_Fairy() //박철우 - 알림기능들에 접근하기위함
+    let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
 
     let mainView = MainView()
     let currentWeather: BottomCurrentWeatherView
@@ -27,17 +25,19 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         MainNavigationBar.setupNavigationBar(for: self, resetButton: #selector(resetLocationButtonTapped), searchPageButton: #selector(SearchPageButtonTapped))
         // MainViewModel 인스턴스 생성 및 초기화
         mapViewModel = MapViewModel(locationManager: locationManager, mapView: mainView.bottomMyLocationView.mapkit.customMapView)
-        // viewModel?.delegate = self
+        mainView.topView.signChangeButton.addTarget(self, action: #selector(signChangeButtonTapped), for: .touchUpInside)
         mainView.middleView.delegate = self
-        // mapview delegate 설정 : mapMaker 디자인을 위해서!
         myLocation.mapkit.customMapView.delegate = self
         myLocation.mapkit.locationManager.delegate = self
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        notificationForWeather_Fairy.openingNotification()//박철우 - 어플이 처음 켜졌을때 메인페이지에서 딱 한번만 보여줄 알림 만들었습니다.
+        notificationForWeather_Fairy.openingNotification() // 박철우 - 어플이 처음 켜졌을때 메인페이지에서 딱 한번만 보여줄 알림 만들었습니다.
+
+        changeTexts()
     }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -60,11 +60,31 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     @objc func resetLocationButtonTapped() {
         didTapMyLocationButton()
         mapViewModel?.resetLocation()
+        locationManager.startUpdatingLocation()
+    }
+
+    @objc func signChangeButtonTapped() {
+        if mainView.topView.celsiusStackView.isHidden {
+            // 화씨 -> 섭씨
+            if let originalCelsiusValue = mainView.topView.originalCelsiusValue {
+                mainView.topView.celsiusLabel.text = String(format: "%d", Int(originalCelsiusValue))
+            }
+        } else {
+            // 섭씨 -> 화씨
+            if let celsiusText = mainView.topView.celsiusLabel.text, let celsiusValue = Double(celsiusText) {
+                mainView.topView.originalCelsiusValue = celsiusValue
+                let fahrenheitValue = (celsiusValue * 1.8) + 32
+                mainView.topView.fahrenheitLabel.text = String(format: "%d", Int(fahrenheitValue))
+            }
+        }
+        // 뷰 전환
+        mainView.topView.celsiusStackView.isHidden.toggle()
+        mainView.topView.fahrenheitStackView.isHidden.toggle()
     }
 
     @objc func SearchPageButtonTapped() {
-            let searchPageVC = SearchPageViewController()
-            navigationController?.pushViewController(searchPageVC, animated: true)
+        let searchPageVC = SearchPageViewController()
+        navigationController?.pushViewController(searchPageVC, animated: true)
     }
 
     func didTapCurrentWeatherButton() {
@@ -88,6 +108,14 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         view.bringSubviewToFront(myLocation)
     }
 
+    func changeTexts() {
+        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "부산"
+        // 현재위치(받아오는 lat, lon) 설정해줘야함 -> 하드코딩 바꾸기
+        let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? 35.1796, longitude: cityLon ?? 129.0756)
+        let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
+        myLocation.mapkit.customMapView.setRegion(coordinateRegion, animated: false)
+    }
+
     init() {
         self.currentWeather = mainView.bottomCurrentWeatherView
         self.forecast = mainView.bottomWeatherForecastView
@@ -105,7 +133,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
         guard let url = URL(string: urlStr) else { return }
 
-        let task = URLSession.shared.dataTask(with: url) { data, _, error in
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
             if let error = error {
                 print("Failed to fetch data with error: ", error)
                 return
@@ -114,20 +142,12 @@ class MainViewController: UIViewController, MiddleViewDelegate {
             guard let data = data else { return }
 
             do {
-                if let jsonResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] {
-                    DispatchQueue.main.async {
-                        if let mainDict = jsonResult["main"] as? [String: Any],
-                           let tempValue = mainDict["temp"] as? Double
-                        {
-                            self.mainView.topView.celsiusLabel.text = "\(Int(tempValue))"
-                        }
-                        if let weatherArray = jsonResult["weather"] as? [[String: Any]],
-                           let weatherDict = weatherArray.first,
-                           let weatherDescription = weatherDict["description"] as? String
-                        {
-                            self.mainView.topView.conditionsLabel.text = weatherDescription
-                        }
-                    }
+                let decoder = JSONDecoder()
+                let weatherData = try decoder.decode(WeatherData.self, from: data)
+
+                DispatchQueue.main.async {
+                    // UI 업데이트 및 배경 이미지 변경
+                    self?.updateUI(with: weatherData)
                 }
 
             } catch {
@@ -138,11 +158,37 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         task.resume()
     }
 
+    func updateUI(with data: WeatherData) {
+        mainView.topView.celsiusLabel.text = "\(Int(data.main.temp))"
+
+        currentWeather.currentLocationItem.sunriseValue.text = convertTime(data.sys.sunrise)
+        currentWeather.currentLocationItem.sunsetValue.text = convertTime(data.sys.sunset)
+        currentWeather.currentLocationItem.windyValue.text = "\(data.wind.speed)m/s"
+        currentWeather.currentLocationItem.humidityValue.text = "\(data.main.humidity)%"
+
+        if let weatherDescription = data.weather.first?.description {
+            mainView.topView.conditionsLabel.text = weatherDescription
+        }
+
+        let weatherImageInstance = WeatherImage()
+
+        if let weatherId = data.weather.first?.id {
+            let image = weatherImageInstance.getImage(id: weatherId)
+            mainView.changeBackgroundImage(to: image)
+        }
+    }
+
+    func convertTime(_ timestamp: TimeInterval) -> String {
+        let date = Date(timeIntervalSince1970: timestamp)
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        return dateFormatter.string(from: date)
+    }
+
     func fetchHourlyWeatherData(latitude: Double, longitude: Double) {
         let urlString = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"
 
         guard let url = URL(string: urlString) else {
-            print("Invalid URL: \(urlString)")
             return
         }
 
@@ -242,15 +288,6 @@ extension MainViewController: CLLocationManagerDelegate {
 
     // 주소를 받아오는 함수
     func geocode(location: CLLocation, completion: @escaping (String) -> Void) {
-        CLGeocoder().reverseGeocodeLocation(location) { placemarks, _ in
-            if let placemark = placemarks?.first,
-               let cityName = placemark.locality
-            {
-                DispatchQueue.main.async {
-                    self.mainView.topView.cityName.text = cityName
-                    // completion(cityName) // 도시 이름을 반환
-                }
-            }
-        }
+        mapViewModel?.geocode(location: location, topViewCityName: mainView.topView.cityName)
     }
 }

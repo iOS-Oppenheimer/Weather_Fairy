@@ -1,4 +1,3 @@
-
 import Foundation
 
 struct HourlyForecast: Decodable {
@@ -8,6 +7,7 @@ struct HourlyForecast: Decodable {
 struct HourlyWeather: Decodable {
     let main: HourlyMain
     let dt_txt: String
+    let weather: [Weather]
 }
 
 struct HourlyMain: Decodable {
@@ -21,6 +21,7 @@ struct DailyForecast: Decodable {
 struct DailyWeather: Decodable {
     let main: DailyMain
     let dt_txt: String
+    let weather: [Weather]
 }
 
 struct DailyMain: Decodable {
@@ -49,5 +50,8 @@ struct Wind: Decodable {
 }
 
 struct Weather: Decodable {
+    let id: Int
     let description: String
+    let icon: String
+
 }

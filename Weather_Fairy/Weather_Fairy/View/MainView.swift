@@ -7,17 +7,18 @@ final class MainView: UIView {
     let bottomCurrentWeatherView = BottomCurrentWeatherView()
     let bottomWeatherForecastView = BottomWeatherForecastView()
     let bottomMyLocationView = BottomMyLocationView()
+    var backgroundImageView: UIImageView?
 
-    private func setupBackgroundImage() {
-        if let backgroundImage = UIImage(named: "background") {
-            let backgroundImageView = UIImageView(frame: UIScreen.main.bounds)
-            backgroundImageView.image = backgroundImage
-            backgroundImageView.contentMode = .scaleAspectFill
-            backgroundImageView.clipsToBounds = true
-            insertSubview(backgroundImageView, at: 0)
-        }
+    func changeBackgroundImage(to image: UIImage?) {
+        backgroundImageView?.removeFromSuperview()
+        let newBackgroundImageView = UIImageView(frame: UIScreen.main.bounds)
+        newBackgroundImageView.image = image
+        newBackgroundImageView.contentMode = .scaleAspectFill
+        newBackgroundImageView.clipsToBounds = true
+        insertSubview(newBackgroundImageView, at: 0)
+        backgroundImageView = newBackgroundImageView
     }
-    
+  
     private func setupLayout() {
         addSubview(topView)
         addSubview(middleView)
@@ -49,10 +50,9 @@ final class MainView: UIView {
         let bottomMyLocationViewYPosition = middleYPosition + middleHeight
         bottomMyLocationView.frame = CGRect(x: 0, y: bottomMyLocationViewYPosition, width: UIScreen.main.bounds.width, height: bottomMyLocationViewHeight)
     }
-
+ 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupBackgroundImage()
         setupLayout()
     }
 

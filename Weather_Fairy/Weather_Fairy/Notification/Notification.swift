@@ -1,9 +1,4 @@
-//
-//  Notification.swift
-//  Weather_Fairy
-//
-//  Created by t2023-m0081 on 2023/09/26.
-//
+
 
 import CoreLocation
 import Foundation
@@ -54,7 +49,6 @@ class NotificationForWeather_Fairy {
                     print("실패 ", error)
                     return
                 }
-
                 guard let data = data else { return }
 
                 do {
@@ -68,7 +62,6 @@ class NotificationForWeather_Fairy {
                             }
                         }
                     }
-
                 } catch {
                     print("실패 ", error)
                 }

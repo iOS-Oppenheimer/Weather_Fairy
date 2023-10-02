@@ -16,68 +16,35 @@ class MiddleView: UIView {
 
     lazy var currentWeatherButton: UIButton = {
         let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.systemBackground, for: .normal)
-        button.setTitle("현재 날씨", for: .normal)
-        button.titleLabel?.font = UIFont(name: "Jua", size: 18)
-        button.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        button.layer.borderColor = UIColor.clear.cgColor
-        button.layer.borderWidth = 0
-        button.layer.cornerRadius = 7
-
+        button.customButton(text: "현재 날씨")
         button.addTarget(self, action: #selector(currentWeatherButtonTapped), for: .touchUpInside)
-
         return button
     }()
 
     lazy var weatherForecastButton: UIButton = {
         let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.systemBackground, for: .normal)
-        button.setTitle("기상 예보", for: .normal)
-        button.titleLabel?.font = UIFont(name: "Jua", size: 18)
-        button.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        button.layer.borderColor = UIColor.clear.cgColor
-        button.layer.borderWidth = 0
-        button.layer.cornerRadius = 7
-
+        button.customButton(text: "기상 예보")
         button.addTarget(self, action: #selector(weatherForecastButtonTapped), for: .touchUpInside)
-
         return button
     }()
 
     lazy var myLocationButton: UIButton = {
         let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.systemBackground, for: .normal)
-        button.setTitle("나의 위치", for: .normal)
-        button.titleLabel?.font = UIFont(name: "Jua", size: 18)
-        button.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        button.layer.borderColor = UIColor.clear.cgColor
-        button.layer.borderWidth = 0
-        button.layer.cornerRadius = 7
-
+        button.customButton(text: "나의 위치")
         button.addTarget(self, action: #selector(myLocationButtonTapped), for: .touchUpInside)
-
         return button
     }()
 
     lazy var middleButtonStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [currentWeatherButton, weatherForecastButton, myLocationButton])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = 20
-
+        stackView.horizontalStackView(spacing: 20)
         return stackView
     }()
 
     lazy var buttonOverlayView: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         view.layer.cornerRadius = 9
-
         return view
     }()
 
@@ -85,24 +52,32 @@ class MiddleView: UIView {
         addSubview(buttonOverlayView)
         addSubview(middleButtonStackView)
 
-        let safeArea = safeAreaLayoutGuide
+        currentWeatherButton.snp.makeConstraints { make in
+            make.width.equalTo(80)
+            make.height.equalTo(25)
+        }
+        weatherForecastButton.snp.makeConstraints { make in
+            make.width.equalTo(80)
+            make.height.equalTo(25)
+        }
 
-        NSLayoutConstraint.activate([
-            currentWeatherButton.widthAnchor.constraint(equalToConstant: 80),
-            currentWeatherButton.heightAnchor.constraint(equalToConstant: 25),
-            weatherForecastButton.widthAnchor.constraint(equalToConstant: 80),
-            weatherForecastButton.heightAnchor.constraint(equalToConstant: 25),
-            myLocationButton.widthAnchor.constraint(equalToConstant: 80),
-            myLocationButton.heightAnchor.constraint(equalToConstant: 25),
-            middleButtonStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            middleButtonStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            middleButtonStackView.heightAnchor.constraint(equalToConstant: 25),
-
-            buttonOverlayView.centerXAnchor.constraint(equalTo: middleButtonStackView.centerXAnchor),
-            buttonOverlayView.centerYAnchor.constraint(equalTo: middleButtonStackView.centerYAnchor),
-            buttonOverlayView.widthAnchor.constraint(equalTo: middleButtonStackView.widthAnchor, constant: 15),
-            buttonOverlayView.heightAnchor.constraint(equalTo: middleButtonStackView.heightAnchor, constant: 15),
-        ])
+        myLocationButton.snp.makeConstraints { make in
+            make.width.equalTo(80)
+            make.height.equalTo(25)
+        }
+        
+        middleButtonStackView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalTo(25)
+        }
+        
+        buttonOverlayView.snp.makeConstraints { make in
+            make.centerX.equalTo(middleButtonStackView)
+            make.centerY.equalTo(middleButtonStackView)
+            make.width.equalTo(middleButtonStackView).offset(15)
+            make.height.equalTo(middleButtonStackView).offset(15)
+        }
     }
 
     @objc func currentWeatherButtonTapped() {
@@ -119,7 +94,7 @@ class MiddleView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.systemGray2
+        self.backgroundColor = UIColor.clear
         setupConstraints()
     }
 
