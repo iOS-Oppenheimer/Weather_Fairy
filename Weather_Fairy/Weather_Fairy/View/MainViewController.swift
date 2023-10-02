@@ -25,6 +25,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         MainNavigationBar.setupNavigationBar(for: self, resetButton: #selector(resetLocationButtonTapped), searchPageButton: #selector(SearchPageButtonTapped))
         // MainViewModel 인스턴스 생성 및 초기화
         mapViewModel = MapViewModel(locationManager: locationManager, mapView: mainView.bottomMyLocationView.mapkit.customMapView)
+        mainView.topView.signChangeButton.addTarget(self, action: #selector(signChangeButtonTapped), for: .touchUpInside)
         mainView.middleView.delegate = self
         myLocation.mapkit.customMapView.delegate = self
         myLocation.mapkit.locationManager.delegate = self
@@ -48,6 +49,25 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     @objc func resetLocationButtonTapped() {
         didTapMyLocationButton()
         mapViewModel?.resetLocation()
+    }
+
+    @objc func signChangeButtonTapped() {
+        if mainView.topView.celsiusStackView.isHidden {
+            // 화씨 -> 섭씨
+            if let originalCelsiusValue = mainView.topView.originalCelsiusValue {
+                mainView.topView.celsiusLabel.text = String(format: "%d", Int(originalCelsiusValue))
+            }
+        } else {
+            // 섭씨 -> 화씨
+            if let celsiusText = mainView.topView.celsiusLabel.text, let celsiusValue = Double(celsiusText) {
+                mainView.topView.originalCelsiusValue = celsiusValue
+                let fahrenheitValue = (celsiusValue * 1.8) + 32
+                mainView.topView.fahrenheitLabel.text = String(format: "%d", Int(fahrenheitValue))
+            }
+        }
+        // 뷰 전환
+        mainView.topView.celsiusStackView.isHidden.toggle()
+        mainView.topView.fahrenheitStackView.isHidden.toggle()
     }
 
     @objc func SearchPageButtonTapped() {
@@ -78,7 +98,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
     func changeTexts() {
         myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "서울"
-        //현재위치(받아오는 lat, lon) 설정해줘야함 -> 하드코딩 바꾸기 
+        // 현재위치(받아오는 lat, lon) 설정해줘야함 -> 하드코딩 바꾸기
         let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? 35.1796, longitude: cityLon ?? 129.0756)
         let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
         myLocation.mapkit.customMapView.setRegion(coordinateRegion, animated: false)

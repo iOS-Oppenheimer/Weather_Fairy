@@ -57,7 +57,7 @@ class TopView: UIView {
         button.layer.borderColor = UIColor.systemBackground.cgColor
         button.layer.borderWidth = 0
         button.layer.cornerRadius = 5
-        button.addTarget(self, action: #selector(signChangeButtonTapped), for: .touchUpInside)
+        
 
         return button
     }()
@@ -119,29 +119,7 @@ class TopView: UIView {
             make.trailing.equalToSuperview()
         }
     }
-
-    @objc func signChangeButtonTapped() {
-        DispatchQueue.main.async {
-            if self.celsiusStackView.isHidden {
-                // 화씨 -> 섭씨
-                if let originalCelsiusValue = self.originalCelsiusValue {
-                    self.celsiusLabel.text = String(format: "%d", Int(originalCelsiusValue))
-                }
-            } else {
-                // 섭씨 -> 화씨
-                if let celsiusText = self.celsiusLabel.text, let celsiusValue = Double(celsiusText) {
-                    self.originalCelsiusValue = celsiusValue
-                    let fahrenheitValue = (celsiusValue * 1.8) + 32
-                    self.fahrenheitLabel.text = String(format: "%d", Int(fahrenheitValue))
-                }
-            }
-
-            // 뷰 전환
-            self.celsiusStackView.isHidden.toggle()
-            self.fahrenheitStackView.isHidden.toggle()
-        }
-    }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupConstraints()
