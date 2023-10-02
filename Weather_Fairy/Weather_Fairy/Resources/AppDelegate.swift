@@ -63,4 +63,5 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         newContent.body = "사용자 정의 알림 메시지"
         contentHandler(newContent)
     }
+    
 }
