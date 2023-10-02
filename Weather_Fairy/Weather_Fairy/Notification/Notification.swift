@@ -56,7 +56,7 @@ class NotificationForWeather_Fairy {
             }
             
             if (0..<24).contains(components.hour!), (0..<60).contains(components.minute!) {
-                let rainfallText = currentLocationViewItem.rainfallValue.text ?? "0%"
+                let rainfallText = currentLocationViewItem.tempMin.text ?? "0%"
                 if rainfallText.hasSuffix("%") {
                     let rainfallPercentage = Int(rainfallText.trimmingCharacters(in: .punctuationCharacters).trimmingCharacters(in: .whitespaces)) ?? 0
                     if rainfallPercentage >= 50, rainfallPercentage <= 100 {
