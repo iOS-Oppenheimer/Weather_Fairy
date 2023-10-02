@@ -5,7 +5,7 @@ import UIKit
 class MainViewController: UIViewController, MiddleViewDelegate {
     private var mapViewModel: MapViewModel?
     private let locationManager = CLLocationManager()
-    // let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
+    let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
 
     let mainView = MainView()
     let currentWeather: BottomCurrentWeatherView
@@ -33,7 +33,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        // notificationForWeather_Fairy.openingNotification() // 박철우 - 어플이 처음 켜졌을때 메인페이지에서 딱 한번만 보여줄 알림 만들었습니다.
+        notificationForWeather_Fairy.openingNotification() // 박철우 - 어플이 처음 켜졌을때 메인페이지에서 딱 한번만 보여줄 알림 만들었습니다.
 
         changeTexts()
     }
