@@ -16,7 +16,6 @@ class MapViewModel: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
-
         // MapView 설정
         self.mapView.delegate = self
     }
@@ -43,7 +42,6 @@ class MapViewModel: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // 위치 업데이트가 발생했을 때의 로직을 여기에 구현
-     
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

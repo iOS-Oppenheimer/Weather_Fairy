@@ -2,12 +2,10 @@ import CoreLocation
 import MapKit
 import UIKit
 
-
 class MainViewController: UIViewController, MiddleViewDelegate {
-
     private var mapViewModel: MapViewModel?
     private let locationManager = CLLocationManager()
-    let notificationForWeather_Fairy = NotificationForWeather_Fairy() //박철우 - 알림기능들에 접근하기위함
+    let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
 
     let mainView = MainView()
     let currentWeather: BottomCurrentWeatherView
@@ -27,20 +25,21 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         MainNavigationBar.setupNavigationBar(for: self, resetButton: #selector(resetLocationButtonTapped), searchPageButton: #selector(SearchPageButtonTapped))
         // MainViewModel 인스턴스 생성 및 초기화
         mapViewModel = MapViewModel(locationManager: locationManager, mapView: mainView.bottomMyLocationView.mapkit.customMapView)
-        // viewModel?.delegate = self
         mainView.middleView.delegate = self
-        // mapview delegate 설정 : mapMaker 디자인을 위해서!
         myLocation.mapkit.customMapView.delegate = self
         myLocation.mapkit.locationManager.delegate = self
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        notificationForWeather_Fairy.openingNotification()//박철우 - 어플이 처음 켜졌을때 메인페이지에서 딱 한번만 보여줄 알림 만들었습니다.
+        notificationForWeather_Fairy.openingNotification() // 박철우 - 어플이 처음 켜졌을때 메인페이지에서 딱 한번만 보여줄 알림 만들었습니다.
+
+        changeTexts()
     }
-    override func viewDidAppear(_ animated: Bool) {//박철우
-        notificationForWeather_Fairy.sendingPushNotification() //박철우
-    }//박철우
+
+    override func viewDidAppear(_ animated: Bool) { // 박철우
+        notificationForWeather_Fairy.sendingPushNotification() // 박철우
+    } // 박철우
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -52,8 +51,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 
     @objc func SearchPageButtonTapped() {
-            let searchPageVC = SearchPageViewController()
-            navigationController?.pushViewController(searchPageVC, animated: true)
+        let searchPageVC = SearchPageViewController()
+        navigationController?.pushViewController(searchPageVC, animated: true)
     }
 
     func didTapCurrentWeatherButton() {
@@ -75,6 +74,14 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         forecast.weatherForecastView.isHidden = true
         myLocation.myLocationView.isHidden = false
         view.bringSubviewToFront(myLocation)
+    }
+
+    func changeTexts() {
+        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "서울"
+        //현재위치(받아오는 lat, lon) 설정해줘야함 -> 하드코딩 바꾸기 
+        let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? 35.1796, longitude: cityLon ?? 129.0756)
+        let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
+        myLocation.mapkit.customMapView.setRegion(coordinateRegion, animated: false)
     }
 
     init() {

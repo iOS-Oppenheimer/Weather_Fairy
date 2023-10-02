@@ -30,11 +30,6 @@ class MyLocationUIView: UIView {
         mapView.layer.cornerRadius = 25
         mapView.showsUserLocation = true
         
-        let initialLocation = CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780)
-        let regionRadius: CLLocationDistance = ZOOM_IN
-        let coordinateRegion = MKCoordinateRegion(center: initialLocation, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
-        mapView.setRegion(coordinateRegion, animated: true)
-
         return mapView
     }()
    
