@@ -24,23 +24,35 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
         tableView.delegate = self
         tableView.separatorStyle = .none
         tableView.register(SearchPageTableViewCell.self, forCellReuseIdentifier: "SearchPageTableViewCell")
-        
         return tableView
     }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         displaySearchHistory()
         setupNavigationBar()
+
+        
     }
+  
+
+    
+ 
     
     // 네비게이션 바 설정 및 삭제 버튼 추가
     func setupNavigationBar() {
         self.navigationController?.navigationBar.tintColor = .black
         let deleteButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deleteSearchHistory(_:)))
         navigationItem.rightBarButtonItem = deleteButton
+        
+        // 검색 기록이 비어 있는 경우 삭제 버튼 비활성화
+        if searchHistory.getSearchHistory().isEmpty {
+            deleteButton.isEnabled = false
+        }
     }
+
     
     func setupUI() {
         let backgroundColor = UIColor(red: 0.90, green: 0.92, blue: 0.94, alpha: 1.0)
@@ -123,9 +135,12 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
             // 검색 결과 초기화
             self?.searchResults = []
             self?.tableView.reloadData()
+            // 삭제 버튼 비활성화
+            sender.isEnabled = false
         }))
         present(alert, animated: true, completion: nil)
     }
+    
 
 }
 
