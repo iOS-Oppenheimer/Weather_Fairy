@@ -97,7 +97,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 
     func changeTexts() {
-        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "서울"
+        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "부산"
         // 현재위치(받아오는 lat, lon) 설정해줘야함 -> 하드코딩 바꾸기
         let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? 35.1796, longitude: cityLon ?? 129.0756)
         let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
@@ -133,15 +133,26 @@ class MainViewController: UIViewController, MiddleViewDelegate {
                 if let jsonResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] {
                     DispatchQueue.main.async {
                         if let mainDict = jsonResult["main"] as? [String: Any],
-                           let tempValue = mainDict["temp"] as? Double
+                           let tempValue = mainDict["temp"] as? Double,
+                           let tempMax = mainDict["temp_max"] as? Double,
+                           let tempMin = mainDict["temp_min"] as? Double,
+                           let humidity = mainDict["humidity"] as? Int
                         {
                             self.mainView.topView.celsiusLabel.text = "\(Int(tempValue))"
+                            self.currentWeather.currentLocationItem.tempMaxValue.text = "\(Int(tempMax))℃"
+                            self.currentWeather.currentLocationItem.tempMinValue.text = "\(Int(tempMin))℃"
+                            self.currentWeather.currentLocationItem.humidityValue.text = "\(humidity)%"
                         }
                         if let weatherArray = jsonResult["weather"] as? [[String: Any]],
                            let weatherDict = weatherArray.first,
                            let weatherDescription = weatherDict["description"] as? String
                         {
                             self.mainView.topView.conditionsLabel.text = weatherDescription
+                        }
+                        if let windArray = jsonResult["wind"] as? [String: Any],
+                           let windValue = windArray["speed"] as? Double
+                        {
+                            self.currentWeather.currentLocationItem.windyValue.text = "\(Int(windValue))m/s"
                         }
                     }
                 }
@@ -258,15 +269,6 @@ extension MainViewController: CLLocationManagerDelegate {
 
     // 주소를 받아오는 함수
     func geocode(location: CLLocation, completion: @escaping (String) -> Void) {
-        CLGeocoder().reverseGeocodeLocation(location) { placemarks, _ in
-            if let placemark = placemarks?.first,
-               let cityName = placemark.locality
-            {
-                DispatchQueue.main.async {
-                    self.mainView.topView.cityName.text = cityName
-                    // completion(cityName) // 도시 이름을 반환
-                }
-            }
-        }
+        mapViewModel?.geocode(location: location, topViewCityName: mainView.topView.cityName)
     }
 }
