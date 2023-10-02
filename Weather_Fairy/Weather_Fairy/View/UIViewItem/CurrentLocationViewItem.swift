@@ -2,28 +2,27 @@ import UIKit
 
 class CurrentLocationViewItem: UIView {
     // 대기질
-    lazy var airQualityImage: UIImageView = {
+    lazy var tempMaxImage: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "airQuality"))
         imageView.customImageView()
         return imageView
     }()
     
-    lazy var airQuality: UILabel = {
+    lazy var tempMax: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "대기질", textColor: .white, fontSize: 25)
+        label.customLabel(text: "최고온도", textColor: .white, fontSize: 25)
         return label
     }()
     
-    lazy var airQualityValue: UILabel = {
+    lazy var tempMaxValue: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "34 좋음", textColor: .white, fontSize: 25)
+        label.customLabel(text: "34℃", textColor: .white, fontSize: 25)
         return label
     }()
     
-    lazy var airQualityStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [airQualityImage, airQuality, airQualityValue])
-        stackView.verticalStackView(spacing: 10)
-        stackView.alignment = .center
+    lazy var tempMaxStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [tempMaxImage, tempMax, tempMaxValue])
+        stackView.verticalStackViewForCenter(spacing: 10)
         return stackView
     }()
     
@@ -48,8 +47,7 @@ class CurrentLocationViewItem: UIView {
     
     lazy var windyStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [windyImageView, windy, windyValue])
-        stackView.verticalStackView(spacing: 10)
-        stackView.alignment = .center
+        stackView.verticalStackViewForCenter(spacing: 10)
         return stackView
     }()
     
@@ -74,39 +72,37 @@ class CurrentLocationViewItem: UIView {
     
     lazy var humidityStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [humidityImageView, humidity, humidityValue])
-        stackView.verticalStackView(spacing: 10)
-        stackView.alignment = .center
+        stackView.verticalStackViewForCenter(spacing: 10)
         return stackView
     }()
     
     // 강수확률
-    lazy var rainfallImageView: UIImageView = {
+    lazy var tempMinImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "umbrella"))
         imageView.customImageView()
         return imageView
     }()
     
-    lazy var rainfall: UILabel = {
+    lazy var tempMin: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "강수확률", textColor: .white, fontSize: 25)
+        label.customLabel(text: "최저온도", textColor: .white, fontSize: 25)
         return label
     }()
     
-    lazy var rainfallValue: UILabel = {
+    lazy var tempMinValue: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "80%", textColor: .white, fontSize: 25)
+        label.customLabel(text: "31℃", textColor: .white, fontSize: 25)
         return label
     }()
     
-    lazy var rainfallStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [rainfallImageView, rainfall, rainfallValue])
-        stackView.verticalStackView(spacing: 10)
-        stackView.alignment = .center
+    lazy var tempMinStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [tempMinImageView, tempMin, tempMinValue])
+        stackView.verticalStackViewForCenter(spacing: 10)
         return stackView
     }()
     
     private func setupCurrentWeatherView() {
-        let stackView = UIStackView(arrangedSubviews: [airQualityStackView, windyStackView, humidityStackView, rainfallStackView])
+        let stackView = UIStackView(arrangedSubviews: [tempMaxStackView, windyStackView, humidityStackView, tempMinStackView])
         stackView.horizontalStackView(spacing: 25)
         addSubview(stackView)
     }
