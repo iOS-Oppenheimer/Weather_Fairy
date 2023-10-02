@@ -14,12 +14,11 @@ final class MainView: UIView {
         let newBackgroundImageView = UIImageView(frame: UIScreen.main.bounds)
         newBackgroundImageView.image = image
         newBackgroundImageView.contentMode = .scaleAspectFill
-
         newBackgroundImageView.clipsToBounds = true
         insertSubview(newBackgroundImageView, at: 0)
         backgroundImageView = newBackgroundImageView
     }
-
+  
     private func setupLayout() {
         addSubview(topView)
         addSubview(middleView)
@@ -51,9 +50,10 @@ final class MainView: UIView {
         let bottomMyLocationViewYPosition = middleYPosition + middleHeight
         bottomMyLocationView.frame = CGRect(x: 0, y: bottomMyLocationViewYPosition, width: UIScreen.main.bounds.width, height: bottomMyLocationViewHeight)
     }
-
+ 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupBackgroundImage()
         setupLayout()
     }
 

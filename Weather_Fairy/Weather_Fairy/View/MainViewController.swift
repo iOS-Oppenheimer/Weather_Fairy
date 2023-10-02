@@ -25,9 +25,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         MainNavigationBar.setupNavigationBar(for: self, resetButton: #selector(resetLocationButtonTapped), searchPageButton: #selector(SearchPageButtonTapped))
         // MainViewModel 인스턴스 생성 및 초기화
         mapViewModel = MapViewModel(locationManager: locationManager, mapView: mainView.bottomMyLocationView.mapkit.customMapView)
-        // viewModel?.delegate = self
+        mainView.topView.signChangeButton.addTarget(self, action: #selector(signChangeButtonTapped), for: .touchUpInside)
         mainView.middleView.delegate = self
-        // mapview delegate 설정 : mapMaker 디자인을 위해서!
         myLocation.mapkit.customMapView.delegate = self
         myLocation.mapkit.locationManager.delegate = self
         locationManager.delegate = self
@@ -35,7 +34,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         notificationForWeather_Fairy.openingNotification() // 박철우 - 어플이 처음 켜졌을때 메인페이지에서 딱 한번만 보여줄 알림 만들었습니다.
-        // currentWeather.currentLocationItem.sunriseValue.text =
+
+        changeTexts()
     }
 
 //    override func viewDidAppear(_ animated: Bool) {//박철우
@@ -50,6 +50,25 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         didTapMyLocationButton()
         mapViewModel?.resetLocation()
         locationManager.startUpdatingLocation()
+    }
+
+    @objc func signChangeButtonTapped() {
+        if mainView.topView.celsiusStackView.isHidden {
+            // 화씨 -> 섭씨
+            if let originalCelsiusValue = mainView.topView.originalCelsiusValue {
+                mainView.topView.celsiusLabel.text = String(format: "%d", Int(originalCelsiusValue))
+            }
+        } else {
+            // 섭씨 -> 화씨
+            if let celsiusText = mainView.topView.celsiusLabel.text, let celsiusValue = Double(celsiusText) {
+                mainView.topView.originalCelsiusValue = celsiusValue
+                let fahrenheitValue = (celsiusValue * 1.8) + 32
+                mainView.topView.fahrenheitLabel.text = String(format: "%d", Int(fahrenheitValue))
+            }
+        }
+        // 뷰 전환
+        mainView.topView.celsiusStackView.isHidden.toggle()
+        mainView.topView.fahrenheitStackView.isHidden.toggle()
     }
 
     @objc func SearchPageButtonTapped() {
@@ -76,6 +95,14 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         forecast.weatherForecastView.isHidden = true
         myLocation.myLocationView.isHidden = false
         view.bringSubviewToFront(myLocation)
+    }
+
+    func changeTexts() {
+        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "부산"
+        // 현재위치(받아오는 lat, lon) 설정해줘야함 -> 하드코딩 바꾸기
+        let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? 35.1796, longitude: cityLon ?? 129.0756)
+        let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
+        myLocation.mapkit.customMapView.setRegion(coordinateRegion, animated: false)
     }
 
     init() {
@@ -250,15 +277,6 @@ extension MainViewController: CLLocationManagerDelegate {
 
     // 주소를 받아오는 함수
     func geocode(location: CLLocation, completion: @escaping (String) -> Void) {
-        CLGeocoder().reverseGeocodeLocation(location) { placemarks, _ in
-            if let placemark = placemarks?.first,
-               let cityName = placemark.locality
-            {
-                DispatchQueue.main.async {
-                    self.mainView.topView.cityName.text = cityName
-                    // completion(cityName) // 도시 이름을 반환
-                }
-            }
-        }
+        mapViewModel?.geocode(location: location, topViewCityName: mainView.topView.cityName)
     }
 }
