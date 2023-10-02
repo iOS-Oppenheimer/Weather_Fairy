@@ -2,6 +2,7 @@ import CoreLocation
 import MapKit
 import UIKit
 
+
 class MainViewController: UIViewController, MiddleViewDelegate {
 
     private var mapViewModel: MapViewModel?
@@ -12,6 +13,10 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     let currentWeather: BottomCurrentWeatherView
     let forecast: BottomWeatherForecastView
     let myLocation: BottomMyLocationView
+    var cityEngName: String?
+    var cityKorName: String?
+    var cityLat: Double?
+    var cityLon: Double?
 
     override func loadView() {
         view = mainView
@@ -37,7 +42,6 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         notificationForWeather_Fairy.sendingPushNotification() //박철우
     }//박철우
 
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -48,8 +52,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 
     @objc func SearchPageButtonTapped() {
-        let searchPageVC = SearchPageViewController()
-        navigationController?.pushViewController(searchPageVC, animated: true)
+            let searchPageVC = SearchPageViewController()
+            navigationController?.pushViewController(searchPageVC, animated: true)
     }
 
     func didTapCurrentWeatherButton() {
@@ -122,7 +126,6 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
         task.resume()
     }
-
 
     func fetchHourlyWeatherData(latitude: Double, longitude: Double) {
         let urlString = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"

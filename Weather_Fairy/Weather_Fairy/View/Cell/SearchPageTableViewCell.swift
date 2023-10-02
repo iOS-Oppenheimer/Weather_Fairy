@@ -5,115 +5,172 @@ import SnapKit
 class SearchPageTableViewCell: UITableViewCell {
     static let identifier = "SearchPageTableViewCell"
     
-    lazy var nameLabel: UILabel = {
+    var cityKorName: String?
+    var cityEngName: String?
+    var cityLat: Double?
+    var cityLon: Double?
+    var weatherId : Int?
+    var weatherMain: String?
+    var weatherIcon: String?
+    var weatherTemp: Int?
+    var weatherMinTemp: Int?
+    var weatherMaxTemp: Int?
+    var cityTime: String?
+    
+    
+    private let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.color = .white
+        return indicator
+    }()
+  
+    
+    lazy var korNameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.customLabel(text: "", textColor: .white, fontSize: 20)
+        return label
+    }()
+
+    
+    
+    lazy var engNameLabel: UILabel = {
+        let label = UILabel()
+        label.customLabel(text: "", textColor: .white, fontSize: 12)
         return label
     }()
     
     lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.text = "09:44 AM"
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.customLabel(text: "", textColor: .white, fontSize: 20)
         return label
     }()
     
     lazy var weatherLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.text = "Cloudy"
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.customLabel(text: "", textColor: .white, fontSize: 20)
         return label
     }()
     
     lazy var tempLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.text = "21°"
-        label.font = UIFont.systemFont(ofSize: 40)
+        label.customLabel(text: "", textColor: .white, fontSize: 40)
         return label
     }()
     
     lazy var maxMinTempLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.text = "최고: 25°C 최저: 17°C"
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.customLabel(text: "", textColor: .white, fontSize: 12)
         return label
     }()
     
-    lazy var englishNameLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 14)
-        return label
-    }()
+    func setLocationData(data: (String, String, Double, Double)) {
+        cityKorName = data.1
+        cityEngName = data.0
+        cityLat = data.2
+        cityLon = data.3
+    }
     
-    lazy var coordinatesLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 12)
-        return label
-    }()
+    func setWeatherData(weatherInfo: (Int, String, String, Int, Int, Int, String)) {
+        weatherId = weatherInfo.0
+        weatherMain = weatherInfo.1
+        weatherIcon = weatherInfo.2
+        weatherTemp = weatherInfo.3
+        weatherMinTemp = weatherInfo.4
+        weatherMaxTemp = weatherInfo.5
+        cityTime = weatherInfo.6
+
+        if let id = weatherId {
+            let backgroundImage = UIImageView()
+            backgroundImage.contentMode = .scaleAspectFill
+            backgroundImage.clipsToBounds = true
+            backgroundImage.image = WeatherCellBackgroundImage().getImage(id: id)
+            backgroundView = backgroundImage
+        }
+    }
     
+    func configure() {
+        DispatchQueue.main.async {
+            let letterSpacing: CGFloat = 10.0
+            let attributedText = NSAttributedString(string: self.cityKorName ?? "",
+                                                   attributes: [
+                                                       NSAttributedString.Key.kern: letterSpacing,
+                                                       NSAttributedString.Key.foregroundColor: UIColor.white,
+                                                       NSAttributedString.Key.font: UIFont(name: "Jua", size: 24) as Any
+                                                   ])
+            self.korNameLabel.attributedText = attributedText
+            
+            // 나머지 레이블에는 자간을 적용하지 않음
+            self.engNameLabel.text = self.cityEngName
+            self.weatherLabel.text = self.weatherMain
+            self.tempLabel.text = self.weatherTemp.map { "\($0)°" }
+            self.maxMinTempLabel.text = self.weatherMaxTemp.flatMap { maxTemp in
+                self.weatherMinTemp.map { minTemp in
+                    "최고: \(maxTemp)°C 최저: \(minTemp)°C"
+                }
+            }
+            self.timeLabel.text = self.cityTime
+        }
+    }
 
     
+    func showLoadingSpinner() {
+        loadingIndicator.startAnimating()
+    }
+    
+    func hideLoadingSpinner() {
+        loadingIndicator.stopAnimating()
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        let backgroundImage = UIImageView(image: UIImage(named: "cloudyBG.png"))
-        backgroundView = backgroundImage
+//        let backgroundImage = UIImageView(image: UIImage(named: "cloudyBG.png"))
+//        backgroundView = backgroundImage
+        selectionStyle = .none
         
-
         self.backgroundColor = .clear
-
-        contentView.addSubview(nameLabel)
-//        contentView.addSubview(englishNameLabel)
-//        contentView.addSubview(coordinatesLabel)
+        
+        contentView.addSubview(korNameLabel)
+        contentView.addSubview(engNameLabel)
         contentView.addSubview(timeLabel)
         contentView.addSubview(weatherLabel)
         contentView.addSubview(tempLabel)
         contentView.addSubview(maxMinTempLabel)
-
-        nameLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.top.equalToSuperview().offset(12)
+        contentView.addSubview(loadingIndicator)
+        
+        korNameLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(20)
+        }
+        
+        engNameLabel.snp.makeConstraints { make in
+            make.leading.equalTo(korNameLabel.snp.leading)
+            make.top.equalTo(korNameLabel.snp.bottom).offset(5)
         }
         
         timeLabel.snp.makeConstraints { make in
-            make.leading.equalTo(nameLabel.snp.leading)
-            make.top.equalTo(nameLabel.snp.bottom).offset(8)
+            make.leading.equalTo(korNameLabel.snp.leading)
+            make.bottom.equalToSuperview().offset(-12)
         }
         
-        weatherLabel.snp.makeConstraints { make in
-            make.leading.equalTo(nameLabel.snp.leading)
-            make.bottom.equalToSuperview().offset(-12)
+        maxMinTempLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(tempLabel.snp.trailing)
+            make.top.equalTo(tempLabel.snp.bottom).offset(6)
         }
         
         tempLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-24)
-            make.top.equalTo(nameLabel.snp.top).offset(-5)
+            make.top.equalTo(korNameLabel.snp.top)
         }
         
-        maxMinTempLabel.snp.makeConstraints { make in
-            make.top.equalTo(weatherLabel.snp.top)
+        weatherLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(timeLabel.snp.bottom)
             make.trailing.equalTo(tempLabel.snp.trailing)
         }
         
-//        englishNameLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(nameLabel.snp.leading)
-//            make.top.equalTo(nameLabel.snp.bottom).offset(5)
-//        }
-//        
-//        coordinatesLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(nameLabel.snp.leading)
-//            make.top.equalTo(englishNameLabel.snp.bottom).offset(5)
-//            make.bottom.equalToSuperview().offset(-10)
-//        }
-        
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
         
         contentView.layer.cornerRadius = 15
         contentView.layer.masksToBounds = true
@@ -121,13 +178,10 @@ class SearchPageTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0))
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:)가 구현되지 않음")
     }
 }
-
-

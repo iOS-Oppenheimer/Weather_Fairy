@@ -1,14 +1,12 @@
-import SnapKit
-import SwiftUI
 import UIKit
+import SwiftUI
+import SnapKit
 
 class SearchPageViewController: UIViewController, UISearchBarDelegate {
     
-    
-    private let viewModel = SearchPageVM()
-    private var searchHistory = SearchHistory()
+    private let viewModel = APIViewModel()
     private var searchResults: [(String, String, Double, Double)] = []
-    
+    private let searchHistory = SearchHistory()
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -33,36 +31,44 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        displaySearchHistory()
+        setupNavigationBar()
+    }
+    
+    // 네비게이션 바 설정 및 삭제 버튼 추가
+    func setupNavigationBar() {
+        self.navigationController?.navigationBar.tintColor = .black
+        let deleteButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deleteSearchHistory(_:)))
+        navigationItem.rightBarButtonItem = deleteButton
     }
     
     func setupUI() {
         let backgroundColor = UIColor(red: 0.90, green: 0.92, blue: 0.94, alpha: 1.0)
         view.backgroundColor = backgroundColor
-        self.navigationController?.navigationBar.tintColor = .black
+
         
-        // searchBar 추가
+        
         view.addSubview(searchBar)
-        
-        // tableView 추가
         view.addSubview(tableView)
         
-        // SnapKit을 사용하여 레이아웃 설정
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
         }
         
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom) // searchBar 아래에 위치
+            make.top.equalTo(searchBar.snp.bottom)
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
             make.bottom.equalToSuperview()
         }
     }
     
-    // 서치바 검색 시 메서드
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchText = searchBar.text {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            // 서치바가 비어있는 경우 검색 기록을 표시
+            displaySearchHistory()
+        } else {
             viewModel.searchLocation(for: searchText) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
@@ -91,7 +97,38 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
             }
         }
     }
+    
+    // 검색 기록 표시
+    func displaySearchHistory() {
+        let searchHistory = SearchHistory().getSearchHistory()
+
+        // 검색 기록이 있을 때만 테이블뷰에 출력
+        if !searchHistory.isEmpty {
+            searchResults = searchHistory.map { ($0.engName, $0.korName, $0.lat, $0.lon) }
+        } else {
+            // 검색 기록이 없을 때는 검색 결과 초기화
+            searchResults = []
+        }
+
+        tableView.reloadData()
+    }
+    
+    // 검색 기록 삭제 버튼 메서드
+    @objc func deleteSearchHistory(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "검색 기록 삭제", message: "검색 기록을 모두 삭제하시겠습니까?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
+            // 검색 기록 삭제
+            SearchHistory().clearSearchHistory()
+            // 검색 결과 초기화
+            self?.searchResults = []
+            self?.tableView.reloadData()
+        }))
+        present(alert, animated: true, completion: nil)
+    }
+
 }
+
 // 테이블뷰 Delegate, DataSource 설정
 extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -101,12 +138,34 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchPageTableViewCell.identifier, for: indexPath) as! SearchPageTableViewCell
         
-        let result = searchResults[indexPath.row]
-        
-        cell.nameLabel.text = result.1
-        cell.englishNameLabel.text = result.0
-        cell.coordinatesLabel.text = "Lat: \(result.2), Lon: \(result.3)"
-        
+        if searchResults.isEmpty {
+            // 검색 결과가 없는 경우, 검색 기록 표시
+            let searchHistory = SearchHistory().getSearchHistory()
+            if indexPath.row < searchHistory.count {
+                let location = searchHistory[indexPath.row]
+                cell.setLocationData(data: (location.engName, location.korName, location.lat, location.lon))
+                cell.hideLoadingSpinner()
+                cell.configure()
+            }
+        } else {
+            // 검색 결과가 있는 경우, 검색 결과 표시
+            let result = searchResults[indexPath.row]
+            cell.setLocationData(data: result)
+            cell.showLoadingSpinner()
+            
+            viewModel.fetchWeatherData(lat: result.2, lon: result.3) { result in
+                switch result {
+                case .success(let weatherInfo):
+                    DispatchQueue.main.async {
+                        cell.hideLoadingSpinner()
+                        cell.setWeatherData(weatherInfo: weatherInfo)
+                        cell.configure()
+                    }
+                case .failure(let error):
+                    print("날씨 정보를 가져오는 데 실패했습니다: \(error)")
+                }
+            }
+        }
         
         return cell
     }
@@ -114,24 +173,23 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
     }
-}
-
-// SwiftUI를 활용한 미리보기
-struct SearchViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchVCRepresentable()
-            .edgesIgnoringSafeArea(.all)
-    }
-}
-
-struct SearchVCRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        let searchViewController = SearchPageViewController()
-        return UINavigationController(rootViewController: searchViewController)
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            let selectedResult = searchResults[indexPath.row]
+            addToSearchHistory(Location(engName: selectedResult.0, korName: selectedResult.1, lat: selectedResult.2, lon: selectedResult.3))
+            
+            let mainVC = MainViewController()
+            mainVC.cityEngName = selectedResult.0
+            mainVC.cityKorName = selectedResult.1
+            mainVC.cityLat = selectedResult.2
+            mainVC.cityLon = selectedResult.3
+            
+            print("3:\(selectedResult)")
+            
+            navigationController?.setViewControllers([mainVC], animated: true)
     }
     
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
-    
-    typealias UIViewControllerType = UIViewController
+    func addToSearchHistory(_ location: Location) {
+        searchHistory.addLocationToHistory(location)
+    }
 }
-
