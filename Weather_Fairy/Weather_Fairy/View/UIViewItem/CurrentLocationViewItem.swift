@@ -108,10 +108,6 @@ class CurrentLocationViewItem: UIView {
     private func setupCurrentWeatherView() {
         let stackView = UIStackView(arrangedSubviews: [airQualityStackView, windyStackView, humidityStackView, rainfallStackView])
         stackView.horizontalStackView(spacing: 25)
-        //stackView.layer.borderColor = UIColor.red.cgColor
-        //stackView.layer.borderWidth = 2.0
-        
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
     }
 
