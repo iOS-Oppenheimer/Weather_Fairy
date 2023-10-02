@@ -10,7 +10,6 @@ class MyLocationUIView: UIView {
         let label = UILabel()
         label.customLabel(text: "부산광역시", textColor: .white, fontSize: 25)
         label.textAlignment = .left
-        
         return label
     }()
     
@@ -35,7 +34,6 @@ class MyLocationUIView: UIView {
    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setupMapView()
     }
     
@@ -51,7 +49,6 @@ class MyLocationUIView: UIView {
             make.top.equalToSuperview().offset(10)
             make.leading.trailing.equalToSuperview()
         }
-                
         customMapView.snp.makeConstraints { make in
             make.top.equalTo(currentLocationLabel.snp.bottom).offset(10)
             make.leading.trailing.bottom.equalToSuperview()

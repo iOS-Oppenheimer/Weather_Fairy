@@ -3,44 +3,39 @@ import UIKit
 
 class TopView: UIView {
     var originalCelsiusValue: Double?
+    
     lazy var cityName: UILabel = {
         let label = UILabel()
         label.customLabel(text: "시", textColor: .white, fontSize: 32)
-
         return label
     }()
 
     lazy var celsiusLabel: UILabel = {
         let label = UILabel()
         label.customLabel(text: "0", textColor: .white, fontSize: 100)
-
         return label
     }()
 
     lazy var celsiusSignLabel: UILabel = {
         let label = UILabel()
         label.customLabel(text: "℃", textColor: .white, fontSize: 65)
-
         return label
     }()
 
     lazy var fahrenheitLabel: UILabel = {
         let label = UILabel()
         label.customLabel(text: "0", textColor: .white, fontSize: 100)
-
         return label
     }()
 
     lazy var fahrenheitSignLabel: UILabel = {
         let label = UILabel()
         label.customLabel(text: "℉", textColor: .white, fontSize: 65)
-
         return label
     }()
 
     lazy var signChangeButton: UIButton = {
         let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
 
         if let changeImage = UIImage(named: "change") {
             let changeImageSize = CGSize(width: 25, height: 25)
@@ -53,36 +48,25 @@ class TopView: UIView {
                 UIGraphicsEndImageContext()
             }
         }
-        button.backgroundColor = UIColor.clear
-        button.layer.borderColor = UIColor.systemBackground.cgColor
-        button.layer.borderWidth = 0
         button.layer.cornerRadius = 5
-        
-
         return button
     }()
 
     lazy var conditionsLabel: UILabel = {
         let label = UILabel()
         label.customLabel(text: "기상 상태", textColor: .white, fontSize: 22)
-
         return label
     }()
 
     lazy var celsiusStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [celsiusLabel, celsiusSignLabel])
-        stackView.horizontalStackView(spacing: 2)
-        stackView.alignment = .center
-
+        stackView.horizontalStackViewForCenter(spacing: 2)
         return stackView
     }()
 
     lazy var fahrenheitStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [fahrenheitLabel, fahrenheitSignLabel])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = 2
+        stackView.horizontalStackViewForCenter(spacing: 2)
         stackView.isHidden = true
 
         return stackView
@@ -90,21 +74,13 @@ class TopView: UIView {
 
     lazy var temperatureStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [celsiusStackView, fahrenheitStackView, signChangeButton])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = 1
-
+        stackView.horizontalStackViewForCenter(spacing: 1)
         return stackView
     }()
 
     lazy var topStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [cityName, temperatureStackView, conditionsLabel])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.alignment = .center
-        stackView.axis = .vertical
-        stackView.spacing = 5
-
+        stackView.verticalStackViewForCenter(spacing: 5)
         return stackView
     }()
 

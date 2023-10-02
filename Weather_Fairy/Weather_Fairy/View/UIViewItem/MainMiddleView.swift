@@ -18,32 +18,26 @@ class MiddleView: UIView {
         let button = UIButton(type: .system)
         button.customButton(text: "현재 날씨")
         button.addTarget(self, action: #selector(currentWeatherButtonTapped), for: .touchUpInside)
-
         return button
     }()
 
     lazy var weatherForecastButton: UIButton = {
         let button = UIButton(type: .system)
         button.customButton(text: "기상 예보")
-
         button.addTarget(self, action: #selector(weatherForecastButtonTapped), for: .touchUpInside)
-
         return button
     }()
 
     lazy var myLocationButton: UIButton = {
         let button = UIButton(type: .system)
         button.customButton(text: "나의 위치")
-
         button.addTarget(self, action: #selector(myLocationButtonTapped), for: .touchUpInside)
-
         return button
     }()
 
     lazy var middleButtonStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [currentWeatherButton, weatherForecastButton, myLocationButton])
         stackView.horizontalStackView(spacing: 20)
-
         return stackView
     }()
 
@@ -51,7 +45,6 @@ class MiddleView: UIView {
         let view = UIView()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         view.layer.cornerRadius = 9
-
         return view
     }()
 

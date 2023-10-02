@@ -6,7 +6,6 @@ class BottomCurrentWeatherView: UIView {
 
     lazy var currentWeatherView: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 25
         view.isHidden = false
 
@@ -15,7 +14,6 @@ class BottomCurrentWeatherView: UIView {
 
     private func setupConstraints() {
         addSubview(currentWeatherView)
-        currentLocationItem.translatesAutoresizingMaskIntoConstraints = false
         currentWeatherView.addSubview(currentLocationItem)
 
         currentWeatherView.snp.makeConstraints { make in
