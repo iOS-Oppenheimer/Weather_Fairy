@@ -2,25 +2,12 @@ import CoreLocation
 import MapKit
 import UIKit
 
-var flag : Bool = true
-
-struct WeatherData: Codable {
-    let list: [WeatherInfo]
-
-    struct WeatherInfo: Codable {
-        let main: MainInfo
-        let dt_txt: String
-
-        struct MainInfo: Codable {
-            let temp: Double
-        }
-    }
-}
 
 class MainViewController: UIViewController, MiddleViewDelegate {
+
     private var mapViewModel: MapViewModel?
     private let locationManager = CLLocationManager()
-    private let notificationForUmbrella = NotificationForUmbrella() // 박철우
+    let notificationForWeather_Fairy = NotificationForWeather_Fairy() //박철우 - 알림기능들에 접근하기위함
 
     let mainView = MainView()
     let currentWeather: BottomCurrentWeatherView
@@ -49,11 +36,11 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+        notificationForWeather_Fairy.openingNotification()//박철우 - 어플이 처음 켜졌을때 메인페이지에서 딱 한번만 보여줄 알림 만들었습니다.
     }
-
-//    override func viewDidAppear(_ animated: Bool) { // 박철우
-//        notificationForUmbrella.sendingPushNotification() // 박철우
-//    } // 박철우
+    override func viewDidAppear(_ animated: Bool) {//박철우
+        notificationForWeather_Fairy.sendingPushNotification() //박철우
+    }//박철우
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -123,6 +110,12 @@ class MainViewController: UIViewController, MiddleViewDelegate {
                         {
                             self.mainView.topView.celsiusLabel.text = "\(Int(tempValue))"
                         }
+                        if let weatherArray = jsonResult["weather"] as? [[String: Any]],
+                           let weatherDict = weatherArray.first,
+                           let weatherDescription = weatherDict["description"] as? String
+                        {
+                            self.mainView.topView.conditionsLabel.text = weatherDescription
+                        }
                     }
                 }
 
@@ -134,26 +127,72 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         task.resume()
     }
 
-    func fetchThreeHourForecastData(city: String) {
-        let urlString = "http://api.openweathermap.org/data/2.5/forecast?q=\(city)&appid=\(geoAPIKey)&units=metric"
+    func fetchHourlyWeatherData(latitude: Double, longitude: Double) {
+        let urlString = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"
 
-        guard let url = URL(string: urlString) else { return }
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL: \(urlString)")
+            return
+        }
 
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
-            guard let data = data, error == nil else { return }
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
+                print("Failed to fetch data with error: ", error)
+                return
+            }
+
+            guard let data = data else {
+                print("No data returned from the server")
+                return
+            }
 
             do {
                 let decoder = JSONDecoder()
-                let weatherData = try decoder.decode(WeatherData.self, from: data)
-
+                let hourlyForecast = try decoder.decode(HourlyForecast.self, from: data)
+                print("Hourly Forecast Data: \(hourlyForecast)")
                 DispatchQueue.main.async {
-                    self?.mainView.bottomWeatherForecastView.updateForecastData(with: weatherData.list)
+                    // 받아온 데이터를 BottomWeatherForecastView에 전달
+                    self.forecast.updateHourlyForecast(hourlyForecast.list)
+                    print("UI Should be updated")
                 }
-
             } catch {
-                print("Failed to parse JSON data: \(error.localizedDescription)")
+                print("Failed to parse JSON with error: ", error)
             }
         }
+        task.resume()
+    }
+
+    func fetchDailyWeatherData(latitude: Double, longitude: Double) {
+        let urlString = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr&cnt=40"
+
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL: \(urlString)")
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
+                print("Failed to fetch data with error: ", error)
+                return
+            }
+
+            guard let data = data else {
+                print("No data returned from the server")
+                return
+            }
+
+            do {
+                let decoder = JSONDecoder()
+                let dailyForecast = try decoder.decode(DailyForecast.self, from: data)
+                DispatchQueue.main.async {
+                    // 받아온 데이터를 BottomWeatherForecastView에 전달
+                    self.forecast.updateDailyForecast(dailyForecast.list)
+                }
+            } catch {
+                print("Failed to parse JSON with error: ", error)
+            }
+        }
+
         task.resume()
     }
 }
@@ -170,7 +209,13 @@ extension MainViewController: CLLocationManagerDelegate {
 
         fetchWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
 
-        geocode(location: location)
+        fetchHourlyWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+
+        fetchDailyWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+
+        geocode(location: location) { cityName in
+            print("City Name: \(cityName)")
+        }
 
         manager.stopUpdatingLocation()
     }
@@ -185,13 +230,14 @@ extension MainViewController: CLLocationManagerDelegate {
     }
 
     // 주소를 받아오는 함수
-    func geocode(location: CLLocation) {
+    func geocode(location: CLLocation, completion: @escaping (String) -> Void) {
         CLGeocoder().reverseGeocodeLocation(location) { placemarks, _ in
             if let placemark = placemarks?.first,
                let cityName = placemark.locality
             {
                 DispatchQueue.main.async {
                     self.mainView.topView.cityName.text = cityName
+                    // completion(cityName) // 도시 이름을 반환
                 }
             }
         }
