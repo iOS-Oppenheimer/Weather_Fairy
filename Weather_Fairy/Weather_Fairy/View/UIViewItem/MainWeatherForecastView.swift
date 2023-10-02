@@ -1,12 +1,17 @@
 import UIKit
 
 class BottomWeatherForecastView: UIView, UICollectionViewDelegate {
-    var forecastData: [WeatherData.WeatherInfo]?
+    var hourlyWeatherList: [HourlyWeather] = []
+    var dailyWeatherList: [DailyWeather] = []
 
-    func updateForecastData(with data: [WeatherData.WeatherInfo]) {
-        print("updateForecastData is called with data count: \(data.count)")
-        forecastData = data
-        firstCollectionView.reloadData() // 데이터 업데이트 후 콜렉션 뷰 리로드
+    func updateHourlyForecast(_ hourlyList: [HourlyWeather]) {
+        hourlyWeatherList = hourlyList
+        firstCollectionView.reloadData()
+    }
+
+    func updateDailyForecast(_ dailyList: [DailyWeather]) {
+        dailyWeatherList = dailyList
+        secondCollectionView.reloadData()
     }
 
     lazy var weatherForecastView: UIView = {
@@ -48,7 +53,7 @@ class BottomWeatherForecastView: UIView, UICollectionViewDelegate {
 
     lazy var dateTitle: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "10일간의 일기예보", textColor: .white, fontSize: 15)
+        label.customLabel(text: "5일간의 일기예보", textColor: .white, fontSize: 15)
 
         return label
     }()
@@ -141,22 +146,20 @@ extension BottomWeatherForecastView: UICollectionViewDataSource {
             var calendar = Calendar.current
             calendar.timeZone = TimeZone.current
             let components = calendar.dateComponents([.hour], from: currentDate)
-
-            // 시간 설정
             if let hour = components.hour {
-                let nextHour = (hour + (indexPath.item * 3) + 1) % 24
+                let nextHour = (hour + (indexPath.item * 3) + 1) % 24 // 현재 시간의 다음 시간부터 시작, 각 항목은 이전 항목보다 세 시간 뒤
                 cell.timeLabel.text = String(format: "%02d:00", nextHour)
             } else {
                 cell.timeLabel.text = "Time \(indexPath.item)"
             }
 
-            // 온도 설정
-            if let data = forecastData?[indexPath.item] {
-                cell.timeTempLabel.text = String(format: "%.1f℃", data.main.temp)
+            // 새로운 온도 설정 로직 추가
+            if indexPath.item < hourlyWeatherList.count {
+                let hourlyWeather = hourlyWeatherList[indexPath.item]
+                cell.timeTempLabel.text = "\(Int(hourlyWeather.main.temp))°"
             } else {
                 cell.timeTempLabel.text = "Temp \(indexPath.item)"
             }
-
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SecondCollectionViewCell.reuseIdentifier, for: indexPath) as! SecondCollectionViewCell
@@ -168,7 +171,7 @@ extension BottomWeatherForecastView: UICollectionViewDataSource {
             if let futureDate = Calendar.current.date(byAdding: dateComponent, to: currentDate) {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "MM/dd"
-                let dateString = dateFormatter.string(from: futureDate)
+                let dateString = dateFormatter.string(from: futureDate) // MM/dd 형태의 문자열로 변환
 
                 let dayFormatter = DateFormatter()
                 dayFormatter.dateFormat = "E"
@@ -179,7 +182,12 @@ extension BottomWeatherForecastView: UICollectionViewDataSource {
                 cell.dateLabel.text = "Date \(indexPath.item)"
             }
 
-            cell.dateTempLabel.text = "Temp \(indexPath.item)"
+            if indexPath.item < dailyWeatherList.count {
+                let dailyWeather = dailyWeatherList[indexPath.item]
+                cell.dateTempLabel.text = "\(Int(dailyWeather.main.temp))°"
+            } else {
+                cell.dateTempLabel.text = "Temp \(indexPath.item)"
+            }
             return cell
         }
     }

@@ -2,19 +2,6 @@ import CoreLocation
 import MapKit
 import UIKit
 
-struct WeatherData: Codable {
-    let list: [WeatherInfo]
-
-    struct WeatherInfo: Codable {
-        let main: MainInfo
-        let dt_txt: String
-
-        struct MainInfo: Codable {
-            let temp: Double
-        }
-    }
-}
-
 class MainViewController: UIViewController, MiddleViewDelegate {
 
     private var mapViewModel: MapViewModel?
@@ -99,8 +86,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 
     func fetchWeatherData(latitude: Double, longitude: Double) {
-        let apiKey = "9156be3c6ef5ecaa3de3ae9adb9063cd"
-        let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric&lang=kr"
+        let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"
 
         guard let url = URL(string: urlStr) else { return }
 
@@ -120,6 +106,12 @@ class MainViewController: UIViewController, MiddleViewDelegate {
                         {
                             self.mainView.topView.celsiusLabel.text = "\(Int(tempValue))"
                         }
+                        if let weatherArray = jsonResult["weather"] as? [[String: Any]],
+                           let weatherDict = weatherArray.first,
+                           let weatherDescription = weatherDict["description"] as? String
+                        {
+                            self.mainView.topView.conditionsLabel.text = weatherDescription
+                        }
                     }
                 }
 
@@ -131,27 +123,73 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         task.resume()
     }
 
-    func fetchThreeHourForecastData(city: String) {
-        let apiKey = "\(geoAPIKey)"
-        let urlString = "http://api.openweathermap.org/data/2.5/forecast?q=\(city)&appid=\(apiKey)&units=metric"
 
-        guard let url = URL(string: urlString) else { return }
+    func fetchHourlyWeatherData(latitude: Double, longitude: Double) {
+        let urlString = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"
 
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
-            guard let data = data, error == nil else { return }
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL: \(urlString)")
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
+                print("Failed to fetch data with error: ", error)
+                return
+            }
+
+            guard let data = data else {
+                print("No data returned from the server")
+                return
+            }
 
             do {
                 let decoder = JSONDecoder()
-                let weatherData = try decoder.decode(WeatherData.self, from: data)
-
+                let hourlyForecast = try decoder.decode(HourlyForecast.self, from: data)
+                print("Hourly Forecast Data: \(hourlyForecast)")
                 DispatchQueue.main.async {
-                    self?.mainView.bottomWeatherForecastView.updateForecastData(with: weatherData.list)
+                    // 받아온 데이터를 BottomWeatherForecastView에 전달
+                    self.forecast.updateHourlyForecast(hourlyForecast.list)
+                    print("UI Should be updated")
                 }
-
             } catch {
-                print("Failed to parse JSON data: \(error.localizedDescription)")
+                print("Failed to parse JSON with error: ", error)
             }
         }
+        task.resume()
+    }
+
+    func fetchDailyWeatherData(latitude: Double, longitude: Double) {
+        let urlString = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr&cnt=40"
+
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL: \(urlString)")
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
+                print("Failed to fetch data with error: ", error)
+                return
+            }
+
+            guard let data = data else {
+                print("No data returned from the server")
+                return
+            }
+
+            do {
+                let decoder = JSONDecoder()
+                let dailyForecast = try decoder.decode(DailyForecast.self, from: data)
+                DispatchQueue.main.async {
+                    // 받아온 데이터를 BottomWeatherForecastView에 전달
+                    self.forecast.updateDailyForecast(dailyForecast.list)
+                }
+            } catch {
+                print("Failed to parse JSON with error: ", error)
+            }
+        }
+
         task.resume()
     }
 }
@@ -168,7 +206,13 @@ extension MainViewController: CLLocationManagerDelegate {
 
         fetchWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
 
-        geocode(location: location)
+        fetchHourlyWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+
+        fetchDailyWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+
+        geocode(location: location) { cityName in
+            print("City Name: \(cityName)")
+        }
 
         manager.stopUpdatingLocation()
     }
@@ -183,13 +227,14 @@ extension MainViewController: CLLocationManagerDelegate {
     }
 
     // 주소를 받아오는 함수
-    func geocode(location: CLLocation) {
+    func geocode(location: CLLocation, completion: @escaping (String) -> Void) {
         CLGeocoder().reverseGeocodeLocation(location) { placemarks, _ in
             if let placemark = placemarks?.first,
                let cityName = placemark.locality
             {
                 DispatchQueue.main.async {
                     self.mainView.topView.cityName.text = cityName
+                    // completion(cityName) // 도시 이름을 반환
                 }
             }
         }

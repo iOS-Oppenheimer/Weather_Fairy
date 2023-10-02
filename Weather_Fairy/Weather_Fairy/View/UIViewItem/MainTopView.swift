@@ -63,7 +63,7 @@ class TopView: UIView {
 
     lazy var conditionsLabel: UILabel = {
         let label = UILabel()
-        label.customLabel(text: "한때 흐림", textColor: .white, fontSize: 22)
+        label.customLabel(text: "기상 상태", textColor: .white, fontSize: 22)
 
         return label
     }()
