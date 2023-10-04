@@ -9,13 +9,14 @@ class SearchPageTableViewCell: UITableViewCell {
     var cityEngName: String?
     var cityLat: Double?
     var cityLon: Double?
-    var weatherId : Int?
+    var weatherId : String?
     var weatherMain: String?
     var weatherIcon: String?
-    var weatherTemp: Int?
-    var weatherMinTemp: Int?
-    var weatherMaxTemp: Int?
+    var weatherTemp: String?
+    var weatherMinTemp: String?
+    var weatherMaxTemp: String?
     var cityTime: String?
+    var weatherData: WeatherData?
     
     
     private let loadingIndicator: UIActivityIndicatorView = {
@@ -70,21 +71,35 @@ class SearchPageTableViewCell: UITableViewCell {
         cityLon = data.3
     }
     
-    func setWeatherData(weatherInfo: (Int, String, String, Int, Int, Int, String)) {
-        weatherId = weatherInfo.0
-        weatherMain = weatherInfo.1
-        weatherIcon = weatherInfo.2
-        weatherTemp = weatherInfo.3
-        weatherMinTemp = weatherInfo.4
-        weatherMaxTemp = weatherInfo.5
-        cityTime = weatherInfo.6
-
-        if let id = weatherId {
-            let backgroundImage = UIImageView()
-            backgroundImage.contentMode = .scaleAspectFill
-            backgroundImage.clipsToBounds = true
-            backgroundImage.image = WeatherCellBackgroundImage().getImage(id: id)
-            backgroundView = backgroundImage
+    func setWeatherData(data: [String], timeData: String) {
+        weatherTemp = data[0]
+        weatherMinTemp = data[1]
+        weatherMaxTemp = data[2]
+        weatherMain = data[3]
+        weatherId = data[4]
+        weatherIcon = data[5]
+        cityTime = timeData
+        
+        setBackGroundImage(id: weatherId ?? "")
+    }
+    
+    func setBackGroundImage(id: String) {
+        if let weatherId = weatherId {
+            // "Optional(800)"에서 "800"만 추출
+            if let startIndex = weatherId.firstIndex(of: "("),
+               let endIndex = weatherId.lastIndex(of: ")"),
+               startIndex < endIndex {
+                let startIndex = weatherId.index(after: startIndex)
+                let id = weatherId[startIndex..<endIndex]
+                
+                if let idInt = Int(id) {
+                    let backgroundImage = UIImageView()
+                    backgroundImage.contentMode = .scaleAspectFill
+                    backgroundImage.clipsToBounds = true
+                    backgroundImage.image = WeatherCellBackgroundImage().getImage(id: idInt)
+                    backgroundView = backgroundImage
+                }
+            }
         }
     }
     

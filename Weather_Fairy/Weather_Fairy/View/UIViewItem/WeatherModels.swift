@@ -33,11 +33,14 @@ struct WeatherData: Decodable {
     let sys: Sys
     let wind: Wind
     let weather: [Weather]
+    let timezone: Int
 }
 
 struct MainInfo: Decodable {
     let temp: Double
     let humidity: Int
+    let temp_min: Double
+    let temp_max: Double
 }
 
 struct Sys: Decodable {

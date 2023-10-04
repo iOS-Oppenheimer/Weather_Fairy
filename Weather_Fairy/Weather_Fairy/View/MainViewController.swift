@@ -36,8 +36,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        notificationForWeather_Fairy.openingNotification() // for notificiation
-
+//        notificationForWeather_Fairy.openingNotification() // for notificiation
+        print("현재 날씨 : \(currentWeatherData)")
         changeTexts()
     }
 

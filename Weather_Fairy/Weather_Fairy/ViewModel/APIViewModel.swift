@@ -49,12 +49,12 @@ class APIViewModel {
             task.resume()
         }
     }
-
-    func fetchWeatherData(lat: Double, lon: Double, completion: @escaping (Result<(Int, String, String, Int, Int, Int, String), Error>) -> Void) {
-        // API 키와 좌표를 이용해 URL 생성
-        let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(geoAPIKey)&units=metric&lang=kr"
+    
+    func fetchWeatherData(latitude: Double, longitude: Double, completion: @escaping (Result<WeatherData, Error>) -> Void) {
+        let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"
+        
         guard let url = URL(string: urlStr) else {
-            completion(.failure(NSError(domain: "유효하지 않은 URL", code: 0, userInfo: nil)))
+            completion(.failure(NSError(domain: "Invalid URL", code: -1, userInfo: nil)))
             return
         }
 
@@ -65,46 +65,16 @@ class APIViewModel {
             }
 
             guard let data = data else {
-                completion(.failure(NSError(domain: "데이터 없음", code: 0, userInfo: nil)))
+                completion(.failure(NSError(domain: "No Data", code: -1, userInfo: nil)))
                 return
             }
 
             do {
                 let decoder = JSONDecoder()
-                let weatherData = try decoder.decode(WeatherModel.self, from: data)
-
-                if let timezoneOffset = weatherData.timezone as? Int {
-                    let adjustedTimezoneOffset = timezoneOffset - 32400
-                    let timezone = TimeZone(secondsFromGMT: adjustedTimezoneOffset)
-                    let currentUTCDate = Date()
-
-                    var calendar = Calendar(identifier: .gregorian)
-                    calendar.timeZone = timezone ?? TimeZone.current
-                    if let currentDateInCity = calendar.date(byAdding: .second, value: Int(adjustedTimezoneOffset), to: currentUTCDate) {
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss a"
-                        dateFormatter.timeZone = timezone
-                        let formattedDate = dateFormatter.string(from: currentDateInCity)
-
-                        let timeFormatter = DateFormatter()
-                        timeFormatter.dateFormat = "hh:mm a"
-                        let currentFormattedTime = timeFormatter.string(from: currentDateInCity)
-
-                        let weatherInfo: (Int, String, String, Int, Int, Int, String) = (
-                            weatherData.weather.first?.id ?? 0,
-                            weatherData.weather.first?.description ?? "",
-                            weatherData.weather.first?.icon ?? "아이콘 없음",
-                            Int(Double(weatherData.main.temp).rounded()),
-                            Int(Double(weatherData.main.temp_min).rounded()),
-                            Int(Double(weatherData.main.temp_max).rounded()),
-                            currentFormattedTime
-                        )
-                        completion(.success(weatherInfo))
-                    } else {
-                        completion(.failure(NSError(domain: "시간 변환 실패", code: 0, userInfo: nil)))
-                    }
-                } else {
-                    completion(.failure(NSError(domain: "타임존 정보 없음", code: 0, userInfo: nil)))
+                let weatherData = try decoder.decode(WeatherData.self, from: data)
+                
+                DispatchQueue.main.async {
+                    completion(.success(weatherData))
                 }
             } catch {
                 completion(.failure(error))
