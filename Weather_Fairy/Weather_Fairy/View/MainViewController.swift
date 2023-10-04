@@ -4,6 +4,8 @@ import UIKit
 
 class MainViewController: UIViewController, MiddleViewDelegate {
     private var mapViewModel: MapViewModel?
+    private var mainViewModel = MainViewModel()
+    private var apiViewModel = APIViewModel()
     private let locationManager = CLLocationManager()
     let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
 
@@ -16,7 +18,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     var cityLat: Double?
     var cityLon: Double?
     var celsius: Double? // 박철우
-    var currentWeatherData: WeatherData? //박철우
+    var currentWeatherData: WeatherData? // 박철우
     override func loadView() {
         view = mainView
     }
@@ -119,15 +121,13 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
-
-
     func updateUI(with data: WeatherData) {
         mainView.topView.celsiusLabel.text = "\(Int(data.main.temp))"
 
-        currentWeatherData = data //for notificiation
-        print("Main Current Temperature: \(Int(data.main.temp))") //for checking notificiation
-        currentWeather.currentLocationItem.sunriseValue.text = convertTime(data.sys.sunrise)
-        currentWeather.currentLocationItem.sunsetValue.text = convertTime(data.sys.sunset)
+        currentWeatherData = data // for notificiation
+        print("Main Current Temperature: \(Int(data.main.temp))") // for checking notificiation
+        currentWeather.currentLocationItem.sunriseValue.text = mainViewModel.convertTime(data.sys.sunrise)
+        currentWeather.currentLocationItem.sunsetValue.text = mainViewModel.convertTime(data.sys.sunset)
         currentWeather.currentLocationItem.windyValue.text = "\(data.wind.speed)m/s"
         currentWeather.currentLocationItem.humidityValue.text = "\(data.main.humidity)%"
 
@@ -141,85 +141,10 @@ class MainViewController: UIViewController, MiddleViewDelegate {
             let image = weatherImageInstance.getImage(id: weatherId)
             mainView.changeBackgroundImage(to: image)
         }
-        if let currentWeatherData = currentWeatherData { //for notificiation
-            let currentTemperature = Int(currentWeatherData.main.temp) //for notificiation
-                notificationForWeather_Fairy.showTemperatureAlert(temperature: currentTemperature)//for notificiation
-        }//for notificiation
-    }
-
-    func convertTime(_ timestamp: TimeInterval) -> String {
-        let date = Date(timeIntervalSince1970: timestamp)
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        return dateFormatter.string(from: date)
-    }
-
-    func fetchHourlyWeatherData(latitude: Double, longitude: Double) {
-        let urlString = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"
-
-        guard let url = URL(string: urlString) else {
-            return
-        }
-
-        let task = URLSession.shared.dataTask(with: url) { data, _, error in
-            if let error = error {
-                print("Failed to fetch data with error: ", error)
-                return
-            }
-
-            guard let data = data else {
-                print("No data returned from the server")
-                return
-            }
-
-            do {
-                let decoder = JSONDecoder()
-                let hourlyForecast = try decoder.decode(HourlyForecast.self, from: data)
-                print("Hourly Forecast Data: \(hourlyForecast)")
-                DispatchQueue.main.async {
-                    // 받아온 데이터를 BottomWeatherForecastView에 전달
-                    self.forecast.updateHourlyForecast(hourlyForecast.list)
-                    print("UI Should be updated")
-                }
-            } catch {
-                print("Failed to parse JSON with error: ", error)
-            }
-        }
-        task.resume()
-    }
-
-    func fetchDailyWeatherData(latitude: Double, longitude: Double) {
-        let urlString = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr&cnt=40"
-
-        guard let url = URL(string: urlString) else {
-            print("Invalid URL: \(urlString)")
-            return
-        }
-
-        let task = URLSession.shared.dataTask(with: url) { data, _, error in
-            if let error = error {
-                print("Failed to fetch data with error: ", error)
-                return
-            }
-
-            guard let data = data else {
-                print("No data returned from the server")
-                return
-            }
-
-            do {
-                let decoder = JSONDecoder()
-                let dailyForecast = try decoder.decode(DailyForecast.self, from: data)
-                DispatchQueue.main.async {
-                    // 받아온 데이터를 BottomWeatherForecastView에 전달
-                    self.forecast.updateDailyForecast(dailyForecast.list)
-                }
-            } catch {
-                print("Failed to parse JSON with error: ", error)
-            }
-        }
-
-        task.resume()
+        if let currentWeatherData = currentWeatherData { // for notificiation
+            let currentTemperature = Int(currentWeatherData.main.temp) // for notificiation
+            notificationForWeather_Fairy.showTemperatureAlert(temperature: currentTemperature) // for notificiation
+        } // for notificiation
     }
 }
 
@@ -233,9 +158,18 @@ extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
 
-        fetchHourlyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
+        apiViewModel.mainFetchWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] data in
+            self?.updateUI(with: data)
+            self?.notificationForWeather_Fairy.dataForNotification(with: data)
+        }
 
-        fetchDailyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
+        apiViewModel.fetchHourlyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] forecast in
+            self?.forecast.updateHourlyForecast(forecast)
+        }
+
+        apiViewModel.fetchDailyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] forecast in
+            self?.forecast.updateDailyForecast(forecast)
+        }
 
         geocode(location: location) { cityName in
             print("City Name: \(cityName)")
@@ -254,6 +188,6 @@ extension MainViewController: CLLocationManagerDelegate {
 
     // 주소를 받아오는 함수
     func geocode(location: CLLocation, completion: @escaping (String) -> Void) {
-        mapViewModel?.geocode(location: location, topViewCityName: mainView.topView.cityName)
+        mapViewModel?.geocode(location: location, topViewCityName: mainView.topView.topCityName)
     }
 }

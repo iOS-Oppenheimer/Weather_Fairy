@@ -4,7 +4,7 @@ class CurrentLocationViewItem: UIView {
     // 대기질
     lazy var sunriseImage: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "sunrise"))
-        imageView.customImageView(widthAnchor: 50, heightAnchor: 50)
+        imageView.customImageView(widthAnchor: 40, heightAnchor: 40)
         return imageView
     }()
     
@@ -30,7 +30,7 @@ class CurrentLocationViewItem: UIView {
     // 바람
     lazy var windyImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "windy"))
-        imageView.customImageView(widthAnchor: 50, heightAnchor: 50)
+        imageView.customImageView(widthAnchor: 40, heightAnchor: 40)
         return imageView
     }()
     
@@ -56,7 +56,7 @@ class CurrentLocationViewItem: UIView {
     // 습도
     lazy var humidityImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "humidity"))
-        imageView.customImageView(widthAnchor: 50, heightAnchor: 50)
+        imageView.customImageView(widthAnchor: 40, heightAnchor: 40)
         return imageView
     }()
     
@@ -81,7 +81,7 @@ class CurrentLocationViewItem: UIView {
     // 강수확률
     lazy var sunsetImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "sunset"))
-        imageView.customImageView(widthAnchor: 50, heightAnchor: 50)
+        imageView.customImageView(widthAnchor: 40, heightAnchor: 40)
         return imageView
     }()
     
