@@ -64,6 +64,7 @@
 </table>
 
 ## 🖥️ TEAM APP Project - Weather_Fairy
+* [TEAM S.A](https://www.notion.so/S-A-1f9f48c90f2b49b6a6a4a3e2cda18086)
 > 스파르타코딩 iOS_7기 iOS심화 팀프로젝트 `떡잎마을 방범대` 입니다
 > 
 > 저희 팀은 이번 3가지 주제중 4명에게 부족한 API 공부를 위하여 `날씨 App`을 진행하기로 하였습니다.
