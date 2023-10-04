@@ -6,7 +6,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     private var mapViewModel: MapViewModel?
     private let locationManager = CLLocationManager()
     let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
-
+    let sceneDelegate = SceneDelegate() // 박철우 - 백그라운드알림
     let mainView = MainView()
     let currentWeather: BottomCurrentWeatherView
     let forecast: BottomWeatherForecastView
@@ -139,6 +139,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
                     // UI 업데이트 및 배경 이미지 변경
                     self?.updateUI(with: weatherData)
                     self?.notificationForWeather_Fairy.dataForNotification(with: weatherData)//for notificiation
+                    self?.sceneDelegate.dataForNotificationForBackground(with: weatherData)//for background notification
+                    
                 }
 
             } catch {
@@ -151,7 +153,6 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
     func updateUI(with data: WeatherData) {
         mainView.topView.celsiusLabel.text = "\(Int(data.main.temp))"
-        currentWeatherData = data //for notificiation
         print("Main Current Temperature: \(Int(data.main.temp))") //for checking notificiation
         currentWeather.currentLocationItem.sunriseValue.text = convertTime(data.sys.sunrise)
         currentWeather.currentLocationItem.sunsetValue.text = convertTime(data.sys.sunset)
@@ -170,7 +171,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         }
         if let currentWeatherData = currentWeatherData { //for notificiation
             let currentTemperature = Int(currentWeatherData.main.temp) //for notificiation
-                notificationForWeather_Fairy.showTemperatureAlert(temperature: currentTemperature)//for notificiation
+            let currentHumide = Int(currentWeatherData.main.humidity) //for notification -humide
+            notificationForWeather_Fairy.showTemperatureAlert(temperature: currentTemperature, humide: currentHumide)//for notificiation
         }//for notificiation
     }
 

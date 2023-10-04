@@ -40,13 +40,17 @@ class NotificationForWeather_Fairy {
         currentWeatherData = data
         topView.celsiusLabel.text = "\(temperature)"
         print("api 온도 가져오기 : \(Int(data.main.temp))")
+        let humide = Int(data.main.humidity)
+        print("api 습도 가져오기 : \(Int(data.main.humidity))")
+        currentWeatherData = data
+        currentLocationViewItem.humidityValue.text = "\(data.main.humidity)%"
 
-        showTemperatureAlert(temperature: temperature)
+        showTemperatureAlert(temperature: temperature, humide: humide)
     }
 
-    // MARK: - api정보받아서 조건 처리
+    // MARK: - api정보받아서 조건 처리 (받은 정보 temp, humidity)
 
-    func showTemperatureAlert(temperature: Int) {
+    func showTemperatureAlert(temperature: Int, humide: Int) {
         print("함수 온도: \(temperature)") // for checking notificiation
 
         DispatchQueue.main.async { [weak self] in
@@ -54,27 +58,180 @@ class NotificationForWeather_Fairy {
 
             var title: String = ""
             var body: String = ""
-            if temperature >= 36 {
-                title = "ウェザ フェアリー(웨쟈 페아리)"
-                body = "현재 온도 \(temperature)°C. 거의 아프리카인대요?"
-            } else if temperature >= 24, temperature < 36 {
-                title = "ウェザ フェアリー(웨쟈 페아리)"
-                body = "현재 온도 \(temperature)°C. 덥네요!"
-            } else if temperature < 24, temperature >= 18 {
-                title = "ウェザ フェアリー(웨쟈 페아리!"
-                body = "현재 온도 \(temperature)°C. 적당한 기온입니다!"
-            } else if temperature < 18, temperature >= 9 {
-                title = "ウェザ フェアリー(웨쟈 페아리!"
-                body = "현재 온도 \(temperature)°C. 겉옷을 챙기는게 좋아요!"
-            } else if temperature < 9, temperature >= 0 {
-                title = "ウェザ フェアリー(웨쟈 페아리!"
-                body = "현재 온도 \(temperature)°C. 날씨가 쌀쌀해요!"
-            } else if temperature <= 0 {
-                title = "ウェザ フェアリー(웨쟈 페아리"
-                body = "현재 온도 \(temperature)°C. 많이 추워요!!"
-            }
 
-            self.notificationForWeather(title: title, body: body)
+            //MARK: -  낮은 습도일때 온도별 조건
+
+            if humide <= 45 {
+                if temperature >= 36 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 거의 아프리카인대요?
+                    현재 습도 \(humide)%
+                    """
+                } else if temperature >= 24, temperature < 36 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도\(temperature)°C. 덥네요!
+                    현재 습도 \(humide)%
+                    """
+                } else if temperature < 24, temperature >= 18 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 적당한 기온입니다!
+                    현재 습도 \(humide)%
+                    """
+                } else if temperature < 18, temperature >= 9 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 겉옷을 챙기는게 좋아요!
+                    현재 습도 \(humide)%
+                    """
+                } else if temperature < 9, temperature >= 0 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 날씨가 쌀쌀해요!
+                    현재 습도 \(humide)%
+                    """
+                } else if temperature <= 0 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body =
+                        """
+                        현재 온도 \(temperature)°C. 많이 추워요!!
+                        현재 습도 \(humide)%
+                        """
+                }
+                self.notificationForWeather(title: title, body: body)
+                
+                //MARK: -  적정습도구간때 온도별 조건
+
+            } else if humide > 45, humide < 55 {
+                if temperature >= 36 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 거의 아프리카인대요?
+                    "현재 습도 \(humide)% 적정 습도입니다.
+                    """
+                } else if temperature >= 24, temperature < 36 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도\(temperature)°C. 덥네요!
+                    현재 습도 \(humide)% 적정 습도입니다.
+                    """
+                } else if temperature < 24, temperature >= 18 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 적당한 기온입니다!
+                    현재 습도 \(humide)% 적정 습도입니다.
+                    """
+                } else if temperature < 18, temperature >= 9 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 겉옷을 챙기는게 좋아요!
+                    현재 습도 \(humide)% 적정 습도입니다.
+                    """
+                } else if temperature < 9, temperature >= 0 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 날씨가 쌀쌀해요!
+                    현재 습도 \(humide)% 적정 습도입니다.
+                    """
+                } else if temperature <= 0 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body =
+                        """
+                        현재 온도 \(temperature)°C. 많이 추워요!!
+                        현재 습도 \(humide)% 적정 습도입니다.
+                        """
+                }
+                self.notificationForWeather(title: title, body: body)
+
+                
+                //MARK: - 좀 높은 습도때 온도별 조건
+
+            } else if humide >= 55, humide <= 75 {
+                if temperature >= 36 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 거의 아프리카인대요?
+                    "현재 습도 \(humide)% 습도가 좀 높습니다.
+                    """
+                } else if temperature >= 24, temperature < 36 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도\(temperature)°C. 덥네요!
+                    현재 습도 \(humide)% 습도가 좀 높습니다.
+                    """
+                } else if temperature < 24, temperature >= 18 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 적당한 기온입니다!
+                    현재 습도 \(humide)% 습도가 좀 높습니다.
+                    """
+                } else if temperature < 18, temperature >= 9 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 겉옷을 챙기는게 좋아요!
+                    현재 습도 \(humide)% 습도가 좀 높습니다.
+                    """
+                } else if temperature < 9, temperature >= 0 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 날씨가 쌀쌀해요!
+                    현재 습도 \(humide)% 습도가 좀 높습니다.
+                    """
+                } else if temperature <= 0 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body =
+                        """
+                        현재 온도 \(temperature)°C. 많이 추워요!!
+                        현재 습도 \(humide)% 습도가 좀 높습니다.
+                        """
+                }
+                self.notificationForWeather(title: title, body: body)
+
+                //MARK: - 높은 습도일때 온도별 조건
+
+            } else if humide > 75, humide <= 100 {
+                if temperature >= 36 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 거의 아프리카인대요?
+                    "현재 습도 \(humide)% 습도가 많이 높습니다.
+                    """
+                } else if temperature >= 24, temperature < 36 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도\(temperature)°C. 덥네요!
+                    현재 습도 \(humide)% 습도가 많이 높습니다.
+                    """
+                } else if temperature < 24, temperature >= 18 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 적당한 기온입니다!
+                    현재 습도 \(humide)% 습도가 많이 높습니다.
+                    """
+                } else if temperature < 18, temperature >= 9 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 겉옷을 챙기는게 좋아요!
+                    현재 습도 \(humide)% 습도가 많이 높습니다.
+                    """
+                } else if temperature < 9, temperature >= 0 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body = """
+                    현재 온도 \(temperature)°C. 날씨가 쌀쌀해요!
+                    현재 습도 \(humide)% 습도가 많이 높습니다.
+                    """
+                } else if temperature <= 0 {
+                    title = "ウェザ フェアリー(웨쟈 페아리)"
+                    body =
+                        """
+                        현재 온도 \(temperature)°C. 많이 추워요!!
+                        현재 습도 \(humide)% 습도가 많이 높습니다.
+                        """
+                }
+                self.notificationForWeather(title: title, body: body)
+            }
         }
     }
 
