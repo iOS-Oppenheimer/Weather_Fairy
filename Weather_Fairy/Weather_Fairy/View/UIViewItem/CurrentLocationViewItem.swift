@@ -4,7 +4,7 @@ class CurrentLocationViewItem: UIView {
     // 대기질
     lazy var sunriseImage: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "sunrise"))
-        imageView.customImageView(widthAnchor: 80, heightAnchor: 80)
+        imageView.customImageView(widthAnchor: 50, heightAnchor: 50)
         return imageView
     }()
     
@@ -22,7 +22,7 @@ class CurrentLocationViewItem: UIView {
     
     lazy var sunriseStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [sunriseImage, sunrise, sunriseValue])
-        stackView.verticalStackView(spacing: 5)
+        stackView.verticalStackView(spacing: 15)
         stackView.alignment = .center
         return stackView
     }()
@@ -30,7 +30,7 @@ class CurrentLocationViewItem: UIView {
     // 바람
     lazy var windyImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "windy"))
-        imageView.customImageView(widthAnchor: 70, heightAnchor: 70)
+        imageView.customImageView(widthAnchor: 50, heightAnchor: 50)
         return imageView
     }()
     
@@ -48,7 +48,7 @@ class CurrentLocationViewItem: UIView {
     
     lazy var windyStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [windyImageView, windy, windyValue])
-        stackView.verticalStackView(spacing: 5)
+        stackView.verticalStackView(spacing: 15)
         stackView.alignment = .center
         return stackView
     }()
@@ -74,14 +74,14 @@ class CurrentLocationViewItem: UIView {
     
     lazy var humidityStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [humidityImageView, humidity, humidityValue])
-        stackView.verticalStackViewForCenter(spacing: 5)
+        stackView.verticalStackViewForCenter(spacing: 15)
         return stackView
     }()
     
     // 강수확률
     lazy var sunsetImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "sunset"))
-        imageView.customImageView(widthAnchor: 70, heightAnchor: 70)
+        imageView.customImageView(widthAnchor: 50, heightAnchor: 50)
         return imageView
     }()
     
@@ -99,18 +99,18 @@ class CurrentLocationViewItem: UIView {
     
     lazy var sunsetStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [sunsetImageView, sunset, sunsetValue])
-        stackView.verticalStackViewForCenter(spacing: 5)
+        stackView.verticalStackViewForCenter(spacing: 15)
         return stackView
     }()
     
     let mainStackView: UIStackView = {
-           let stackView = UIStackView()
-           stackView.axis = .horizontal
-           stackView.spacing = 5
-           stackView.distribution = .fillEqually
-           stackView.translatesAutoresizingMaskIntoConstraints = false
-           return stackView
-       }()
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 11
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
      
     func setupCurrentWeatherView() {
         mainStackView.addArrangedSubview(sunriseStackView)

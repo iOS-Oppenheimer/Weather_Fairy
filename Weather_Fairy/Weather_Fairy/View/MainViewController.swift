@@ -15,6 +15,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     var cityKorName: String?
     var cityLat: Double?
     var cityLon: Double?
+    var celsius: Double? // 박철우
     var currentWeatherData: WeatherData? //박철우
     override func loadView() {
         view = mainView
@@ -40,7 +41,6 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
     }
 
     override func didReceiveMemoryWarning() {

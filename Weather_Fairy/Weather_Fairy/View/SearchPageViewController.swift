@@ -27,7 +27,6 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
         return tableView
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -37,10 +36,6 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
         
     }
   
-
-    
- 
-    
     // 네비게이션 바 설정 및 삭제 버튼 추가
     func setupNavigationBar() {
         self.navigationController?.navigationBar.tintColor = .black
@@ -53,7 +48,6 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
         }
     }
 
-    
     func setupUI() {
         let backgroundColor = UIColor(red: 0.90, green: 0.92, blue: 0.94, alpha: 1.0)
         view.backgroundColor = backgroundColor

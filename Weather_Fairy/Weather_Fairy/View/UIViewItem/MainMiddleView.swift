@@ -43,7 +43,7 @@ class MiddleView: UIView {
 
     lazy var buttonOverlayView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.1)
         view.layer.cornerRadius = 9
         return view
     }()
@@ -65,13 +65,13 @@ class MiddleView: UIView {
             make.width.equalTo(80)
             make.height.equalTo(25)
         }
-        
+
         middleButtonStackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
             make.height.equalTo(25)
         }
-        
+
         buttonOverlayView.snp.makeConstraints { make in
             make.centerX.equalTo(middleButtonStackView)
             make.centerY.equalTo(middleButtonStackView)
