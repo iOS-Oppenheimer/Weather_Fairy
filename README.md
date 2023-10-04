@@ -63,7 +63,7 @@
   </tbody>
 </table>
 
-## 🖥️  TEAM APP Project - Weather_Fairy
+## 🖥️ TEAM APP Project - Weather_Fairy
 > 스파르타코딩 iOS_7기 iOS심화 팀프로젝트 `떡잎마을 방범대` 입니다
 > 
 > 저희 팀은 이번 3가지 주제중 4명에게 부족한 API 공부를 위하여 `날씨 App`을 진행하기로 하였습니다.
@@ -90,7 +90,7 @@
 > 
 > 발표: 2023/10/06 금요일
 
-## Requirements
+## ⚙️ Requirements
 
 - 최소 iOS 14.0 +
 
@@ -120,7 +120,7 @@
     - [x]  git 브랜치/ PR / merge 활용
     - [ ]  github pull request에서 Code review 활용
 
-## ✏️와이어프레임
+## ✏️ 와이어프레임
   <table>
     <tr>
       <td>
@@ -143,7 +143,10 @@
     </tr>
   </table>
 
-## Library
+## ⭐️ YOUTUBE 시연영상 ⭐️
+
+
+## 📚 Library
 ```text
 //외부 라이브러리
 https://github.com/SnapKit/SnapKit
@@ -153,12 +156,12 @@ import UserNotifications
 import MapKit
 ```
 
-## Project Issue
+## 🔥 Project Issue 🔥
 ```text
 
 ```
 
-## 회고 & 느낀점
+## 🍎 회고 & 느낀점
 ```text
 
 ```
