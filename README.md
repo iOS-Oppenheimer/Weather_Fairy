@@ -64,7 +64,6 @@
 </table>
 
 ## 🖥️ TEAM APP Project - Weather_Fairy
-* [TEAM S.A](https://www.notion.so/S-A-1f9f48c90f2b49b6a6a4a3e2cda18086)
 > 스파르타코딩 iOS_7기 iOS심화 팀프로젝트 `떡잎마을 방범대` 입니다
 > 
 > 저희 팀은 이번 3가지 주제중 4명에게 부족한 API 공부를 위하여 `날씨 App`을 진행하기로 하였습니다.
@@ -90,7 +89,34 @@
 > 개발기간: 2023/09/25 월요일 ~ 2023/10/05 목요일
 > 
 > 발표: 2023/10/06 금요일
+>
 
+## 👨‍💻 역할분담 및 프로젝트 주요기능 
+* [TEAM S.A](https://www.notion.so/S-A-1f9f48c90f2b49b6a6a4a3e2cda18086)
+
+* 김은경
+  > 작성
+  
+* 박상우
+  > 작성
+  
+* 박철우
+  > 작성
+  
+* 원성준
+  > 작성
+
+## ⚡️ 팀 규칙
+```text
+1. 아래의 Git Convention 지켜서 commit과 PR 요청하기! 
+git commit -m "[FEAT] : ⚙️ commit init"
+
+2. 스크럼: 오전 9시 30분
+3. Pull Request: 오후 8시
+
+4. 자리비울 때 말하기 (개인사정)
+5. 이슈 트랙킹/트러블슈팅시 질문하기
+```
 ## ⚙️ Requirements
 
 - 최소 iOS 14.0 +
