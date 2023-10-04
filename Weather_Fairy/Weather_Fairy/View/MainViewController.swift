@@ -8,7 +8,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     private var apiViewModel = APIViewModel()
     private let locationManager = CLLocationManager()
     let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
-
+    let sceneDelegate = SceneDelegate() // 박철우 - 백그라운드알림
     let mainView = MainView()
     let currentWeather: BottomCurrentWeatherView
     let forecast: BottomWeatherForecastView
@@ -121,6 +121,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
+
     func updateUI(with data: WeatherData) {
         mainView.topView.celsiusLabel.text = "\(Int(data.main.temp))"
 
@@ -141,11 +142,15 @@ class MainViewController: UIViewController, MiddleViewDelegate {
             let image = weatherImageInstance.getImage(id: weatherId)
             mainView.changeBackgroundImage(to: image)
         }
-        if let currentWeatherData = currentWeatherData { // for notificiation
-            let currentTemperature = Int(currentWeatherData.main.temp) // for notificiation
-            notificationForWeather_Fairy.showTemperatureAlert(temperature: currentTemperature) // for notificiation
-        } // for notificiation
+        if let currentWeatherData = currentWeatherData { //for notificiation
+            let currentTemperature = Int(currentWeatherData.main.temp) //for notificiation
+            let currentHumide = Int(currentWeatherData.main.humidity) //for notification -humide
+            notificationForWeather_Fairy.showTemperatureAlert(temperature: currentTemperature, humide: currentHumide)//for notificiation
+        }//for notificiation
     }
+
+    
+      
 }
 
 extension MainViewController: MKMapViewDelegate {
