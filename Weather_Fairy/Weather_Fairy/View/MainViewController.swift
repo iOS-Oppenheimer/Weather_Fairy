@@ -50,6 +50,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     @objc func resetLocationButtonTapped() {
         didTapMyLocationButton()
         mapViewModel?.resetLocation()
+        myLocation.mapkit.currentLocationLabel.text = "현재 내 위치"
         locationManager.startUpdatingLocation()
     }
 
@@ -99,7 +100,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 
     func changeTexts() {
-        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "부산"
+        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "서울"
         // 현재위치(받아오는 lat, lon) 설정해줘야함 -> 하드코딩 바꾸기
         let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? 35.1796, longitude: cityLon ?? 129.0756)
         let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
@@ -151,6 +152,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
     func updateUI(with data: WeatherData) {
         mainView.topView.celsiusLabel.text = "\(Int(data.main.temp))"
+
         currentWeatherData = data //for notificiation
         print("Main Current Temperature: \(Int(data.main.temp))") //for checking notificiation
         currentWeather.currentLocationItem.sunriseValue.text = convertTime(data.sys.sunrise)
@@ -260,16 +262,15 @@ extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
 
-        fetchWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        fetchWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
 
-        fetchHourlyWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        fetchHourlyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
 
-        fetchDailyWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        fetchDailyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
 
         geocode(location: location) { cityName in
             print("City Name: \(cityName)")
         }
-
         manager.stopUpdatingLocation()
     }
 
