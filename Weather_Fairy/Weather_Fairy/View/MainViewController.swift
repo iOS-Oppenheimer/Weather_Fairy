@@ -15,7 +15,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     var cityKorName: String?
     var cityLat: Double?
     var cityLon: Double?
-    var celsius: Double? //박철우
+    var celsius: Double? // 박철우
     override func loadView() {
         view = mainView
     }
@@ -40,13 +40,13 @@ class MainViewController: UIViewController, MiddleViewDelegate {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         if let currentLocation = locationManager.location {
             let latitude = currentLocation.coordinate.latitude
             let longitude = currentLocation.coordinate.longitude
 
             notificationForWeather_Fairy.apiForNotification(latitude: latitude, longitude: longitude)
-            notificationForWeather_Fairy.updateCelsiusLabel(self.celsius ?? 5)
+            notificationForWeather_Fairy.updateCelsiusLabel(celsius ?? 5)
             notificationForWeather_Fairy.sendingPushNotification()
         } else {
             print("Failed to get current location.")
