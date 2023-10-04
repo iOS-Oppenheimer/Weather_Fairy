@@ -4,7 +4,8 @@ import SnapKit
 
 class SearchPageViewController: UIViewController, UISearchBarDelegate {
     
-    private let viewModel = APIViewModel()
+    private let apiViewModel = APIViewModel()
+    private let searchPageViewModel = SearchPageViewModel()
     private var searchResults: [(String, String, Double, Double)] = []
     private let searchHistory = SearchHistory()
     
@@ -75,7 +76,7 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
             // 서치바가 비어있는 경우 검색 기록을 표시
             displaySearchHistory()
         } else {
-            viewModel.searchLocation(for: searchText) { [weak self] result in
+            apiViewModel.searchLocation(for: searchText) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let coordinates):
@@ -162,12 +163,16 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
             cell.setLocationData(data: result)
             cell.showLoadingSpinner()
             
-            viewModel.fetchWeatherData(lat: result.2, lon: result.3) { result in
+            
+            apiViewModel.fetchWeatherData(latitude: result.2, longitude: result.3) { result in
                 switch result {
                 case .success(let weatherInfo):
                     DispatchQueue.main.async {
+                        let data = self.searchPageViewModel.convertWeatherData(data: weatherInfo)
+                        let timeData = self.searchPageViewModel.convertTime(data: weatherInfo)
+                        cell.weatherData = weatherInfo
                         cell.hideLoadingSpinner()
-                        cell.setWeatherData(weatherInfo: weatherInfo)
+                        cell.setWeatherData(data: data, timeData: timeData ?? "")
                         cell.configure()
                     }
                 case .failure(let error):
@@ -184,6 +189,7 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) as? SearchPageTableViewCell {
             let selectedResult = searchResults[indexPath.row]
             addToSearchHistory(Location(engName: selectedResult.0, korName: selectedResult.1, lat: selectedResult.2, lon: selectedResult.3))
             
@@ -192,10 +198,10 @@ extension SearchPageViewController: UITableViewDataSource, UITableViewDelegate {
             mainVC.cityKorName = selectedResult.1
             mainVC.cityLat = selectedResult.2
             mainVC.cityLon = selectedResult.3
-            
-            print("3:\(selectedResult)")
+            mainVC.currentWeatherData = cell.weatherData
             
             navigationController?.setViewControllers([mainVC], animated: true)
+        }
     }
     
     func addToSearchHistory(_ location: Location) {

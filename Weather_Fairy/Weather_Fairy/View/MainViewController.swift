@@ -34,8 +34,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        notificationForWeather_Fairy.openingNotification() // for notificiation
-
+//        notificationForWeather_Fairy.openingNotification() // for notificiation
+        print("현재 날씨 : \(currentWeatherData)")
         changeTexts()
     }
 
@@ -119,36 +119,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func fetchWeatherData(latitude: Double, longitude: Double) {
-        let urlStr = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(geoAPIKey)&units=metric&lang=kr"
 
-        guard let url = URL(string: urlStr) else { return }
-
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
-            if let error = error {
-                print("Failed to fetch data with error: ", error)
-                return
-            }
-
-            guard let data = data else { return }
-
-            do {
-                let decoder = JSONDecoder()
-                let weatherData = try decoder.decode(WeatherData.self, from: data)
-
-                DispatchQueue.main.async {
-                    // UI 업데이트 및 배경 이미지 변경
-                    self?.updateUI(with: weatherData)
-                    self?.notificationForWeather_Fairy.dataForNotification(with: weatherData)//for notificiation
-                }
-
-            } catch {
-                print("Failed to parse JSON with error: ", error)
-            }
-        }
-
-        task.resume()
-    }
 
     func updateUI(with data: WeatherData) {
         mainView.topView.celsiusLabel.text = "\(Int(data.main.temp))"
@@ -261,8 +232,6 @@ extension MainViewController: MKMapViewDelegate {
 extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-
-        fetchWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
 
         fetchHourlyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
 
