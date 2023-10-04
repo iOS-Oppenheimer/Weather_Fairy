@@ -16,6 +16,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     var cityLat: Double?
     var cityLon: Double?
     var celsius: Double? // 박철우
+    var currentWeatherData: WeatherData? //박철우
     override func loadView() {
         view = mainView
     }
@@ -33,24 +34,13 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        notificationForWeather_Fairy.openingNotification() // 박철우 - 어플이 처음 켜졌을때 메인페이지에서 딱 한번만 보여줄 알림 만들었습니다.
+        notificationForWeather_Fairy.openingNotification() // for notificiation
 
         changeTexts()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        if let currentLocation = locationManager.location {
-            let latitude = currentLocation.coordinate.latitude
-            let longitude = currentLocation.coordinate.longitude
-
-            notificationForWeather_Fairy.apiForNotification(latitude: latitude, longitude: longitude)
-            notificationForWeather_Fairy.updateCelsiusLabel(celsius ?? 5)
-            notificationForWeather_Fairy.sendingPushNotification()
-        } else {
-            print("Failed to get current location.")
-        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,6 +50,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     @objc func resetLocationButtonTapped() {
         didTapMyLocationButton()
         mapViewModel?.resetLocation()
+        myLocation.mapkit.currentLocationLabel.text = "현재 내 위치"
         locationManager.startUpdatingLocation()
     }
 
@@ -109,7 +100,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 
     func changeTexts() {
-        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "부산"
+        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "서울"
         // 현재위치(받아오는 lat, lon) 설정해줘야함 -> 하드코딩 바꾸기
         let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? 35.1796, longitude: cityLon ?? 129.0756)
         let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
@@ -148,6 +139,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
                 DispatchQueue.main.async {
                     // UI 업데이트 및 배경 이미지 변경
                     self?.updateUI(with: weatherData)
+                    self?.notificationForWeather_Fairy.dataForNotification(with: weatherData)//for notificiation
                 }
 
             } catch {
@@ -161,6 +153,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     func updateUI(with data: WeatherData) {
         mainView.topView.celsiusLabel.text = "\(Int(data.main.temp))"
 
+        currentWeatherData = data //for notificiation
+        print("Main Current Temperature: \(Int(data.main.temp))") //for checking notificiation
         currentWeather.currentLocationItem.sunriseValue.text = convertTime(data.sys.sunrise)
         currentWeather.currentLocationItem.sunsetValue.text = convertTime(data.sys.sunset)
         currentWeather.currentLocationItem.windyValue.text = "\(data.wind.speed)m/s"
@@ -176,6 +170,10 @@ class MainViewController: UIViewController, MiddleViewDelegate {
             let image = weatherImageInstance.getImage(id: weatherId)
             mainView.changeBackgroundImage(to: image)
         }
+        if let currentWeatherData = currentWeatherData { //for notificiation
+            let currentTemperature = Int(currentWeatherData.main.temp) //for notificiation
+                notificationForWeather_Fairy.showTemperatureAlert(temperature: currentTemperature)//for notificiation
+        }//for notificiation
     }
 
     func convertTime(_ timestamp: TimeInterval) -> String {
@@ -264,16 +262,15 @@ extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
 
-        fetchWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        fetchWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
 
-        fetchHourlyWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        fetchHourlyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
 
-        fetchDailyWeatherData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        fetchDailyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
 
         geocode(location: location) { cityName in
             print("City Name: \(cityName)")
         }
-
         manager.stopUpdatingLocation()
     }
 
