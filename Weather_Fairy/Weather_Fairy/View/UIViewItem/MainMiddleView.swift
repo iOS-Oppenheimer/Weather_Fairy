@@ -43,7 +43,7 @@ class MiddleView: UIView {
 
     lazy var buttonOverlayView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.1)
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         view.layer.cornerRadius = 9
         return view
     }()

@@ -4,7 +4,7 @@ import UIKit
 class TopView: UIView {
     var originalCelsiusValue: Double?
     
-    lazy var cityName: UILabel = {
+    lazy var topCityName: UILabel = {
         let label = UILabel()
         label.customLabel(text: "시", textColor: .white, fontSize: 32)
         return label
@@ -79,7 +79,7 @@ class TopView: UIView {
     }()
 
     lazy var topStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [cityName, temperatureStackView, conditionsLabel])
+        let stackView = UIStackView(arrangedSubviews: [topCityName, temperatureStackView, conditionsLabel])
         stackView.verticalStackViewForCenter(spacing: 5)
         return stackView
     }()
