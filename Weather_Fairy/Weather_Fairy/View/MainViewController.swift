@@ -36,9 +36,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-//        notificationForWeather_Fairy.openingNotification() // for notificiation
-        print("현재 날씨 : \(currentWeatherData)")
-        changeTexts()
+        notificationForWeather_Fairy.openingNotification()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -99,14 +97,6 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         forecast.weatherForecastView.isHidden = true
         myLocation.myLocationView.isHidden = false
         view.bringSubviewToFront(myLocation)
-    }
-
-    func changeTexts() {
-        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "서울"
-        // 현재위치(받아오는 lat, lon) 설정해줘야함 -> 하드코딩 바꾸기
-        let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? 35.1796, longitude: cityLon ?? 129.0756)
-        let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
-        myLocation.mapkit.customMapView.setRegion(coordinateRegion, animated: false)
     }
 
     init() {
@@ -180,6 +170,12 @@ extension MainViewController: CLLocationManagerDelegate {
             print("City Name: \(cityName)")
         }
         manager.stopUpdatingLocation()
+        
+        //하드코딩 "서울" 바꿔주기
+        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "서울"
+        let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
+        let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
+        myLocation.mapkit.customMapView.setRegion(coordinateRegion, animated: false)
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
