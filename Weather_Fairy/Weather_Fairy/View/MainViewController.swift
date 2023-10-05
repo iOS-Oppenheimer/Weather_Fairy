@@ -38,7 +38,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        notificationForWeather_Fairy.openingNotification()
+        //notificationForWeather_Fairy.openingNotification()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -138,7 +138,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         if let currentWeatherData = currentWeatherData { // for notificiation
             let currentTemperature = Int(currentWeatherData.main.temp) // for notificiation
             let currentHumide = Int(currentWeatherData.main.humidity) // for notification -humide
-            notificationForWeather_Fairy.showTemperatureAlert(temperature: currentTemperature, humide: currentHumide) // for notificiation
+            //notificationForWeather_Fairy.showTemperatureAlert(temperature: currentTemperature, humide: currentHumide) // for notificiation
         } // for notificiation
     }
 }
