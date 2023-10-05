@@ -105,7 +105,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if let error = error {
                 print("푸시 알림 Error: \(error.localizedDescription)")
             } else {
-                print("푸시 알림 ON")
+                print("일간 오전 오후 푸시 알림 ON")
             }
         }
     }
@@ -117,7 +117,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         backgroundNotification.body = body
         backgroundNotification.sound = UNNotificationSound.default
 
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true) //1분마다 실시간 백그라운드 알림 한시간 간격으로 하기위한건대 테스트겸 1분으로 해둠
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 3600, repeats: true) //1분마다 실시간 백그라운드 알림 한시간 간격으로 하기위한건대 테스트겸 1분으로 해둠
 
         let request = UNNotificationRequest(identifier: "APIforNotificationForWeather_Fairy", content: backgroundNotification, trigger: trigger)
 
@@ -125,7 +125,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if let error = error {
                 print("푸시 알림 Error: \(error.localizedDescription)")
             } else {
-                print("푸시 알림 ON")
+                print("백그라운드 실시간 온도 한시간 간격 푸시 알림 ON")
             }
         }
     }

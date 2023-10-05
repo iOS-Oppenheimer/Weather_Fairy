@@ -27,7 +27,7 @@ class NotificationForWeather_Fairy {
             let calendar = Calendar.current
             let components = calendar.dateComponents([.hour, .minute], from: now)
             if (0 ..< 24).contains(components.hour!) {
-                notificationForWeather(title: "ウェザ フェアリー(웨쟈 페아리)", body: "오늘 날씨를 확인해보세요 !")
+                notificationForOpening(title: "ウェザ フェアリー(웨쟈 페아리)", body: "오늘 날씨를 확인해보세요 !")
                 self.timer?.invalidate()
             }
         }
@@ -237,6 +237,24 @@ class NotificationForWeather_Fairy {
 
     // MARK: - 알람 배너 설정 배너 내용-트리거-생성
 
+    func notificationForOpening(title: String, body: String) {
+        let pushNotification = UNMutableNotificationContent()
+        pushNotification.title = title
+        pushNotification.body = body
+        pushNotification.sound = UNNotificationSound.default
+
+        // let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false )
+        let request = UNNotificationRequest(identifier: "opening", content: pushNotification, trigger: nil)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print(" 푸시 알림 Error: \(error.localizedDescription) ")
+            } else {
+                print(" 오프닝 푸시 알림 ON ")
+            }
+        }
+    }
+    
     func notificationForWeather(title: String, body: String) {
         let pushNotification = UNMutableNotificationContent()
         pushNotification.title = title
@@ -250,7 +268,7 @@ class NotificationForWeather_Fairy {
             if let error = error {
                 print(" 푸시 알림 Error: \(error.localizedDescription) ")
             } else {
-                print(" 푸시 알림 ON ")
+                print(" 메인페이지 푸시 알림 ON ")
             }
         }
     }
