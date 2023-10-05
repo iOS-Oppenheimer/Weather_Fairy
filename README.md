@@ -194,7 +194,7 @@ git commit -m "[FEAT] : ⚙️ commit init"
 
 
 ## ⭐️ YOUTUBE 시연영상 ⭐️
-
+[![Video Label](http://img.youtube.com/vi/CG0sDbMho24/0.jpg)](https://youtu.be/CG0sDbMho24)
 
 ## 📚 Library
 ```text
