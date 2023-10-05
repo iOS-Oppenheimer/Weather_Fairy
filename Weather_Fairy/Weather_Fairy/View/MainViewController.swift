@@ -170,6 +170,7 @@ extension MainViewController: CLLocationManagerDelegate {
             mainViewModel.fetchAndUpdateWeatherData(latitude: cityLat ?? myCurrentLat, longitude: cityLon ?? myCurrentLon) { [weak self] data in
                 self?.updateUI(with: data)
                 self?.notificationForWeather_Fairy.dataForNotification(with: data)
+                self?.sceneDelegate.dataForNotificationForBackground(with: data)
             }
 
             mainViewModel.fetchAndUpdateHourlyWeatherData(latitude: cityLat ?? myCurrentLat, longitude: cityLon ?? myCurrentLon) { [weak self] forecast in
