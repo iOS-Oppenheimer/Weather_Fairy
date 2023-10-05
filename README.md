@@ -94,7 +94,7 @@
 ## 👨‍💻 역할분담 및 프로젝트 주요기능 
 * [TEAM S.A](https://www.notion.so/S-A-1f9f48c90f2b49b6a6a4a3e2cda18086)
 
-* 김은경
+### 김은경
 - currentWeatherViewItem  -> UIViewItem 분리 중 한개
 - myLocationViewItem -> UIViewItem 분리 중 한개
 - MapKit 내부 라이브러리 사용 -> 현재 위치 서비스 및 위치 정보 Authorization 허용
@@ -103,19 +103,22 @@
 - GitHub PR 지도 및 Conflict/Merge 정리
 - README 초안 작성
   
-* 박상우
+### 박상우
 - 도시 검색 페이지 제작
 - 사용자의 입력을 받아 검색 기능 구현
 - OpenWeather API를 호출해 검색 도시들의 날씨 출력 기능 구현
 - UserDefaults를 활용한 검색 기록 저장 구현
   
-* 박철우
+### 박철우
 - push notification 기능 ( api에서 필요한 데이터 가져와서 해당 데이터를 이용한 알림 생성 호출)
 - SceneDelegate에서 background에서 알림을 받을수있게 설정
 - appDelegate에서 알림 허용 설정기능 // 어플이 실행된 직후에  단 한번 보여줄 알림 처리할수있는 기능
   
-* 원성준
-
+### 원성준
+- 메인 현재 위치 기온 섭씨, 화씨 단위 변환
+- 메인 현재 위치, 기온, 기상상태 openweathermap api 설정
+- 메인 현재 위치에 대한 일출시간, 바람, 습도, 일몰시간 api 설정
+- 메인 현재 위치에 대한 5일간, 3시간 간격 기상예보 api 설정
 
 ## ⚡️ 팀 규칙
 ```text
@@ -156,7 +159,7 @@ git commit -m "[FEAT] : ⚙️ commit init"
 - **GIT**
     - [x]  git add / commit / push 활용
     - [x]  git 브랜치/ PR / merge 활용
-    - [ ]  github pull request에서 Code review 활용
+    - [x]  github pull request에서 Code review 활용
 
 ## ✏️ 와이어프레임
   <table>
@@ -180,6 +183,15 @@ git commit -m "[FEAT] : ⚙️ commit init"
       </td>
     </tr>
   </table>
+
+  <table>
+    <tr>
+      <td>
+        <img src="https://github.com/iOS-Oppenheimer/Weather_Fairy/assets/136118540/5e1baa94-e60d-43c6-af39-b6d24fa96ef1"/>
+      </td>
+    </tr>
+  </table>
+
 
 ## ⭐️ YOUTUBE 시연영상 ⭐️
 
