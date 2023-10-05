@@ -98,15 +98,18 @@ class MapViewModel: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
             print("알 수 없는 위치 권한 상태입니다.")
         }
     }
-    
-    func geocode(location: CLLocation, topViewCityName: UILabel) {
+
+    func geocode(location: CLLocation, completion: @escaping (String?) -> Void) {
         CLGeocoder().reverseGeocodeLocation(location) { placemarks, _ in
             if let placemark = placemarks?.first,
                let cityName = placemark.locality
             {
                 DispatchQueue.main.async {
                     currentCityName = cityName
+                    completion(cityName)
                 }
+            } else {
+                completion(nil)
             }
         }
     }
