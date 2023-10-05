@@ -57,6 +57,15 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         let currentLocation = CLLocationCoordinate2D(latitude: myCurrentLat, longitude: myCurrentLon)
         let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
         myLocation.mapkit.customMapView.setRegion(coordinateRegion, animated: false)
+
+        // 현재 위치의 도시 이름을 얻어와 currentLocationLabel 업데이트
+        if let location = locationManager.location {
+            mapViewModel?.geocode(location: location) { cityName in
+                if let cityName = cityName {
+                    self.myLocation.mapkit.currentLocationLabel.text = cityName
+                }
+            }
+        }
     }
 
     @objc func signChangeButtonTapped() {
@@ -151,15 +160,15 @@ extension MainViewController: MKMapViewDelegate {
 
 extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else { return } //가장 최근 위치 업데이트 가져오기!
+        guard let location = locations.first else { return } // 가장 최근 위치 업데이트 가져오기!
 
         // 초기 위치가 아직 저장되지 않았을 때 실행
         if initialLocation == nil {
-            //현재 위도 경도 저장
+            // 현재 위도 경도 저장
             myCurrentLat = location.coordinate.latitude
             myCurrentLon = location.coordinate.longitude
-            
-            //초기 위치로 설정 및 위치 업데이트 Stop
+
+            // 초기 위치로 설정 및 위치 업데이트 Stop
             initialLocation = location
             manager.stopUpdatingLocation()
 
@@ -198,6 +207,13 @@ extension MainViewController: CLLocationManagerDelegate {
 
     // 주소를 받아오는 함수
     func geocode(location: CLLocation, completion: @escaping (String) -> Void) {
-        mapViewModel?.geocode(location: location, topViewCityName: mainView.topView.topCityName)
+        mapViewModel?.geocode(location: location) { cityName in
+            if let cityName = cityName {
+                DispatchQueue.main.async {
+                    self.mainView.topView.topCityName.text = cityName
+                    completion(cityName)
+                }
+            }
+        }
     }
 }
