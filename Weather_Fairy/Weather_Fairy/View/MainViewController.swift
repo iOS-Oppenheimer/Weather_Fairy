@@ -7,8 +7,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     private var mainViewModel = MainViewModel()
     // private var apiViewModel = APIViewModel()
     private let locationManager = CLLocationManager()
-//    let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
-//    let sceneDelegate = SceneDelegate() // 박철우 - 백그라운드알림
+    let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
+    let sceneDelegate = SceneDelegate() // 박철우 - 백그라운드알림
     let mainView = MainView()
     let currentWeather: BottomCurrentWeatherView
     let forecast: BottomWeatherForecastView
@@ -36,7 +36,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-//        notificationForWeather_Fairy.openingNotification()
+        notificationForWeather_Fairy.openingNotification()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -52,13 +52,13 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         mapViewModel?.resetLocation()
         myLocation.mapkit.currentLocationLabel.text = cityKorName ?? currentCityName
         locationManager.startUpdatingLocation()
-        
+
         if let location = locationManager.location {
             geocode(location: location) { cityName in
                 self.myLocation.mapkit.currentLocationLabel.text = cityName
             }
         } else {
-            self.myLocation.mapkit.currentLocationLabel.text = "위치 정보 가져오기 실패"
+            myLocation.mapkit.currentLocationLabel.text = "위치 정보 가져오기 실패"
         }
     }
 
@@ -123,7 +123,6 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         mainView.topView.topCityName.text = cityKorName ?? currentCityName
         mainView.topView.celsiusLabel.text = "\(Int(data.main.temp))"
         currentWeatherData = data // for notificiation
-//        print("Main Current Temperature: \(Int(data.main.temp))") // for checking notificiation
         currentWeather.currentLocationItem.sunriseValue.text = mainViewModel.convertTime(data.sys.sunrise)
         currentWeather.currentLocationItem.sunsetValue.text = mainViewModel.convertTime(data.sys.sunset)
         currentWeather.currentLocationItem.windyValue.text = "\(data.wind.speed)m/s"
@@ -160,11 +159,10 @@ extension MainViewController: CLLocationManagerDelegate {
         geocode(location: location) { cityName in
             print("City Name: \(cityName)")
         }
-        
-        apiViewModel.mainFetchWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] data in
+
         mainViewModel.fetchAndUpdateWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] data in
             self?.updateUI(with: data)
-//            self?.notificationForWeather_Fairy.dataForNotification(with: data)
+            self?.notificationForWeather_Fairy.dataForNotification(with: data)
         }
 
         mainViewModel.fetchAndUpdateHourlyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] forecast in
@@ -174,7 +172,6 @@ extension MainViewController: CLLocationManagerDelegate {
         mainViewModel.fetchAndUpdateDailyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] forecast in
             self?.forecast.updateDailyForecast(forecast)
         }
-
 
         manager.stopUpdatingLocation()
 
