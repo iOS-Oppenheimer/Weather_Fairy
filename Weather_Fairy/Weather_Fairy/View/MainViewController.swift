@@ -50,7 +50,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     @objc func resetLocationButtonTapped() {
         didTapMyLocationButton()
         mapViewModel?.resetLocation()
-        myLocation.mapkit.currentLocationLabel.text = "현재 내 위치"
+        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? currentCityName
         locationManager.startUpdatingLocation()
     }
 
@@ -174,7 +174,6 @@ extension MainViewController: CLLocationManagerDelegate {
         manager.stopUpdatingLocation()
         
         //하드코딩 "서울" 바꿔주기
-        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "서울"
         let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
         let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
         myLocation.mapkit.customMapView.setRegion(coordinateRegion, animated: false)

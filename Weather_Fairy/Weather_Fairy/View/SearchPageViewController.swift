@@ -24,6 +24,7 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+        tableView.keyboardDismissMode = .onDrag
         tableView.register(SearchPageTableViewCell.self, forCellReuseIdentifier: "SearchPageTableViewCell")
         return tableView
     }()
@@ -33,8 +34,19 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
         setupUI()
         displaySearchHistory()
         setupNavigationBar()
-
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        view.addGestureRecognizer(tapGesture)
+        
+        tapGesture.cancelsTouchesInView = false
+    }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
   
     // 네비게이션 바 설정 및 삭제 버튼 추가
@@ -47,6 +59,10 @@ class SearchPageViewController: UIViewController, UISearchBarDelegate {
         if searchHistory.getSearchHistory().isEmpty {
             deleteButton.isEnabled = false
         }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        searchBar.resignFirstResponder()
     }
 
     func setupUI() {
