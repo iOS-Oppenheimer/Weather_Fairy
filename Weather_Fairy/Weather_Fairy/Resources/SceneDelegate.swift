@@ -60,9 +60,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let temperature = Int(data.main.temp)
         currentWeatherData = data
         topView.celsiusLabel.text = "\(temperature)"
-        print("api 온도 가져오기 : \(Int(data.main.temp))")
+//        print("api 온도 가져오기 : \(Int(data.main.temp))")
         let humide = Int(data.main.humidity)
-        print("api 습도 가져오기 : \(Int(data.main.humidity))")
+//        print("api 습도 가져오기 : \(Int(data.main.humidity))")
         currentWeatherData = data
         currentLocationViewItem.humidityValue.text = "\(data.main.humidity)%"
 
@@ -72,7 +72,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     //MARK: - 백그라운드 실시간 알림
 
     func backgroundAPInotification(temperature: Int, humide: Int) {
-        print("함수 온도: \(temperature)") // for checking notificiation
+//        print("함수 온도: \(temperature)") // for checking notificiation
 
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }

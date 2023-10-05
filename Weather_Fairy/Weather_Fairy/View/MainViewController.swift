@@ -7,14 +7,14 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     private var mainViewModel = MainViewModel()
     // private var apiViewModel = APIViewModel()
     private let locationManager = CLLocationManager()
-    let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
-    let sceneDelegate = SceneDelegate() // 박철우 - 백그라운드알림
+//    let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
+//    let sceneDelegate = SceneDelegate() // 박철우 - 백그라운드알림
     let mainView = MainView()
     let currentWeather: BottomCurrentWeatherView
     let forecast: BottomWeatherForecastView
     let myLocation: BottomMyLocationView
     var cityEngName: String?
-    var cityKorName: String?
+    var cityKorName: String? = nil
     var cityLat: Double?
     var cityLon: Double?
     var celsius: Double? // 박철우
@@ -36,7 +36,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        notificationForWeather_Fairy.openingNotification()
+//        notificationForWeather_Fairy.openingNotification()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -50,6 +50,7 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     @objc func resetLocationButtonTapped() {
         didTapMyLocationButton()
         mapViewModel?.resetLocation()
+        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? currentCityName
         locationManager.startUpdatingLocation()
         
         if let location = locationManager.location {
@@ -119,10 +120,10 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 
     func updateUI(with data: WeatherData) {
+        mainView.topView.topCityName.text = cityKorName ?? currentCityName
         mainView.topView.celsiusLabel.text = "\(Int(data.main.temp))"
-
         currentWeatherData = data // for notificiation
-        print("Main Current Temperature: \(Int(data.main.temp))") // for checking notificiation
+//        print("Main Current Temperature: \(Int(data.main.temp))") // for checking notificiation
         currentWeather.currentLocationItem.sunriseValue.text = mainViewModel.convertTime(data.sys.sunrise)
         currentWeather.currentLocationItem.sunsetValue.text = mainViewModel.convertTime(data.sys.sunset)
         currentWeather.currentLocationItem.windyValue.text = "\(data.wind.speed)m/s"
@@ -156,9 +157,14 @@ extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
 
+        geocode(location: location) { cityName in
+            print("City Name: \(cityName)")
+        }
+        
+        apiViewModel.mainFetchWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] data in
         mainViewModel.fetchAndUpdateWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] data in
             self?.updateUI(with: data)
-            self?.notificationForWeather_Fairy.dataForNotification(with: data)
+//            self?.notificationForWeather_Fairy.dataForNotification(with: data)
         }
 
         mainViewModel.fetchAndUpdateHourlyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] forecast in
@@ -169,13 +175,9 @@ extension MainViewController: CLLocationManagerDelegate {
             self?.forecast.updateDailyForecast(forecast)
         }
 
-        geocode(location: location) { cityName in
-            print("City Name: \(cityName)")
-        }
+
         manager.stopUpdatingLocation()
 
-        // 하드코딩 "서울" 바꿔주기
-        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? "서울"
         let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
         let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
         myLocation.mapkit.customMapView.setRegion(coordinateRegion, animated: false)

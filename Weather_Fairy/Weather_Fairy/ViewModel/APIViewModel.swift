@@ -135,7 +135,7 @@ class APIViewModel {
             do {
                 let decoder = JSONDecoder()
                 let hourlyForecast = try decoder.decode(HourlyForecast.self, from: data)
-                print("Hourly Forecast Data: \(hourlyForecast)")
+//                print("Hourly Forecast Data: \(hourlyForecast)")
                 DispatchQueue.main.async {
                     completion(hourlyForecast.list)
                 }

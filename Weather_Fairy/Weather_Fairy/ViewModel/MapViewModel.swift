@@ -2,6 +2,8 @@ import CoreLocation
 import Foundation
 import MapKit
 
+var currentCityName: String?
+
 class MapViewModel: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
     private var locationManager: CLLocationManager
     private var mapView: MKMapView
@@ -103,7 +105,7 @@ class MapViewModel: NSObject, CLLocationManagerDelegate, MKMapViewDelegate {
                let cityName = placemark.locality
             {
                 DispatchQueue.main.async {
-                    topViewCityName.text = cityName
+                    currentCityName = cityName
                 }
             }
         }
