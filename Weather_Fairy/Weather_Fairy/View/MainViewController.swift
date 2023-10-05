@@ -5,8 +5,8 @@ import UIKit
 class MainViewController: UIViewController, MiddleViewDelegate {
     private var mapViewModel: MapViewModel?
     private var mainViewModel = MainViewModel()
-    // private var apiViewModel = APIViewModel()
     private let locationManager = CLLocationManager()
+    var initialLocation: CLLocation? = nil
     let notificationForWeather_Fairy = NotificationForWeather_Fairy() // 박철우 - 알림기능들에 접근하기위함
     let sceneDelegate = SceneDelegate() // 박철우 - 백그라운드알림
     let mainView = MainView()
@@ -19,6 +19,8 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     var cityLon: Double?
     var celsius: Double? // 박철우
     var currentWeatherData: WeatherData? // 박철우
+    var myCurrentLat: Double = 0.0
+    var myCurrentLon: Double = 0.0
     override func loadView() {
         view = mainView
     }
@@ -48,18 +50,13 @@ class MainViewController: UIViewController, MiddleViewDelegate {
     }
 
     @objc func resetLocationButtonTapped() {
-        didTapMyLocationButton()
+        didTapMyLocationButton() // 클릭시, mapview로 전환
         mapViewModel?.resetLocation()
-        myLocation.mapkit.currentLocationLabel.text = cityKorName ?? currentCityName
-        locationManager.startUpdatingLocation()
+        myLocation.mapkit.currentLocationLabel.text = "현재 내 위치" // 이건 무조건 내 위치로 돌아와야함!
 
-        if let location = locationManager.location {
-            geocode(location: location) { cityName in
-                self.myLocation.mapkit.currentLocationLabel.text = cityName
-            }
-        } else {
-            myLocation.mapkit.currentLocationLabel.text = "위치 정보 가져오기 실패"
-        }
+        let currentLocation = CLLocationCoordinate2D(latitude: myCurrentLat, longitude: myCurrentLon)
+        let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
+        myLocation.mapkit.customMapView.setRegion(coordinateRegion, animated: false)
     }
 
     @objc func signChangeButtonTapped() {
@@ -154,30 +151,40 @@ extension MainViewController: MKMapViewDelegate {
 
 extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
+        guard let location = locations.first else { return } //가장 최근 위치 업데이트 가져오기!
 
-        geocode(location: location) { cityName in
-            print("City Name: \(cityName)")
+        // 초기 위치가 아직 저장되지 않았을 때 실행
+        if initialLocation == nil {
+            //현재 위도 경도 저장
+            myCurrentLat = location.coordinate.latitude
+            myCurrentLon = location.coordinate.longitude
+            
+            //초기 위치로 설정 및 위치 업데이트 Stop
+            initialLocation = location
+            manager.stopUpdatingLocation()
+
+            geocode(location: location) { cityName in
+                print("City Name: \(cityName)")
+            }
+
+            mainViewModel.fetchAndUpdateWeatherData(latitude: cityLat ?? myCurrentLat, longitude: cityLon ?? myCurrentLon) { [weak self] data in
+                self?.updateUI(with: data)
+                self?.notificationForWeather_Fairy.dataForNotification(with: data)
+                self?.sceneDelegate.dataForNotificationForBackground(with: data)
+            }
+
+            mainViewModel.fetchAndUpdateHourlyWeatherData(latitude: cityLat ?? myCurrentLat, longitude: cityLon ?? myCurrentLon) { [weak self] forecast in
+                self?.forecast.updateHourlyForecast(forecast)
+            }
+
+            mainViewModel.fetchAndUpdateDailyWeatherData(latitude: cityLat ?? myCurrentLat, longitude: cityLon ?? myCurrentLon) { [weak self] forecast in
+                self?.forecast.updateDailyForecast(forecast)
+            }
+
+            let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? myCurrentLat, longitude: cityLon ?? myCurrentLon)
+            let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
+            myLocation.mapkit.customMapView.setRegion(coordinateRegion, animated: false)
         }
-
-        mainViewModel.fetchAndUpdateWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] data in
-            self?.updateUI(with: data)
-            self?.notificationForWeather_Fairy.dataForNotification(with: data)
-        }
-
-        mainViewModel.fetchAndUpdateHourlyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] forecast in
-            self?.forecast.updateHourlyForecast(forecast)
-        }
-
-        mainViewModel.fetchAndUpdateDailyWeatherData(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude) { [weak self] forecast in
-            self?.forecast.updateDailyForecast(forecast)
-        }
-
-        manager.stopUpdatingLocation()
-
-        let currentLocation = CLLocationCoordinate2D(latitude: cityLat ?? location.coordinate.latitude, longitude: cityLon ?? location.coordinate.longitude)
-        let coordinateRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: ZOOM_IN, longitudinalMeters: ZOOM_IN)
-        myLocation.mapkit.customMapView.setRegion(coordinateRegion, animated: false)
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
