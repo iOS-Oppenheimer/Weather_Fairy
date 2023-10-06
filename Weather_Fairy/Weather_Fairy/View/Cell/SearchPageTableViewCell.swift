@@ -117,10 +117,10 @@ class SearchPageTableViewCell: UITableViewCell {
             // 나머지 레이블에는 자간을 적용하지 않음
             self.engNameLabel.text = self.cityEngName
             self.weatherLabel.text = self.weatherMain
-            self.tempLabel.text = self.weatherTemp.map { "\($0)°" }
+            self.tempLabel.text = self.weatherTemp.map { "\($0)" }
             self.maxMinTempLabel.text = self.weatherMaxTemp.flatMap { maxTemp in
                 self.weatherMinTemp.map { minTemp in
-                    "최고: \(maxTemp)°C 최저: \(minTemp)°C"
+                    "최고: \(maxTemp) 최저: \(minTemp)"
                 }
             }
             self.timeLabel.text = self.cityTime
