@@ -87,3 +87,6 @@ fastlane/test_output
 iOSInjectionProject/
 
 # End of https://www.toptal.com/developers/gitignore/api/swift
+Weather_Fairy/Weather_Fairy/ViewModel/API/GeocodingAPIKey.swift
+Weather_Fairy/Weather_Fairy/ViewModel/API/GeocodingAPIKey.swift
+Weather_Fairy/Weather_Fairy/ViewModel/GeocodingAPIKey.swift
